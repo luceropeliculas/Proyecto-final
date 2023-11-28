@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+  <title>TODO supply a title</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link th:href="@{/css/registro.css}" type="text/css" rel="stylesheet"></link>
+</head>
+    <body>
+           <form id="reister-form-cliente" th:action="@{/rubro/registro/}" method="POST">
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" name="nombreRubro" required th:value="${nombre}"><br>
+      <label for="descripcion">descripcion:</label>
+      <input type="text" id="descripcion" name="descripcion" required th:value="${apellido}"><br>
+      
+
+      <input type="submit" value="Registrar Rubro">
+    </form>
+    </body>
+</html>
