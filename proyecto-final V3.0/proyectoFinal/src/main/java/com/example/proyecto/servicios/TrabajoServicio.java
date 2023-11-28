@@ -32,7 +32,7 @@ ProveedorRepositorio proveedorRepositorio;
 TrabajoRepositorio trabajoRepositorio;
 
 @Transactional
-public Trabajo contrataTrabajo(String dniProveedor, String dniCliente) throws MiException{
+public Trabajo solicitudTrabajo(String dniProveedor, String dniCliente, String detalleDeTrabajo) throws MiException{
 
 
    
@@ -50,31 +50,50 @@ public Trabajo contrataTrabajo(String dniProveedor, String dniCliente) throws Mi
    trabajo.setProveedor(proveedor);
    trabajo.setCliente(cliente);
    trabajo.setEstadoTrabajo(EstadoTrabajo.PENDIENTE);
-
+    trabajo.setDetalleDeSolicitud(detalleDeTrabajo);  
     return trabajo;
 
 }
 @Transactional
-public void aceptacionDeTrabajoProveedor (Long idtrabajo ){
+public void revisionDeTrabajo(Long idtrabajo ,
+ Boolean aceptacion,String respuestaProveedor, int gastosAdicionales, int horasTrabajadasEstimadas, String dniProveedor){
 
-   
+Trabajo trabajo = new Trabajo();
 
-   boolean EstadoDeAceptacion = false;
+ Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idtrabajo);
 
-   if (EstadoDeAceptacion) {
-      trabajo.setEstadoTrabajo(EstadoTrabajo.ACEPTADO);
+ 
+         if (trabajoRespuesta.isPresent()) {
+            trabajo = trabajoRespuesta.get();
+         }
+  
+
+
+   if (aceptacion) {
+      trabajo.setEstadoTrabajo(EstadoTrabajo.REVISION);
       trabajo.setFechaInicio(new Date());
-      trabajo.setHorasTrabajo(0);
+    
+      trabajo.setRespuestaProveedor(respuestaProveedor);
+      trabajo.setHorasTrabajoEstimadas(horasTrabajadasEstimadas);
+      trabajo.setGastosAdicionales(gastosAdicionales);
+
+ Optional<Proveedor> proveedorRespuesta = proveedorRepositorio.findById(dniProveedor);
+
+         if (proveedorRespuesta.isPresent()) {
+            proveedor = proveedorRespuesta.get();
+         }
+
+double preciofinal;
 
 
-      trabajo.setPrecioFinal(0);
+preciofinal = (proveedor.getPrecioHora()*trabajo.getHorasTrabajoEstimadas()) + trabajo.getGastosAdicionales();
       
-
-      
+trabajo.setPrecioFinal(preciofinal);
 
 
    }else{
-
+  trabajo.setEstadoTrabajo(EstadoTrabajo.CANCELADO);
+  trabajo.setRespuestaProveedor(respuestaProveedor);
    }
 
 }
