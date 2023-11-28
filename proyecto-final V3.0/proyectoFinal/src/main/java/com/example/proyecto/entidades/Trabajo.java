@@ -17,18 +17,22 @@ public class Trabajo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Temporal(TemporalType.DATE)
     private Date fechaInicio;
+
     @Temporal(TemporalType.DATE)
     private Date fechaFinalizado;
+
     private int puntuacionTrabajo;
     private EstadoTrabajo estadoTrabajo;
+    private String cometarioTrabajoTerminado;
     
-    //private Proveedor proveedor;
     private int horasTrabajo;//Lo completa el provedor x horas de trabajo
     private int precioFinal;//este campo se completa con la horas trabajas x precio hora  trabajada x el provedor
     
-    //private Cliente cliente;
+    private Proveedor proveedor;
+    private Cliente cliente;
 }
     
     

@@ -23,6 +23,7 @@ private Rubro rubro;
 //private EstadoTrabajo estadoTrabajo;//visualiza en el perfil del proveedor 
 private boolean estadoActual;//Depende del estado actual
 
+
 private double precioHora;
 private Date fechaAlta;
 private int contdTrabajoRealizado;//esto permite scar un promedio de los trabajos realizados
