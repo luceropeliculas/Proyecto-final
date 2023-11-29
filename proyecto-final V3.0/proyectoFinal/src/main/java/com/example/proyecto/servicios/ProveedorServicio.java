@@ -38,7 +38,7 @@ public class ProveedorServicio {
                                double precioHora, String domicilio, String idRubro) throws MiException {
         //recordar el que rol se lo seteamos en el servicio. no lo traemos del controlador
                 
-        validar(nombre, apellido, dni, telefono, email, password, password2, precioHora);
+        validar(nombre, apellido, dni, telefono, email, password, password2, precioHora, domicilio);
         
         Proveedor proveedor = new Proveedor();
         
@@ -60,14 +60,10 @@ public class ProveedorServicio {
         proveedor.setEmail(email);
         proveedor.setPassword(password);
         proveedor.setDescripcion(descripcion);        //Descripcion de cada proveedor Ej: horarios, presentación breve, etc.
-        
-       
-        
-        proveedor.setPrecioHora(precioHora); //Es el valor de los honorarios por hora. 
-        
+        proveedor.setPrecioHora(precioHora); //Es el valor de los honorarios por hora.         
         proveedor.setFechaAlta(new Date());
         proveedor.setRol(Rol.PROVEEDOR);
-          
+        
         Imagen imagen = imagenServicio.guardar(archivo);
 
         proveedor.setImagen(imagen);
@@ -78,8 +74,8 @@ public class ProveedorServicio {
     @Transactional
     public void modificar(MultipartFile archivo, String nombre, String apellido, String dni, String telefono, String email, String password,
                                String password2, String matricula, String descripcion,
-                               double precioHora, String idRubro) throws MiException {
-        validar(nombre, apellido, dni, telefono, email, password, password2, precioHora);
+                               double precioHora, String idRubro, String domicilio) throws MiException {
+        validar(nombre, apellido, dni, telefono, email, password, password2, precioHora, domicilio);
         // falta domicilio
         Optional<Proveedor> respuesta = proveedorRepositorio.findById(dni);
         if (respuesta.isPresent()) {
@@ -88,15 +84,13 @@ public class ProveedorServicio {
         proveedor.setNombre(nombre);
         proveedor.setApellido(apellido);
         proveedor.setDni(dni);
+        proveedor.setDomicilio(domicilio);
         proveedor.setTelefono(telefono);
         proveedor.setEmail(email);
         proveedor.setPassword(password);
-        proveedor.setDescripcion(descripcion); //Descripcion de cada proveedor Ej: horarios, presentación breve, etc.
-        proveedor.setPrecioHora(precioHora); //Es el valor de los honorarios por hora. 
-        //proveedor.setFechaAlta(new Date()); // Asigna la fecha actual
-           
-        proveedor.setRol(Rol.PROVEEDOR);
-          //  proveedor.setRoles(roles);
+        proveedor.setDescripcion(descripcion); 
+        proveedor.setPrecioHora(precioHora);                
+        proveedor.setRol(Rol.PROVEEDOR);         
 
             String idImagen = null;
 
@@ -144,10 +138,28 @@ public class ProveedorServicio {
         }
         return proveedoresPorRubro;
 
-        //exelente metodo!!!
-        //HAcer metodo para esto... lo haria eliminar sino que vuelva a ser cliente
     }
+    
+    @Transactional
+    public void cambiarRolCliente(String dni) throws MiException {
+    Optional<Proveedor> proveedorOptional = proveedorRepositorio.findById(dni);
 
+    if (proveedorOptional.isPresent()) {
+        Proveedor proveedor = proveedorOptional.get();
+
+        // Verificar si el proveedor está dado de alta antes de realizar el cambio de rol
+        if (proveedor.isAlta()) {
+            proveedor.setRol(Rol.CLIENTE);
+            proveedorRepositorio.save(proveedor);
+        } else {
+            throw new MiException("El proveedor con DNI " + dni + " no está dado de alta.");
+        }
+    } else {
+        throw new MiException("No se encontró un proveedor con el DNI proporcionado: " + dni);
+    }
+}
+    
+    
     @Transactional
     public void eliminar(String dni) throws MiException {
 
@@ -177,7 +189,9 @@ public class ProveedorServicio {
 
 
     @Transactional   
-    private void validar(String nombre, String apellido, String dni, String telefono, String email, String password, String password2, double precioHora) throws MiException {
+    private void validar(String nombre, String apellido, String dni, String telefono,
+            String email, String password, String password2, double precioHora, String domicilio) throws MiException {
+        
         if (nombre == null || nombre.isEmpty()) {
             throw new MiException("El nombre no puede ser nulo o estar vacío");
         }
@@ -187,9 +201,9 @@ public class ProveedorServicio {
         }
 
         if (dni == null || dni.isEmpty()) {
-            throw new MiException("El DNI no puede ser nulo o estar vacío");
+            throw new MiException("El DNI no puede ser nulo o estar vacío");            
         }
-
+        
         if (telefono == null || telefono.isEmpty()) {
             throw new MiException("El teléfono no puede ser nulo o estar vacío");
         }
@@ -200,8 +214,7 @@ public class ProveedorServicio {
 
         if (password == null || password.isEmpty() || password.length() <= 5) {
             throw new MiException("La contraseña no puede estar vacía y debe tener más de 5 dígitos");
-        }
-  
+        }  
 
         if (!password.equals(password2)) {
             throw new MiException("Las contraseñas ingresadas deben ser iguales");
@@ -210,10 +223,18 @@ public class ProveedorServicio {
         if (precioHora == 0.0) {
             throw new MiException("El campo honorarios/hora no puede estar vacío o ser cero");
         }
-
         
+        if (proveedorRepositorio.existsByDni(dni)) {
+            throw new MiException("El DNI ya está registrado en el sistema");
+        }
+
+        if (proveedorRepositorio.existsByEmail(email)) {
+            throw new MiException("El email ya está registrado en el sistema");
+        }
+        if (domicilio == null || domicilio.isEmpty()) {
+            throw new MiException("El domicilio no estar vacío");
     }
-    
-    
-    
+ 
+ }
+
 }
