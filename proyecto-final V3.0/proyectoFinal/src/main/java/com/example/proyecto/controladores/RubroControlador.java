@@ -6,7 +6,7 @@
 package com.example.proyecto.controladores;
 
 import com.example.proyecto.excepciones.MiException;
-import com.example.proyecto.servicios.ClienteServicio;
+
 import com.example.proyecto.servicios.RubroServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,12 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+
 
 /**
  *
- * @author AMD
- */
+ * @author AMD */
 @Controller
 @RequestMapping("/rubro")
 public class RubroControlador {
@@ -35,7 +34,7 @@ return "rubro_form.html";
         }
     
       @PostMapping("/registro")
-    public String registro(@RequestParam String nombreRubro,String descripcion, ModelMap modelo){
+    public String registro(@RequestParam String nombreRubro,String descripcion, ModelMap modelo) throws MiException{
        //faltan excepciones en el servicio
       //  try {
             rubroServicio.CrearRubro(nombreRubro, descripcion);
