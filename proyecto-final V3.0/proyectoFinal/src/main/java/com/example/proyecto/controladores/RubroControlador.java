@@ -35,7 +35,7 @@ return "rubro_form.html";
         }
     
       @PostMapping("/registro")
-    public String registro(@RequestParam String nombreRubro,String descripcion, ModelMap modelo){
+    public String registro(@RequestParam String nombreRubro,String descripcion, ModelMap modelo) throws MiException{
        //faltan excepciones en el servicio
       //  try {
             rubroServicio.CrearRubro(nombreRubro, descripcion);
