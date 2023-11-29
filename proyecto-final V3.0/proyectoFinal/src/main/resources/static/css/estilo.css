@@ -1,0 +1,260 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto' ,sans-serif;
+}
+
+body{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:aqua; /*letras de todo lo que se ve*/
+}
+
+.background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/imagenes/bg-inicio3.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+}
+
+a{
+    color: aqua;
+    text-decoration:none;
+font-weight:500;
+display: inline-block;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ajusta la altura del contenedor al 100% del viewport */
+}
+
+
+.container-form{
+    display: flex;
+    justify-content: space-around;
+    width: 90%;
+    max-width: 800px;
+    height: 500px;
+    display: flex;
+    transition: all .5s ease-in-out;
+
+}
+.welcome-back{
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+}
+.messege{
+padding: 1rem;
+}
+.messege h2{
+    font-size: 1.7rem;
+    padding: 1rem 0;
+    
+}
+.messege button {
+    padding: 1rem;
+    font-weight: 400;
+    background-color: #4a4aee;
+    border-radius: 2rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: .9rem;
+    margin-top: 2rem;
+    transition: all .3s ease-in;
+    color: #fff;
+}
+.messege button:hover{
+    
+    background-color: #6464f8;
+}
+.formulario{
+    height: 250%;
+    width: 400px;
+    padding: 1rem;
+    margin: 2rem;
+    background-color: rgb(53,51,51,0.602); /*color de fondo del form*/
+    text-align: center;
+}
+
+
+.create-account{
+    padding:2.7rem 0;
+    font-size: 1.7rem;
+}
+.iconos{
+    width: 200px;
+    display: flex;
+    justify-content: space-around;
+    margin: auto;
+
+}
+.border-icon{
+    height: 20px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    border: solid thin white; /*linea de link fecbook,inst...*/
+    border-radius: 50%;
+    font-size: 1.5rem;
+    transition: all .3s ease-in;
+}
+.border-icon:hover{
+    background-color: #4a4aee; /*cuando pase el mause por el icono cambia*/
+    cursor: pointer;
+}
+.cuenta-gratis{
+    padding: 2rem 0;
+}
+
+.formulario input{
+    
+    width: 70%;
+    display: block;
+    margin: auto;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border: none;
+    border-bottom: white thin solid; /*de linea de form*/
+    text-align: center;
+    outline: none;
+    padding: .2rem 0;
+    font-size: .9rem;
+    color: white; /*color de letra de llenado*/
+    cursor: pointer;
+}
+.formulario input[type="button"]{
+    width: 60%;
+    margin: auto;
+    border: solid thin white; /*borde del cuadro*/
+    font-weight: 600;
+    margin-top: 1rem;
+    font-size: .8rem;
+    cursor: pointer;
+    color: white; /*boton registro*/
+}
+.sign-in{
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+}
+.sign-in.active{
+    opacity: 1;
+    visibility: visible;
+}
+.sign-up.active{
+    opacity: 0;
+
+    visibility: visible;
+}
+
+#ov-btn-slide-close {
+  background: mediumslateblue; /* color de fondo */
+  color: white; /* color de fuente */
+  border: transparent; /* tamaño y color de borde */
+  padding: 10px 20px;
+  border-radius: 60px; /* redondear bordes */
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: inline-block;
+  
+}
+#ov-btn-slide-close:before, #ov-btn-slide-close:after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  top: 0;
+  left: -50%;
+  background-color: lightgreen; /* color de fondo hover */
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+#ov-btn-slide-close:after {
+  left: 100%;
+}
+#ov-btn-slide-close:hover {
+  color: #fff; /* color de fuente hover */
+  cursor: pointer;
+}
+#ov-btn-slide-close:hover:before {
+  left: 0;
+}
+#ov-btn-slide-close:hover:after {
+  left: 50%;
+}
+.content-select{
+    align-items: center;
+    display: flex;
+   justify-content: center;
+   gap:5px;
+   margin: 10px;
+}
+.content-input input,
+.content-select select{
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
+ 
+.content-select select{
+	display: inline-block;
+	width: 100%;
+	cursor: pointer;
+  	padding: 7px 10px;
+  	height: 42px;
+  	outline: 0; 
+  	border: 0;
+	border-radius: 0;
+	background: #f0f0f0;
+	color: #7b7b7b;
+	font-size: 1em;
+	color: #999;
+	font-family: 
+	'Quicksand', sans-serif;
+	border:2px solid rgba(0,0,0,0.2);
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.25s ease;
+}
+ 
+.content-select select:hover{
+	background: #B1E8CD;
+}
+.content-select select::-ms-expand {
+    display: none;
+}
+.content-select i{
+	position: absolute;
+	right: 20px;
+	top: calc(50% - 13px);
+	width: 16px;
+	height: 16px;
+	display: block;
+	border-left:4px solid #2AC176;
+	border-bottom:4px solid #2AC176;
+	transform: rotate(-45deg); /* Giramos el cuadrado */
+	transition: all 0.25s ease;
+}
+ 
+.content-select:hover i{
+	margin-top: 3px;
+}
