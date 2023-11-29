@@ -4,16 +4,18 @@
     box-sizing: border-box;
 }
 body{
-    background-image: url("../imagenes/barrioFoto.jpg");
+    background-color: rgba(0,0,0,0.1);
+    background-image: url("../imagenes/w.jpg");
     background-size: cover;
     background-attachment: fixed;
+   
 }
 #header-index{
     display:flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 10px 25px 0px 15px;
-    background-color: rgba(0,0,0,0.3);
+    padding: 0px 80px 10px 55px;
+    background-color: rgba(0,0,0,0.5);
     position: fixed;
     top: 0;
     width: 100%;
@@ -21,14 +23,24 @@ body{
 
 }
 #logo>img{
-    height: 65px;
+    margin: -30px;
+    height: 160px;
 }
 #presentacion{
     text-align: center;
 }
 
+#botones{
+    display: flex;
+    justify-content: center;
+}
+.cada-boton{
+   
+    margin-left: 13px;
+}
+
 #contenedor{
-    margin-top: 100px;
+    margin-top: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,12 +48,12 @@ body{
 
 #animacion{
     width: 50%;
-    margin-bottom: 25px;
+    margin-bottom: 55px;
     text-align: center;
     padding: 25px;
     color: aqua;
     opacity: 0;
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0,0,0,0.5);
     animation: intro 3s ;
     animation-delay: 2s;
     animation-fill-mode: forwards;
@@ -69,7 +81,7 @@ body{
 
 #carrusel-container{
     position: relative;
-    width: calc(min(90rem, 90%));
+    width: calc(min(60rem, 60%));
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -82,7 +94,7 @@ body{
 
 .swiper-slide {
     width: 18.75rem;
-    height: 35rem;
+    height: 25rem;
     display: flex;
     flex-direction: column;
     justify-content: end;
@@ -101,7 +113,7 @@ body{
     bottom: -0.063rem;
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
-    filter: brightness(50%);
+    filter: brightness(85%);
 }
 .swiper-slide-img img {
     width: 100%;
@@ -124,7 +136,8 @@ body{
     fill: #ffffff;
 }
 .swiper-slide-content {
-    background: transparent;
+     background-color: rgba(0,0,0,0.5);
+    
     padding: 0 1.65rem;
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
