@@ -31,9 +31,11 @@ ProveedorRepositorio proveedorRepositorio;
 @Autowired
 TrabajoRepositorio trabajoRepositorio;
 
-@Transactional //lo crea el cliente
+@Transactional
 public Trabajo solicitudTrabajo(String dniProveedor, String dniCliente, String detalleDeTrabajo) throws MiException{
 
+
+   
    Optional<Cliente> clienteRespuesta = clienteRepositorio.findById(dniCliente);
 
          if (clienteRespuesta.isPresent()) {
@@ -52,49 +54,47 @@ public Trabajo solicitudTrabajo(String dniProveedor, String dniCliente, String d
     return trabajo;
 
 }
-@Transactional // le llega al proveedor lo acepta o no, y genera el presupúesto
-public void revisionDeTrabajo(Long idtrabajo ,
- Boolean aceptacion,String respuestaProveedor, int gastosAdicionales, int horasTrabajadasEstimadas, String dniProveedor, String observacionCancelado){
+    @Transactional
+    public void revisionDeTrabajo(Long idtrabajo, Boolean aceptacion,
+            String respuestaProveedor, int gastosAdicionales, int horasTrabajadasEstimadas, String dniProveedor) {
 
-Trabajo trabajo = new Trabajo();
+        Trabajo trabajo = new Trabajo();
 
- Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idtrabajo);
+        Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idtrabajo);
 
- 
-         if (trabajoRespuesta.isPresent()) {
+        if (trabajoRespuesta.isPresent()) {
             trabajo = trabajoRespuesta.get();
-         }
+        }
 
-   if (aceptacion) {
-      trabajo.setEstadoTrabajo(EstadoTrabajo.REVISION);
-      trabajo.setFechaInicio(new Date());
-    
-      trabajo.setRespuestaProveedor(respuestaProveedor);
-      trabajo.setHorasTrabajoEstimadas(horasTrabajadasEstimadas);
-      trabajo.setGastosAdicionales(gastosAdicionales);
+        if (aceptacion) {
+            trabajo.setEstadoTrabajo(EstadoTrabajo.REVISION);
+            trabajo.setFechaInicio(new Date());
 
- Optional<Proveedor> proveedorRespuesta = proveedorRepositorio.findById(dniProveedor);
+            trabajo.setRespuestaProveedor(respuestaProveedor);
+            trabajo.setHorasTrabajoEstimadas(horasTrabajadasEstimadas);
+            trabajo.setGastosAdicionales(gastosAdicionales);
 
-         if (proveedorRespuesta.isPresent()) {
-            proveedor = proveedorRespuesta.get();
-         }
+            Optional<Proveedor> proveedorRespuesta = proveedorRepositorio.findById(dniProveedor);
 
-double preciofinal;
+            if (proveedorRespuesta.isPresent()) {
+                proveedor = proveedorRespuesta.get();
+            }
 
-preciofinal = (proveedor.getPrecioHora()*trabajo.getHorasTrabajoEstimadas()) + trabajo.getGastosAdicionales();
-      
-trabajo.setPrecioFinal(preciofinal);
+            double preciofinal;
 
+            preciofinal = (proveedor.getPrecioHora() * trabajo.getHorasTrabajoEstimadas()) + trabajo.getGastosAdicionales();
 
-   }else{
-  trabajo.setEstadoTrabajo(EstadoTrabajo.CANCELADO);
-  trabajo.setObservacionCancelado(observacionCancelado);
-   }
+            trabajo.setPrecioFinal(preciofinal);
 
-}
+        } else {
+            trabajo.setEstadoTrabajo(EstadoTrabajo.CANCELADO);
+            trabajo.setRespuestaProveedor(respuestaProveedor);
+        }
 
-@Transactional
-    public void aceptacionCliente(Long idTrabajo, boolean aceptacion, String observacionCancelado) throws MiException {
+    }
+
+    @Transactional
+    public void aceptacionCliente(Long idTrabajo, boolean aceptacion) throws MiException {
         Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idTrabajo);
 
         if (trabajoRespuesta.isPresent()) {
@@ -103,11 +103,14 @@ trabajo.setPrecioFinal(preciofinal);
             if (aceptacion) {
                 trabajo.setEstadoTrabajo(EstadoTrabajo.ACEPTADO);
 
+                // Obtener el proveedor asociado al trabajo
+                Proveedor proveedor = trabajo.getProveedor();
 
-
+                // Cambiar el estado del proveedor a ocupado
+                proveedor.setEstadoActual(false);
+                
             } else {
                 trabajo.setEstadoTrabajo(EstadoTrabajo.CANCELADO);
-                trabajo.setObservacionCancelado(observacionCancelado);
             }
 
             trabajoRepositorio.save(trabajo);
@@ -115,44 +118,55 @@ trabajo.setPrecioFinal(preciofinal);
             throw new MiException("No se encontró un trabajo con el ID proporcionado: " + idTrabajo);
         }
     }
+    
+    
     @Transactional
-    public void finalizarTrabajo(Long idTrabajo) throws MiException {
+    public void finalizadoTrabajo(Long idTrabajo, String idProvedor, Boolean estado) throws MiException {
+        Trabajo trabajo = new Trabajo();
+        Proveedor proveedor = new Proveedor();
         Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idTrabajo);
+        Optional<Proveedor> proveedorRespuesta = proveedorRepositorio.findById(idProvedor);
 
         if (trabajoRespuesta.isPresent()) {
-            Trabajo trabajo = trabajoRespuesta.get();
-
-            if (trabajo.getEstadoTrabajo() == EstadoTrabajo.FINALIZADO ) {
-                throw new MiException("El trabajo ya está marcado como finalizado.");
-            }
+            trabajo = trabajoRespuesta.get();
 
             trabajo.setEstadoTrabajo(EstadoTrabajo.FINALIZADO);
             trabajoRepositorio.save(trabajo);
-        } else {
-            throw new MiException("No se encontró un trabajo con el ID proporcionado: " + idTrabajo);
+        }
+
+        if (proveedorRespuesta.isPresent()) {
+            proveedor = proveedorRespuesta.get();
+
+        }
+
+        if (estado) {
+            proveedor.setEstadoActual(true);
+            proveedorRepositorio.save(proveedor);
         }
     }
 
+
     @Transactional
-    public void ComentarioYpuntuacion(Long idTrabajo, String comentario, int puntuacion) throws MiException {
+    public void comentarioYpuntuacion(Long idTrabajo, String comentario, int puntuacion) throws MiException {
         Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idTrabajo);
 
         if (trabajoRespuesta.isPresent()) {
             Trabajo trabajo = trabajoRespuesta.get();
 
-            if (trabajo.getEstadoTrabajo() != EstadoTrabajo.FINALIZADO) {
-                throw new MiException("El trabajo debe estar marcado como finalizado para agregar un comentario y puntuación.");
+            if (trabajo.getEstadoTrabajo() == EstadoTrabajo.FINALIZADO) {
+                if (puntuacion > 0 && puntuacion <= 5) {
+                    trabajo.setPuntuacionTrabajo(puntuacion);
+                    trabajo.setCometarioTrabajoTerminado(comentario);
+
+                    trabajoRepositorio.save(trabajo);
+                } else {
+                    throw new MiException("La puntuación debe estar entre 1 y 5");
+                }
+            } else {
+                throw new MiException("Debe estar finalizado el trabajo para poder dar el comentario y puntuacion");
             }
-
-            trabajo.setCometarioTrabajoTerminado(comentario);
-            trabajo.setPuntuacionTrabajo(puntuacion);
-
-            trabajoRepositorio.save(trabajo);
         } else {
             throw new MiException("No se encontró un trabajo con el ID proporcionado: " + idTrabajo);
         }
     }
-
-
-    
 }
