@@ -31,11 +31,9 @@ ProveedorRepositorio proveedorRepositorio;
 @Autowired
 TrabajoRepositorio trabajoRepositorio;
 
-@Transactional
+@Transactional //lo crea el cliente
 public Trabajo solicitudTrabajo(String dniProveedor, String dniCliente, String detalleDeTrabajo) throws MiException{
 
-
-   
    Optional<Cliente> clienteRespuesta = clienteRepositorio.findById(dniCliente);
 
          if (clienteRespuesta.isPresent()) {
@@ -54,9 +52,9 @@ public Trabajo solicitudTrabajo(String dniProveedor, String dniCliente, String d
     return trabajo;
 
 }
-@Transactional
+@Transactional // le llega al proveedor lo acepta o no, y genera el presupúesto
 public void revisionDeTrabajo(Long idtrabajo ,
- Boolean aceptacion,String respuestaProveedor, int gastosAdicionales, int horasTrabajadasEstimadas, String dniProveedor){
+ Boolean aceptacion,String respuestaProveedor, int gastosAdicionales, int horasTrabajadasEstimadas, String dniProveedor, String observacionCancelado){
 
 Trabajo trabajo = new Trabajo();
 
@@ -66,8 +64,6 @@ Trabajo trabajo = new Trabajo();
          if (trabajoRespuesta.isPresent()) {
             trabajo = trabajoRespuesta.get();
          }
-  
-
 
    if (aceptacion) {
       trabajo.setEstadoTrabajo(EstadoTrabajo.REVISION);
@@ -85,7 +81,6 @@ Trabajo trabajo = new Trabajo();
 
 double preciofinal;
 
-
 preciofinal = (proveedor.getPrecioHora()*trabajo.getHorasTrabajoEstimadas()) + trabajo.getGastosAdicionales();
       
 trabajo.setPrecioFinal(preciofinal);
@@ -93,9 +88,71 @@ trabajo.setPrecioFinal(preciofinal);
 
    }else{
   trabajo.setEstadoTrabajo(EstadoTrabajo.CANCELADO);
-  trabajo.setRespuestaProveedor(respuestaProveedor);
+  trabajo.setObservacionCancelado(observacionCancelado);
    }
 
 }
+
+@Transactional
+    public void aceptacionCliente(Long idTrabajo, boolean aceptacion, String observacionCancelado) throws MiException {
+        Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idTrabajo);
+
+        if (trabajoRespuesta.isPresent()) {
+            Trabajo trabajo = trabajoRespuesta.get();
+
+            if (aceptacion) {
+                trabajo.setEstadoTrabajo(EstadoTrabajo.ACEPTADO);
+
+
+
+            } else {
+                trabajo.setEstadoTrabajo(EstadoTrabajo.CANCELADO);
+                trabajo.setObservacionCancelado(observacionCancelado);
+            }
+
+            trabajoRepositorio.save(trabajo);
+        } else {
+            throw new MiException("No se encontró un trabajo con el ID proporcionado: " + idTrabajo);
+        }
+    }
+    @Transactional
+    public void finalizarTrabajo(Long idTrabajo) throws MiException {
+        Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idTrabajo);
+
+        if (trabajoRespuesta.isPresent()) {
+            Trabajo trabajo = trabajoRespuesta.get();
+
+            if (trabajo.getEstadoTrabajo() == EstadoTrabajo.FINALIZADO ) {
+                throw new MiException("El trabajo ya está marcado como finalizado.");
+            }
+
+            trabajo.setEstadoTrabajo(EstadoTrabajo.FINALIZADO);
+            trabajoRepositorio.save(trabajo);
+        } else {
+            throw new MiException("No se encontró un trabajo con el ID proporcionado: " + idTrabajo);
+        }
+    }
+
+    @Transactional
+    public void ComentarioYpuntuacion(Long idTrabajo, String comentario, int puntuacion) throws MiException {
+        Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idTrabajo);
+
+        if (trabajoRespuesta.isPresent()) {
+            Trabajo trabajo = trabajoRespuesta.get();
+
+            if (trabajo.getEstadoTrabajo() != EstadoTrabajo.FINALIZADO) {
+                throw new MiException("El trabajo debe estar marcado como finalizado para agregar un comentario y puntuación.");
+            }
+
+            trabajo.setCometarioTrabajoTerminado(comentario);
+            trabajo.setPuntuacionTrabajo(puntuacion);
+
+            trabajoRepositorio.save(trabajo);
+        } else {
+            throw new MiException("No se encontró un trabajo con el ID proporcionado: " + idTrabajo);
+        }
+    }
+
+
     
 }
