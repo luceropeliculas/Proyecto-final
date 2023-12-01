@@ -17,6 +17,8 @@ import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.repositorios.ClienteRepositorio;
 import com.example.proyecto.repositorios.ProveedorRepositorio;
 import com.example.proyecto.repositorios.TrabajoRepositorio;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TrabajoServicio {
@@ -32,7 +34,7 @@ ProveedorRepositorio proveedorRepositorio;
 TrabajoRepositorio trabajoRepositorio;
 
 @Transactional
-public Trabajo solicitudTrabajo(String dniProveedor, String dniCliente, String detalleDeTrabajo) throws MiException{
+public void solicitudTrabajo(String dniProveedor, String dniCliente, String detalleDeTrabajo) throws MiException{
 
 
    
@@ -47,12 +49,12 @@ public Trabajo solicitudTrabajo(String dniProveedor, String dniCliente, String d
             proveedor = proveedorRespuesta.get();
          }
 
-   trabajo.setProveedor(proveedor);
-   trabajo.setCliente(cliente);
-   trabajo.setEstadoTrabajo(EstadoTrabajo.PENDIENTE);
-    trabajo.setDetalleDeSolicitud(detalleDeTrabajo);  
-    return trabajo;
-
+    trabajo.setProveedor(proveedor);
+    trabajo.setCliente(cliente);
+    trabajo.setEstadoTrabajo(EstadoTrabajo.PENDIENTE);
+    trabajo.setDetalleDeSolicitud(detalleDeTrabajo);
+    trabajoRepositorio.save(trabajo);
+  
 }
     @Transactional
     public void revisionDeTrabajo(Long idtrabajo, Boolean aceptacion,
@@ -80,17 +82,19 @@ public Trabajo solicitudTrabajo(String dniProveedor, String dniCliente, String d
                 proveedor = proveedorRespuesta.get();
             }
 
-            double preciofinal;
+            Double preciofinal;
 
             preciofinal = (proveedor.getPrecioHora() * trabajo.getHorasTrabajoEstimadas()) + trabajo.getGastosAdicionales();
 
             trabajo.setPrecioFinal(preciofinal);
+            
 
         } else {
             trabajo.setEstadoTrabajo(EstadoTrabajo.CANCELADO);
             trabajo.setRespuestaProveedor(respuestaProveedor);
         }
-
+        
+         trabajoRepositorio.save(trabajo);
     }
 
     @Transactional
@@ -169,4 +173,23 @@ public Trabajo solicitudTrabajo(String dniProveedor, String dniCliente, String d
             throw new MiException("No se encontró un trabajo con el ID proporcionado: " + idTrabajo);
         }
     }
+    
+    public List<Trabajo> listarTrabajoCliente (String dniCliente) {
+    
+        List<Trabajo> trabajosCliente = new ArrayList<>();
+        
+        trabajosCliente = trabajoRepositorio.findByClienteDni(dniCliente);
+               
+     return trabajosCliente; 
+    }
+   
+    public List<Trabajo> listarTrabajoProveedor (String dniProveedor) {
+    
+        List<Trabajo> trabajosProveedor = new ArrayList<>();
+            
+        trabajosProveedor = trabajoRepositorio.findByProveedorDni(dniProveedor);
+            
+     return trabajosProveedor; 
+    }
+    
 }

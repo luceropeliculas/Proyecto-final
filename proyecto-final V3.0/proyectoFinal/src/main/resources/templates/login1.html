@@ -18,8 +18,8 @@
          <img class="logo" th:src="@{/imagenes/grupo.jpg}">
          
           <form class="formulario" th:action="@{/logincheck}" method="POST">
-          <input type="text" placeholder="Username">
-          <input type="password" placeholder="Password">
+          <input type="email" class="form-control" name="email" placeholder="EMAIL">
+          <input type="password" class="form-control" name="password" placeholder="CONTRASEÑA">
           <br>
     <br>
     <button type="submit" class="ov-btn-slide-left">Iniciar Sesion</button> 

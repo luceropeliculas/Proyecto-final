@@ -7,9 +7,11 @@ package com.example.proyecto.controladores;
 
 import com.example.proyecto.entidades.Proveedor;
 import com.example.proyecto.entidades.Rubro;
+import com.example.proyecto.entidades.Trabajo;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.servicios.ProveedorServicio;
 import com.example.proyecto.servicios.RubroServicio;
+import com.example.proyecto.servicios.TrabajoServicio;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +38,14 @@ public class ProveedorControlador {
     ProveedorServicio proveedorServicio;
     @Autowired
     RubroServicio rubroServicio;
+    @Autowired
+    TrabajoServicio trabajoServicio;
+   
 
     @PostMapping("/registro")
     public String registro(@RequestParam String nombre, String apellido, String dni, String telefono,
             String direccion, String email, String password, String matricula,
-            double precioHora, String descripcion,
+            Double precioHora, String descripcion,
             ModelMap modelo, MultipartFile archivo, String password2, String idRubro) {
 
         try {
@@ -77,7 +82,22 @@ public class ProveedorControlador {
         modelo.addAttribute("listProveedors", listProveedors);
         modelo.addAttribute("palabraClave", palabraClave);
 
-        return "index";
+        return "index.html";
 
     }
+    
+    @GetMapping("/listarTrabajo")
+    public String listarTrabajo(ModelMap modelo) {
+        
+        String dniProveedor = "t"; 
+        
+        List<Trabajo> listaTrabajos = trabajoServicio.listarTrabajoCliente(dniProveedor);
+        
+        modelo.addAttribute("listaTrabajos",listaTrabajos);
+        
+        return "listar_trabajo_proovedor.html";
+    }
+    
+    
+    
 }
