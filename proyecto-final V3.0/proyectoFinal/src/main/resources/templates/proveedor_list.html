@@ -22,10 +22,12 @@
                 </div>
             </div>
             <div class="Information">
-                <h1 th:text="${proveedor.nombre}"></h1>
-                <h1 th:text="${proveedor.apellido}"></h1>
                 <div class="animated_text">
-                    <h1 class="title" th:text="${proveedor.rubro}"></h1>
+                <h1 class="title" th:text="${proveedor.nombre}"></h1>
+                <h1 class="title" th:text="${proveedor.apellido}"></h1>
+                </div>
+                <div>
+                    <h1  th:text="${proveedor.rubro.nombreRubro}"></h1>
                     <h2 th:text="${proveedor.matricula}"></h2>
                 </div>
                 <p th:text="${proveedor.descripcion}"></p>
@@ -36,12 +38,12 @@
                 </div>
             </div>
             <div class="btn-container">
-              <!--<a th:href="@{/proveedor/perfil/{id}(id=${proveedor.id})}" class="card">-->
-              <a>
+              <a th:href="@{/proveedor/perfil/{dni}(id=${proveedor.dni})}">
+              
                 <button class="sign-up-btn" id="ov-btn-slide-close">Ver Perfil</button>
             </a>        
               
-            <a>
+            <a th:href="@{/trabajo/contratar/{dni}(id=${proveedor.dni})}">
                 <button class="sign-up-btn" id="ov-btn-slide-close">Contratar</button>
             </a>
                 </div>
