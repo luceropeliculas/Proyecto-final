@@ -24,7 +24,7 @@ private Rubro rubro;
 private boolean estadoActual;//Depende del estado actual
 
 
-private double precioHora;
+private Double precioHora;
 private Date fechaAlta;
 private int contdTrabajoRealizado;//esto permite scar un promedio de los trabajos realizados
 

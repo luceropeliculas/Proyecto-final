@@ -1,6 +1,7 @@
 
 package com.example.proyecto.repositorios;
 
+
 import com.example.proyecto.entidades.Proveedor;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,5 +23,10 @@ public interface ProveedorRepositorio extends JpaRepository<Proveedor, String> {
     boolean existsByDni(String dni);
 
     boolean existsByEmail(String email);
+    
+    
+    @Query("SELECT p FROM Proveedor p WHERE p.email = :email")
+    public Proveedor BuscarPorEmail(@Param("email") String email);
+    
 
 }

@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,7 +36,7 @@ public class ProveedorServicio {
     @Transactional
     public void crearProveedor(MultipartFile archivo, String nombre, String apellido, String dni, String telefono, String email, String password,
                                String password2, String matricula, String descripcion,
-                               double precioHora, String domicilio, String idRubro) throws MiException {
+                               Double precioHora, String domicilio, String idRubro) throws MiException {
         //recordar el que rol se lo seteamos en el servicio. no lo traemos del controlador
                 
         validar(nombre, apellido, dni, telefono, email, password, password2, precioHora, domicilio);
@@ -58,7 +59,7 @@ public class ProveedorServicio {
         proveedor.setDni(dni);
         proveedor.setTelefono(telefono);
         proveedor.setEmail(email);
-        proveedor.setPassword(password);
+        proveedor.setPassword(new BCryptPasswordEncoder().encode(password));
         proveedor.setDescripcion(descripcion);        //Descripcion de cada proveedor Ej: horarios, presentación breve, etc.
         proveedor.setPrecioHora(precioHora); //Es el valor de los honorarios por hora.         
         proveedor.setFechaAlta(new Date());
@@ -74,7 +75,7 @@ public class ProveedorServicio {
     @Transactional
     public void modificar(MultipartFile archivo, String nombre, String apellido, String dni, String telefono, String email, String password,
                                String password2, String matricula, String descripcion,
-                               double precioHora, String idRubro, String domicilio) throws MiException {
+                               Double precioHora, String idRubro, String domicilio) throws MiException {
         validar(nombre, apellido, dni, telefono, email, password, password2, precioHora, domicilio);
         // falta domicilio
         Optional<Proveedor> respuesta = proveedorRepositorio.findById(dni);
@@ -87,7 +88,7 @@ public class ProveedorServicio {
         proveedor.setDomicilio(domicilio);
         proveedor.setTelefono(telefono);
         proveedor.setEmail(email);
-        proveedor.setPassword(password);
+        proveedor.setPassword(new BCryptPasswordEncoder().encode(password));
         proveedor.setDescripcion(descripcion); 
         proveedor.setPrecioHora(precioHora);                
         proveedor.setRol(Rol.PROVEEDOR);         
@@ -190,7 +191,7 @@ public class ProveedorServicio {
 
     @Transactional   
     private void validar(String nombre, String apellido, String dni, String telefono,
-            String email, String password, String password2, double precioHora, String domicilio) throws MiException {
+            String email, String password, String password2, Double precioHora, String domicilio) throws MiException {
         
         if (nombre == null || nombre.isEmpty()) {
             throw new MiException("El nombre no puede ser nulo o estar vacío");
@@ -232,9 +233,16 @@ public class ProveedorServicio {
             throw new MiException("El email ya está registrado en el sistema");
         }
         if (domicilio == null || domicilio.isEmpty()) {
-            throw new MiException("El domicilio no estar vacío");
+            throw new MiException("El domicilio no puede estar vacío");
     }
  
  }
 
+    public Proveedor getOne(String dni) {
+    
+             
+        return proveedorRepositorio.getOne(dni);
+    }
+    
+    
 }

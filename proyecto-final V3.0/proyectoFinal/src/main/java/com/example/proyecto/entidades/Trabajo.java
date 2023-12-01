@@ -30,7 +30,7 @@ public class Trabajo {
     private int puntuacionTrabajo; // del 1 al 5
     private EstadoTrabajo estadoTrabajo;
     private String cometarioTrabajoTerminado;
-    private String detalleDeSolicitud;
+    private String detalleDeSolicitud; //Lo detalla el cliente cuando solicita
     private String observacionCancelado;
     private int horasTrabajoEstimadas;// Lo completa el provedor x horas de trabajo
     private int gastosAdicionales;

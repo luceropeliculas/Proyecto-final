@@ -31,6 +31,12 @@ public class PortalControlador {
     return"index.html";
     }
   
+      @GetMapping("/inicio")        
+    public String index1(){
+    return"index1.html";
+    }
+    
+    
        @GetMapping("/login1")        
     public String loginInicio(){
     return"login1.html";
