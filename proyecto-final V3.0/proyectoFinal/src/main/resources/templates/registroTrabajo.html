@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="container">
+            <div class="solicitud">
+                <h1>Formulario de solicitud de trabajo</h1>
+
+                <div class="data">
+                    <div class="trabajo">
+                        <h2>Detalles del Trabajo</h2>
+                        <p>Estado: <span th:text="${trabajo.estadoTrabajo}"></span></p>
+                        <p>Fecha de alta: <span th:text="${trabajo.fechaInicio}"></span></p>
+                    </div>
+                    <div class="cliente">
+                        <h2>Solicitante</h2>
+                        <h2 id="solicitante" th:text="${cliente.nombre + ' ' + cliente.apellido}"></h2>
+                        <p>Dirección: <span th:text="${cliente.domicilio}"></span></p>
+                        <p>Telefono: <span th:text="${cliente.telefono}"></span></p>
+                    </div>
+                    <div class="proveedor">
+                        <h2>Proveedor</h2>
+                        <h2 id="proveedor" th:text="${proveedor.nombre}"></h2>
+                        <p>Rubro: <span th:text="${proveedor.rubro}"></span></p>
+                    </div>
+
+                    <div class="descripcion">
+                        <input placeholder="Descripción del trabajo / Horarios disponibles" 
+                               minlength="15" maxlength="1000" 
+                               style="width: 100%; height: 300px" 
+                               type="text">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div th:if="${exito}!=null" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+            <div class="card-body">
+                <h5 class="card-title">Exito!</h5>
+                <p class="card-text" th:text="${exito}"></p>
+            </div>
+        </div>
+        <div th:if="${error}!=null" class="card text-white bg-danger mb-3 mensajeError" >
+            <div class="card-body">
+                <h5 class="card-title">Error ð</h5>
+                <p class="card-text" th:text="${error}"></p>
+            </div>
+        </div>
+
+        
+        
+    </body>
+</html>
+
