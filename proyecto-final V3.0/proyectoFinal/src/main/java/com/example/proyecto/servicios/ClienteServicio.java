@@ -2,10 +2,12 @@ package com.example.proyecto.servicios;
 
 import com.example.proyecto.entidades.Cliente;
 import com.example.proyecto.entidades.Imagen;
+import com.example.proyecto.entidades.Persona;
 import com.example.proyecto.enumeraciones.Rol;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.repositorios.ClienteRepositorio;
 import com.example.proyecto.repositorios.ImagenRepositorio;
+import com.example.proyecto.repositorios.PersonaRepositorio;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -34,7 +36,9 @@ public class ClienteServicio implements UserDetailsService {
     ClienteRepositorio clienteRepositorio;
     @Autowired
     ImagenServicio imagenServicio;
-
+ @Autowired
+    PersonaRepositorio personaRepositorio;
+    
     @Transactional
     public void crearCliente(MultipartFile archivo, String nombre, String apellido, String dni, String telefono,
             String email, String password,String password2, String domicilio) throws MiException {
@@ -193,12 +197,15 @@ public class ClienteServicio implements UserDetailsService {
     }
 @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Cliente cliente = clienteRepositorio.BuscarPorEmail(email);
         
-        if (cliente != null) {
+        //se cambio por persona
+     //   y se implemento repositorio de persona
+       Persona persona =personaRepositorio.BuscarPorEmail(email);
+        
+        if (persona != null) {
             List<GrantedAuthority> permisos = new ArrayList<>();
 
-            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + cliente.getRol().toString());
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + persona.getRol().toString());
 
             permisos.add(p);
 
@@ -206,9 +213,9 @@ public class ClienteServicio implements UserDetailsService {
 
             HttpSession session = attr.getRequest().getSession(true);
 
-            session.setAttribute("usuariosession", cliente);
+            session.setAttribute("usuariosession", persona);
 
-            return new User(cliente.getEmail(), cliente.getPassword(), permisos);
+            return new User(persona.getEmail(), persona.getPassword(), permisos);
         } else {
             return null;
         }

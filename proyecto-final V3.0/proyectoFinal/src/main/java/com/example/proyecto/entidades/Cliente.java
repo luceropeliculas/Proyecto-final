@@ -15,8 +15,7 @@ import lombok.Data;
 @Entity
 public class Cliente extends Persona{
 
-  @Enumerated(EnumType.STRING)
-    private Rol rol;
+ 
   
     
 }
