@@ -196,7 +196,7 @@ public class ClienteServicio implements UserDetailsService {
         Cliente cliente = clienteRepositorio.BuscarPorEmail(email);
         
         if (cliente != null) {
-            List<GrantedAuthority> permisos = new ArrayList();
+            List<GrantedAuthority> permisos = new ArrayList<>();
 
             GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + cliente.getRol().toString());
 
