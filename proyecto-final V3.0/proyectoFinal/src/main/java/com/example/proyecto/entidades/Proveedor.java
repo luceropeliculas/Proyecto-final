@@ -30,9 +30,11 @@ private int contdTrabajoRealizado;//esto permite scar un promedio de los trabajo
 
 
  // se elimino lista de roles
+/*
+se puso el rol en la entidad persona
 @Enumerated(EnumType.STRING)
     private Rol rol;
- 
+ */
  @OneToOne
  private Imagen imagen;
  

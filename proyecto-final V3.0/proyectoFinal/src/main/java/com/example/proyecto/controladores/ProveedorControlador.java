@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -64,7 +65,7 @@ public class ProveedorControlador {
 
         return "index.html";
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN','ROLE_PROVEEDOR')")
     @GetMapping("/listar/{rubro}")
     public String listar(@PathVariable String rubro, ModelMap modelo) {
 
@@ -96,6 +97,17 @@ public class ProveedorControlador {
         modelo.addAttribute("listaTrabajos",listaTrabajos);
         
         return "listar_trabajo_proovedor.html";
+    }
+    
+     @GetMapping("/perfil/{dni}")
+    public String listarTrabajo(@PathVariable String dni, ModelMap modelo) {
+         System.out.println(dni);
+         System.out.println("--------------");
+        Proveedor proveedor =proveedorServicio.getOne(dni);
+                       
+        modelo.addAttribute("proveedor",proveedor);
+        
+        return "Perfil.html";
     }
     
     

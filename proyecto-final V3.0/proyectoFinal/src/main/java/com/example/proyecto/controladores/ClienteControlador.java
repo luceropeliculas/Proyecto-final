@@ -11,6 +11,7 @@ import com.example.proyecto.servicios.ClienteServicio;
 import com.example.proyecto.servicios.TrabajoServicio;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,7 +56,7 @@ return "cliente_form.html";
         
         return "index.html";        
     }
-    
+      @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN')")
     @GetMapping("/listarTrabajo")
     public String listarTrabajo(ModelMap modelo) {
         

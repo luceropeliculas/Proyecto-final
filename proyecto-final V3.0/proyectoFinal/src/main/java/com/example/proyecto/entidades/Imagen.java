@@ -3,8 +3,11 @@ GUSTAVVO 22/11
  */
 package com.example.proyecto.entidades;
 
+import com.example.proyecto.enumeraciones.Rol;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -28,6 +31,7 @@ public class Imagen {
     @Lob @Basic(fetch = FetchType.LAZY)
     private byte[] contenido;
 
-   
+    @Enumerated(EnumType.STRING)
+    private Rol rol;
     
 }

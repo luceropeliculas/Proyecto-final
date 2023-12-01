@@ -140,7 +140,7 @@ public class ProveedorServicio {
         return proveedoresPorRubro;
 
     }
-    
+    /*
     @Transactional
     public void cambiarRolCliente(String dni) throws MiException {
     Optional<Proveedor> proveedorOptional = proveedorRepositorio.findById(dni);
@@ -158,8 +158,9 @@ public class ProveedorServicio {
     } else {
         throw new MiException("No se encontró un proveedor con el DNI proporcionado: " + dni);
     }
+
 }
-    
+ */   
     
     @Transactional
     public void eliminar(String dni) throws MiException {
@@ -239,8 +240,7 @@ public class ProveedorServicio {
  }
 
     public Proveedor getOne(String dni) {
-    
-             
+        
         return proveedorRepositorio.getOne(dni);
     }
     
