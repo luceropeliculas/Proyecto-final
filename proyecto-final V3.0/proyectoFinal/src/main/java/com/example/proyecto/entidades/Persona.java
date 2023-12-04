@@ -1,8 +1,11 @@
 
 package com.example.proyecto.entidades;
 
+import com.example.proyecto.enumeraciones.Rol;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -31,7 +34,8 @@ public class Persona {
   @OneToOne
   private Imagen imagen;
 
-    
+    @Enumerated(EnumType.STRING)
+    private Rol rol;
     
    
   

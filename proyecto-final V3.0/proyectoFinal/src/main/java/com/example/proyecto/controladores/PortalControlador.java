@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.proyecto.entidades.Rubro;
 import com.example.proyecto.servicios.RubroServicio;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  *
@@ -30,7 +31,13 @@ public class PortalControlador {
     public String index(){
     return"index.html";
     }
-  
+        @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN','ROLE_PROVEEDOR')")
+      @GetMapping("/inicio")        
+    public String index1(){
+    return"index1.html";
+    }
+    
+    
        @GetMapping("/login1")        
     public String loginInicio(){
     return"login1.html";

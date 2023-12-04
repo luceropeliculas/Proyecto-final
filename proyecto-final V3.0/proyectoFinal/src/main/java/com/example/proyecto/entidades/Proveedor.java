@@ -24,15 +24,17 @@ private Rubro rubro;
 private boolean estadoActual;//Depende del estado actual
 
 
-private double precioHora;
+private Double precioHora;
 private Date fechaAlta;
 private int contdTrabajoRealizado;//esto permite scar un promedio de los trabajos realizados
 
 
  // se elimino lista de roles
+/*
+se puso el rol en la entidad persona
 @Enumerated(EnumType.STRING)
     private Rol rol;
- 
+ */
  @OneToOne
  private Imagen imagen;
  

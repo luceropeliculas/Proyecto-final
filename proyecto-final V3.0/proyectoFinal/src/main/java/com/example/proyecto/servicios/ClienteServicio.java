@@ -2,30 +2,43 @@ package com.example.proyecto.servicios;
 
 import com.example.proyecto.entidades.Cliente;
 import com.example.proyecto.entidades.Imagen;
+import com.example.proyecto.entidades.Persona;
 import com.example.proyecto.enumeraciones.Rol;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.repositorios.ClienteRepositorio;
 import com.example.proyecto.repositorios.ImagenRepositorio;
+import com.example.proyecto.repositorios.PersonaRepositorio;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class ClienteServicio {
+public class ClienteServicio implements UserDetailsService {
 
     @Autowired
     ClienteRepositorio clienteRepositorio;
     @Autowired
     ImagenServicio imagenServicio;
-
+ @Autowired
+    PersonaRepositorio personaRepositorio;
+    
     @Transactional
     public void crearCliente(MultipartFile archivo, String nombre, String apellido, String dni, String telefono,
             String email, String password,String password2, String domicilio) throws MiException {
@@ -40,13 +53,10 @@ public class ClienteServicio {
         cliente.setDni(dni);
         cliente.setTelefono(telefono);
         cliente.setEmail(email);
-        cliente.setPassword(password);
+        cliente.setPassword(new BCryptPasswordEncoder().encode(password));
         cliente.setAlta(true);
         cliente.setFechaAlta(new Date());
-
-        // Crear un conjunto de roles para el cliente
-       
-     cliente.setRol(Rol.CLIENTE);
+        cliente.setRol(Rol.CLIENTE);
      //se elimino lista de roles
      
      
@@ -154,22 +164,14 @@ public class ClienteServicio {
 /// setear domicilio
             Cliente cliente = respuesta.get();
             cliente.setNombre(nombre);
-            cliente.setEmail(email);
-            cliente.setNombre(nombre);
+            cliente.setEmail(email);           
             cliente.setApellido(apellido);
             cliente.setDni(dni);
-            cliente.setTelefono(telefono);
-            cliente.setEmail(nombre);
-            cliente.setPassword(nombre);
-
-            
-            ///arreglar roles
-            // Crear un conjunto de roles para el cliente
-            Set<Rol> roles = new HashSet<>();
-            roles.add(Rol.CLIENTE);
+            cliente.setTelefono(telefono);           
             cliente.setPassword(new BCryptPasswordEncoder().encode(password));
+            
 
-          //  cliente.setRoles(roles);
+            //cliente.setRoles(roles);
 
             String idImagen = null;
 
@@ -193,5 +195,29 @@ public class ClienteServicio {
         } catch (Exception e) {
         }
     }
+@Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        
+        //se cambio por persona
+     //   y se implemento repositorio de persona
+       Persona persona =personaRepositorio.BuscarPorEmail(email);
+        
+        if (persona != null) {
+            List<GrantedAuthority> permisos = new ArrayList<>();
 
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + persona.getRol().toString());
+
+            permisos.add(p);
+
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            HttpSession session = attr.getRequest().getSession(true);
+
+            session.setAttribute("usuariosession", persona);
+
+            return new User(persona.getEmail(), persona.getPassword(), permisos);
+        } else {
+            return null;
+        }
+    }
 }

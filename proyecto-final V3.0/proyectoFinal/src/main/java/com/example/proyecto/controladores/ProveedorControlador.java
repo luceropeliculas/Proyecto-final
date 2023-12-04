@@ -7,13 +7,16 @@ package com.example.proyecto.controladores;
 
 import com.example.proyecto.entidades.Proveedor;
 import com.example.proyecto.entidades.Rubro;
+import com.example.proyecto.entidades.Trabajo;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.servicios.ProveedorServicio;
 import com.example.proyecto.servicios.RubroServicio;
+import com.example.proyecto.servicios.TrabajoServicio;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -36,11 +39,14 @@ public class ProveedorControlador {
     ProveedorServicio proveedorServicio;
     @Autowired
     RubroServicio rubroServicio;
+    @Autowired
+    TrabajoServicio trabajoServicio;
+   
 
     @PostMapping("/registro")
     public String registro(@RequestParam String nombre, String apellido, String dni, String telefono,
             String direccion, String email, String password, String matricula,
-            double precioHora, String descripcion,
+            Double precioHora, String descripcion,
             ModelMap modelo, MultipartFile archivo, String password2, String idRubro) {
 
         try {
@@ -59,7 +65,7 @@ public class ProveedorControlador {
 
         return "index.html";
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN','ROLE_PROVEEDOR')")
     @GetMapping("/listar/{rubro}")
     public String listar(@PathVariable String rubro, ModelMap modelo) {
 
@@ -77,7 +83,33 @@ public class ProveedorControlador {
         modelo.addAttribute("listProveedors", listProveedors);
         modelo.addAttribute("palabraClave", palabraClave);
 
-        return "index";
+        return "index.html";
 
     }
+    
+    @GetMapping("/listarTrabajo")
+    public String listarTrabajo(ModelMap modelo) {
+        
+        String dniProveedor = "t"; 
+        
+        List<Trabajo> listaTrabajos = trabajoServicio.listarTrabajoCliente(dniProveedor);
+        
+        modelo.addAttribute("listaTrabajos",listaTrabajos);
+        
+        return "listar_trabajo_proovedor.html";
+    }
+    
+     @GetMapping("/perfil/{dni}")
+    public String listarTrabajo(@PathVariable String dni, ModelMap modelo) {
+         System.out.println(dni);
+         System.out.println("--------------");
+        Proveedor proveedor =proveedorServicio.getOne(dni);
+                       
+        modelo.addAttribute("proveedor",proveedor);
+        
+        return "Perfil.html";
+    }
+    
+    
+    
 }

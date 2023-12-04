@@ -5,9 +5,13 @@
  */
 package com.example.proyecto.controladores;
 
+import com.example.proyecto.entidades.Trabajo;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.servicios.ClienteServicio;
+import com.example.proyecto.servicios.TrabajoServicio;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +30,9 @@ public class ClienteControlador {
     
     @Autowired
     ClienteServicio clienteServicio;
+    
+    @Autowired
+    TrabajoServicio trabajoServicio;
     
     @GetMapping("/registrar")
     public String registrar(){
@@ -49,4 +56,18 @@ return "cliente_form.html";
         
         return "index.html";        
     }
+      @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN')")
+    @GetMapping("/listarTrabajo")
+    public String listarTrabajo(ModelMap modelo) {
+        
+        String dniCliente = "t"; 
+        
+        List<Trabajo> listaTrabajos = trabajoServicio.listarTrabajoCliente(dniCliente);
+        
+        modelo.addAttribute("listaTrabajos",listaTrabajos);
+        
+        return "listar_trabajo_cliente.html";
+    }
+    
+    
 }
