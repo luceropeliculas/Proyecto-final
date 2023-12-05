@@ -70,4 +70,10 @@ return "cliente_form.html";
     }
     
     
+    @GetMapping("/modificar")
+    public String modificar(){
+    
+return "modificarCliente.html";
+        }
+    
 }

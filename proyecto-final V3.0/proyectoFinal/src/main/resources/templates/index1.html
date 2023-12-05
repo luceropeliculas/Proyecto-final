@@ -11,8 +11,7 @@
         <link rel="stylesheet" th:href="@{/css/index.css}">
     </head>
     <body>
-
-        <div id="presentacion">
+<nav>        <div id="presentacion">
             <header id="header-index">
                 <div id="logo" >
                     <img th:src="@{/imagenes/logoServiceProM.png}" alt="">
@@ -35,7 +34,17 @@
                         </button>
                     </a>
                     </div>
+                    <div class="cada-boton perfil">
+                    <a th:href="@{/cliente/modificar}">                   
+                        <img src="imagenes/perfil.png" href alt="foto del perfil">
+                    </a>
                 </div>
+                </div>
+
+             
+            </div>
+        </nav>
+
             </header>
 
             <div id="contenedor">
