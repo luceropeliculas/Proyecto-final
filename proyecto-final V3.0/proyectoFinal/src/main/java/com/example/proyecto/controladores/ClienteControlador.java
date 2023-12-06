@@ -10,6 +10,7 @@ import com.example.proyecto.entidades.Trabajo;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.servicios.ClienteServicio;
 import com.example.proyecto.servicios.TrabajoServicio;
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -62,10 +63,12 @@ return "cliente_form.html";
     }
       @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN')")
     @GetMapping("/listarTrabajo")
-    public String listarTrabajo(ModelMap modelo) {
-        
-        String dniCliente = "t"; 
-        
+    public String listarTrabajo(ModelMap modelo, Principal principal) {
+
+        String dniCliente = "t";
+        //  Para recuperar los trabajos del usuario logueado
+        // Cliente cliente = clienteServicio.getClienteByEmail(principal.getName());
+        // String dniCliente = cliente.getDni(); 
         List<Trabajo> listaTrabajos = trabajoServicio.listarTrabajoCliente(dniCliente);
         
         modelo.addAttribute("listaTrabajos",listaTrabajos);
@@ -102,10 +105,37 @@ return "cliente_form.html";
 
     
     @GetMapping("/modificar")
-    public String modificar(){
-    
-return "modificarCliente.html";
+    public String goToModificarCliente(ModelMap modelo, Principal principal){
+        Cliente cliente = clienteServicio.getClienteByEmail(principal.getName());
+         modelo.addAttribute("user",cliente);
+        return "modificarCliente.html";
         }
+
+
+     
+      @PostMapping("/modificar")
+    public String ModificarUsuario(@RequestParam String nombre,String apellido,String dni,String telefono, 
+ String domicilio,String password, ModelMap modelo,MultipartFile archivo, String password2, Principal principal){
+
+            // Se recupera el email del usuario logueado
+            String emailUsuario = principal.getName();
+            
+            // Se recupupera el cliente de la base de datos por email
+            Cliente clienteEncontrado = clienteServicio.getClienteByEmail(emailUsuario);
+            
+            // Se modifican las propiedades que queremos modificar del cliente
+            clienteEncontrado.setNombre(nombre);
+            clienteEncontrado.setApellido(apellido);
+            clienteEncontrado.setDni(dni);
+            clienteEncontrado.setDomicilio(domicilio);
+
+            // Se llama al ActualizarCliente, pasandole el cliente modificado
+            clienteServicio.actulizarCliente(clienteEncontrado);
+       
+            // Se retorna al index
+        return "index1.html";        
+    }
+  
     
 }
 }

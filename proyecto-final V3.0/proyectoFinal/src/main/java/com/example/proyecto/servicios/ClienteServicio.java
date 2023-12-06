@@ -148,6 +148,16 @@ public class ClienteServicio {
         return clientes;
     }
 
+
+    // Recupera la informacion del cliente por el email
+    // Y lo devuelve en el tipo de dato Cliente
+    @Transactional
+    public Cliente getClienteByEmail(String email){
+        Cliente clienteFound = clienteRepositorio.BuscarPorEmail(email);
+        return clienteFound;
+
+    }
+
     // Modificar Cliente
     @Transactional
     public void actualizar(MultipartFile archivo, String nombre, String apellido, String dni, String telefono,

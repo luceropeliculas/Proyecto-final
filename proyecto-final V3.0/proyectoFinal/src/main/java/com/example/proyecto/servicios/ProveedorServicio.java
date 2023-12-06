@@ -78,7 +78,7 @@ public class ProveedorServicio {
     public void modificar(MultipartFile archivo, String nombre, String apellido, String dni, String telefono, String email, String password,
                                String password2, String matricula, String descripcion,
                                Double precioHora, String idRubro, String domicilio) throws MiException {
-        validar(nombre, apellido, dni, telefono, email, password, password2, precioHora, domicilio);
+        validar(nombre, apellido, dni, telefono, email, password, password2, precioHora, domicilio );
         // falta domicilio
         Optional<Proveedor> respuesta = proveedorRepositorio.findById(dni);
         if (respuesta.isPresent()) {
