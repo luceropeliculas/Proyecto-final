@@ -39,6 +39,7 @@ public class ClienteControlador {
     @Autowired
     TrabajoServicio trabajoServicio;
     
+    
     @GetMapping("/registrar")
     public String registrar(){
     
@@ -102,7 +103,7 @@ return "cliente_form.html";
 
             return "cliente_modificar.html";
         }
-
+    }
     
     @GetMapping("/modificar")
     public String goToModificarCliente(ModelMap modelo, Principal principal){
@@ -115,7 +116,7 @@ return "cliente_form.html";
      
       @PostMapping("/modificar")
     public String ModificarUsuario(@RequestParam String nombre,String apellido,String dni,String telefono, 
- String domicilio,String password, ModelMap modelo,MultipartFile archivo, String password2, Principal principal){
+ String domicilio,String password, ModelMap modelo,MultipartFile archivo, String password2, Principal principal) throws MiException{
 
             // Se recupera el email del usuario logueado
             String emailUsuario = principal.getName();
@@ -130,12 +131,11 @@ return "cliente_form.html";
             clienteEncontrado.setDomicilio(domicilio);
 
             // Se llama al ActualizarCliente, pasandole el cliente modificado
-            clienteServicio.actulizarCliente(clienteEncontrado);
+            clienteServicio.actualizar(archivo, nombre, apellido, dni, telefono, dni, password, password2, domicilio);
        
             // Se retorna al index
         return "index1.html";        
     }
   
     
-}
 }
