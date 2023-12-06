@@ -5,11 +5,15 @@
  */
 package com.example.proyecto.controladores;
 
+import com.example.proyecto.entidades.Cliente;
 import com.example.proyecto.entidades.Trabajo;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.servicios.ClienteServicio;
 import com.example.proyecto.servicios.TrabajoServicio;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -69,5 +73,33 @@ return "cliente_form.html";
         return "listar_trabajo_cliente.html";
     }
     
+    @PreAuthorize("hasAnyRole('ROLE_CLIENTE', 'ROLE_ADMIN')")
+    @GetMapping("/perfil")
+    public String perfil(ModelMap modelo,HttpSession session){
+        Cliente cliente = (Cliente) session.getAttribute("personaesession");
+         modelo.put("cliente", cliente);
+        return "cliente_modificar.html";
+    }
     
+    @PreAuthorize("hasAnyRole('ROLE_CLIENTE', 'ROLE_ADMIN')")
+    @PostMapping("/perfil/{id}")
+    public String actualizar(@RequestParam String nombre,MultipartFile archivo, String apellido, String dni, String telefono,
+    String email, String password, String password2, String domicilio, ModelMap modelo) {
+
+        try {
+            clienteServicio.actualizar(archivo, nombre, apellido, dni, telefono, email, password, password2, domicilio);
+
+            modelo.put("exito", "Cliente actualizado correctamente!");
+
+            return "inicio.html";
+        } catch (MiException ex) {
+
+            modelo.put("error", ex.getMessage());
+         
+
+            return "cliente_modificar.html";
+        }
+
+    
+}
 }

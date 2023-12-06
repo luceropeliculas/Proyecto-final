@@ -1,6 +1,6 @@
 package com.example.proyecto;
 
-import com.example.proyecto.servicios.ClienteServicio;
+import com.example.proyecto.servicios.PersonaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,11 +16,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SeguridadWeb extends WebSecurityConfigurerAdapter {
     
     @Autowired
-   public ClienteServicio clienteServicio;
+   public PersonaServicio personaServicio;
     
    @Autowired
    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-        auth.userDetailsService(clienteServicio)
+        auth.userDetailsService(personaServicio)
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
   
