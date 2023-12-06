@@ -223,6 +223,7 @@ footer a[href="#"]:hover {
   transition: transform 150ms ease-out, opacity 150ms ease-out;
 }
 #dropdown-menu {
+    width: 100px;
     box-shadow: none;
     border-radius: 25px 10px 10px 5px;
     display: none; /* Inicialmente ocultar el menú */
