@@ -1,6 +1,4 @@
 package com.example.proyecto.entidades;
-
-
 import com.example.proyecto.enumeraciones.Rol;
 import java.util.Set;
 import javax.persistence.CollectionTable;

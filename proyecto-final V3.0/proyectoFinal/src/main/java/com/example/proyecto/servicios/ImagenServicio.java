@@ -14,9 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class ImagenServicio {
      @Autowired
     private ImagenRepositorio imagenRepositorio;
+   
     @Transactional
     public Imagen guardar(MultipartFile archivo) throws MiException{
-        if (archivo != null) {
+System.out.println("entrro a la imagen linea 20");
+
+        if (archivo != null && !archivo.isEmpty()) {
             try {
                 
                 Imagen imagen = new Imagen();
@@ -31,6 +34,7 @@ public class ImagenServicio {
                 
             } catch (Exception e) {
                 System.err.println(e.getMessage());
+                System.out.println("no guardo la imagen linea 36");
             }
         }
         return null;

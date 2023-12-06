@@ -1,6 +1,7 @@
 
 package com.example.proyecto.servicios;
 
+import com.example.proyecto.entidades.Cliente;
 import com.example.proyecto.entidades.Imagen;
 import com.example.proyecto.entidades.Proveedor;
 import com.example.proyecto.entidades.Rubro;
@@ -68,7 +69,8 @@ public class ProveedorServicio {
         Imagen imagen = imagenServicio.guardar(archivo);
 
         proveedor.setImagen(imagen);
-        
+
+        proveedor.setImagen(imagen);
         proveedorRepositorio.save(proveedor);
     }
     
@@ -140,27 +142,20 @@ public class ProveedorServicio {
         return proveedoresPorRubro;
 
     }
-    /*
-    @Transactional
-    public void cambiarRolCliente(String dni) throws MiException {
-    Optional<Proveedor> proveedorOptional = proveedorRepositorio.findById(dni);
+    public void cambiarEstadoPoveedor(String dni, boolean activar) throws MiException { // VICTOR
 
-    if (proveedorOptional.isPresent()) {
-        Proveedor proveedor = proveedorOptional.get();
+        Optional<Proveedor> proveedorRepuest = proveedorRepositorio.findById(dni);
+        Proveedor proveedor = new Proveedor();
 
-        // Verificar si el proveedor está dado de alta antes de realizar el cambio de rol
-        if (proveedor.isAlta()) {
-            proveedor.setRol(Rol.CLIENTE);
-            proveedorRepositorio.save(proveedor);
+        if (proveedorRepuest.isPresent()) {
+            proveedor = proveedorRepuest.get();
+            proveedor.setAlta(activar);
+
         } else {
-            throw new MiException("El proveedor con DNI " + dni + " no está dado de alta.");
-        }
-    } else {
-        throw new MiException("No se encontró un proveedor con el DNI proporcionado: " + dni);
-    }
+            throw new MiException("No se encontró el cliente con el DNI proporcionado: " + dni);
 
-}
- */   
+        } 
+    }
     
     @Transactional
     public void eliminar(String dni) throws MiException {

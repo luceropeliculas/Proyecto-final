@@ -1,13 +1,8 @@
 
 package com.example.proyecto.entidades;
-import com.example.proyecto.enumeraciones.Rol;
 import java.util.Date;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 import javax.persistence.OneToOne;
-
 import lombok.Data;
 
 @Data

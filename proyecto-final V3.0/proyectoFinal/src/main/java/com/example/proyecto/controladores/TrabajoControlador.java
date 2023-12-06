@@ -1,14 +1,10 @@
 
 package com.example.proyecto.controladores;
-
-import com.example.proyecto.entidades.Cliente;
 import com.example.proyecto.entidades.Persona;
 import com.example.proyecto.entidades.Proveedor;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.servicios.ProveedorServicio;
 import com.example.proyecto.servicios.TrabajoServicio;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

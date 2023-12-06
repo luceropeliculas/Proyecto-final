@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.example.proyecto.controladores;
 
 import com.example.proyecto.entidades.Proveedor;
@@ -14,6 +9,7 @@ import com.example.proyecto.servicios.RubroServicio;
 import com.example.proyecto.servicios.TrabajoServicio;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -110,6 +106,35 @@ public class ProveedorControlador {
         return "Perfil.html";
     }
     
+     @PreAuthorize("hasAnyRole('ROLE_PROVEEDOR', 'ROLE_ADMIN')")
+    @GetMapping("/perfil")
+    public String perfil(ModelMap modelo,HttpSession session){
+        Proveedor proveedor = (Proveedor) session.getAttribute("personasession");
+         modelo.put("proveedor", proveedor);
+        return "proveedor_modificar.html";
+    }
     
+    @PreAuthorize("hasAnyRole('ROLE_PROVEEDOR', 'ROLE_ADMIN')")
+    @PostMapping("/perfil/{id}")
+    public String actualizar(@RequestParam MultipartFile archivo, String nombre, String apellido, String dni, String telefono, String email, String password,
+    String password2, String matricula, String descripcion,
+    Double precioHora, String idRubro, String domicilio, ModelMap modelo) {
+
+        try {
+            proveedorServicio.modificar(archivo, nombre, apellido, dni, telefono, email, password, password2, matricula, descripcion, precioHora, idRubro, domicilio);
+
+            modelo.put("exito", "Cliente actualizado correctamente!");
+
+            return "inicio.html";
+        } catch (MiException ex) {
+
+            modelo.put("error", ex.getMessage());
+         
+
+            return "proveedor_modificar.html";
+        }
+
+    
+}
     
 }

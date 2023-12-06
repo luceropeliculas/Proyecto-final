@@ -1,15 +1,7 @@
 
- package com.example.proyecto.entidades;
-
-
-
-import com.example.proyecto.enumeraciones.Rol;
+package com.example.proyecto.entidades;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 import lombok.Data;
-
 
 @Data
 @Entity
