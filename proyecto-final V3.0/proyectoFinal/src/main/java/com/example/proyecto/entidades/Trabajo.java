@@ -27,13 +27,13 @@ public class Trabajo {
     @Temporal(TemporalType.DATE)
     private Date fechaFinalizado;
 
-    private int puntuacionTrabajo; // del 1 al 5
+    private Integer puntuacionTrabajo; // del 1 al 5
     private EstadoTrabajo estadoTrabajo;
     private String cometarioTrabajoTerminado;
     private String detalleDeSolicitud; //Lo detalla el cliente cuando solicita
     private String observacionCancelado;
-    private int horasTrabajoEstimadas;// Lo completa el provedor x horas de trabajo
-    private int gastosAdicionales;
+    private Integer horasTrabajoEstimadas;// Lo completa el provedor x horas de trabajo
+    private Integer gastosAdicionales;
     private double precioFinal;// este campo se completa con la horas trabajas x precio hora trabajada x el
                             // provedor
     private String respuestaProveedor; // el proovedor comenta el trabajo que va a realizar
