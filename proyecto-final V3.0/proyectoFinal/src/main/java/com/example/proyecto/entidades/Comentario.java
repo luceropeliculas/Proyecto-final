@@ -2,6 +2,7 @@
 package com.example.proyecto.entidades;
 
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,15 +16,20 @@ public class Comentario {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     private String contenido;
-    private int calificacion;
+    private Integer calificacion;
     private LocalDateTime fechaHora;  // Agrega la fecha y hora al comentario
+    private boolean altaBaja;
 
-    public Comentario(String contenido, int calificacion) {
+  
+
+    public Comentario(String id, String contenido, Integer calificacion, LocalDateTime fechaHora, boolean altaBaja) {
+        this.id = id;
         this.contenido = contenido;
         this.calificacion = calificacion;
-        this.fechaHora = LocalDateTime.now();  // Establece la fecha y hora actual al crear el comentario
+        this.fechaHora = fechaHora;
+        this.altaBaja = altaBaja;
     }
-
+    
     // Métodos getter para la fecha y hora
     public LocalDateTime getFechaHora() {
         return fechaHora;
@@ -33,7 +39,7 @@ public class Comentario {
         return contenido;
     }
 
-    public int getCalificacion() {
+    public Integer getCalificacion() {
         return calificacion;
     } 
   /*  
