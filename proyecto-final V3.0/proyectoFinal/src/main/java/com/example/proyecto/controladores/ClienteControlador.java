@@ -6,6 +6,7 @@
 package com.example.proyecto.controladores;
 
 import com.example.proyecto.entidades.Cliente;
+import com.example.proyecto.entidades.Persona;
 import com.example.proyecto.entidades.Trabajo;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.servicios.ClienteServicio;
@@ -39,7 +40,6 @@ public class ClienteControlador {
     @Autowired
     TrabajoServicio trabajoServicio;
     
-    
     @GetMapping("/registrar")
     public String registrar(){
     
@@ -62,21 +62,23 @@ return "cliente_form.html";
         
         return "index.html";        
     }
-      @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN')")
+      ///definir si el proveedor puede contratar trabajos
+    @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN','ROLE_PROVEEDOR')")
     @GetMapping("/listarTrabajo")
-    public String listarTrabajo(ModelMap modelo, Principal principal) {
-
-        String dniCliente = "t";
-        //  Para recuperar los trabajos del usuario logueado
-        // Cliente cliente = clienteServicio.getClienteByEmail(principal.getName());
-        // String dniCliente = cliente.getDni(); 
-        List<Trabajo> listaTrabajos = trabajoServicio.listarTrabajoCliente(dniCliente);
-        
-        modelo.addAttribute("listaTrabajos",listaTrabajos);
+    public String listarTrabajo(ModelMap modelo , HttpSession session) {
+             
+                 Persona cliente = (Persona) session.getAttribute("usuariosession");
+                 
+                  String dniCliente = cliente.getDni();
+                         
+        List<Trabajo> trabajos = trabajoServicio.listarTrabajoCliente(dniCliente);
+                
+        modelo.put("trabajos",trabajos);
         
         return "listar_trabajo_cliente.html";
     }
-    
+               
+        
     @PreAuthorize("hasAnyRole('ROLE_CLIENTE', 'ROLE_ADMIN')")
     @GetMapping("/perfil")
     public String perfil(ModelMap modelo,HttpSession session){
@@ -114,9 +116,9 @@ return "cliente_form.html";
 
 
      
-      @PostMapping("/modificar")
+      @PostMapping("/modificar1")
     public String ModificarUsuario(@RequestParam String nombre,String apellido,String dni,String telefono, 
- String domicilio,String password, ModelMap modelo,MultipartFile archivo, String password2, Principal principal) throws MiException{
+ String domicilio,String password, ModelMap modelo,MultipartFile archivo, String password2, Principal principal){
 
             // Se recupera el email del usuario logueado
             String emailUsuario = principal.getName();
@@ -131,7 +133,7 @@ return "cliente_form.html";
             clienteEncontrado.setDomicilio(domicilio);
 
             // Se llama al ActualizarCliente, pasandole el cliente modificado
-            clienteServicio.actualizar(archivo, nombre, apellido, dni, telefono, dni, password, password2, domicilio);
+          //  clienteServicio.actulizarCliente(clienteEncontrado);
        
             // Se retorna al index
         return "index1.html";        

@@ -52,9 +52,10 @@ public class PersonaServicio implements UserDetailsService {//El llanero Solitar
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 
             HttpSession session = attr.getRequest().getSession(true);
-
-            session.setAttribute("personasession", persona);
-
+// VICTOR !!! si por conveniencia venimos trabajando con "usuariosession", 
+//no pongas personasession que daña todos los demas donde se lo llama
+            session.setAttribute("usuariosession", persona);
+  // session.setAttribute("personasession", persona);
             return new User(persona.getEmail(), persona.getPassword(), permisos);
         } else {
             return null;
