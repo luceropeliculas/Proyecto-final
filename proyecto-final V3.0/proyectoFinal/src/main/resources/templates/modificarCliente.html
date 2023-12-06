@@ -16,74 +16,121 @@
         <title></title>
     </head>
   
-    <body>
-        <nav>        <div id="presentacion">
-            <header id="header-index">
-                <div id="logo" >
-                    <img th:src="@{/imagenes/logoServiceProM.png}" alt="">
-                </div>
-    
-                <div id="botones">
-                    <div class="cada-boton">
-                        <a th:href="@{/cliente/listarTrabajo}">
-                            <button  type="button" class="btn btn-outline-info">
-                               Ver mis trabajos
-                            </button>
-                        </a>
-                    </div>         
-    <br>
-    
-                    <div class="cada-boton">
-                        <a th:href="@{/logout}">
-                        <button type="button" class="btn btn-outline-info">
-                            Logout
+ 
+        <header id="header-index">
+            <div id="logo" >
+                <img th:src="@{/imagenes/logoServiceProM.png}" alt="">
+            </div>
+         <div class="search-box">
+             <form class="search-box">
+                 <input type="text" placeholder=" "/>
+                 <button type="reset"></button>
+             </form>
+         </div>
+         <div id="botones" >
+                <div class="cada-boton">
+                    <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/proveedor/listar}" >
+                        <button  type="button" class="btn btn-outline-info" >
+                           Proveedores
                         </button>
                     </a>
-                    </div>
-                    <div class="cada-boton perfil">
-                    <a th:href="@{/cliente/modificar}">                   
-                        <img src="imagenes/perfil.png" href alt="foto del perfil">
+                </div>
+             <div id="botones" >
+                <div class="cada-boton">
+                    <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/clientes/listar}" >
+                        <button  type="button" class="btn btn-outline-info">
+                           Clientes
+                        </button>
                     </a>
+                </div>  
+
+            <div id="botones">
+                <div class="cada-boton">
+                    <a th:href="@{/index1}">
+                        <button  type="button" class="btn btn-outline-info">
+                           Home
+                        </button>
+                    </a>
+                </div>         
+<br>
+
+                <div class="cada-boton">
+                    <a th:href="@{/}">
+                        <button  type="button" class="btn btn-outline-info">
+                           Mis trabajos
+                        </button>
+                    </a>
+                </div>         
+<br>
+
+                <div class="cada-boton">
+                    <a th:href="@{/}">
+                    <button type="button" class="btn btn-outline-info">
+                        Perfil
+                    </button>
+                </a>
                 </div>
+<br>
+
+                <div class="cada-boton">
+                    <a th:href="@{/}">
+                    <button type="button" class="btn btn-outline-info">
+                        Logout
+                    </button>
+                </a>
                 </div>
-    
+            </div>
             
+        
+        </header>
+        <body>
+            <div class="background-container">
+                <div class="container">
+    
+                </div>
             </div>
-        </nav>
-        <div class="background-container">
-            <div class="container">
-
-            </div>
-        </div>
-
         <div class="container">
             <div class="container-form sign-up">
                 <div class="welcome-back">
                     <div class="messeger">
                         <h2>PERFIL</h2>
-                        <p>Aqui podras modificar tu PERFIL </p>
-                    <button class="sign-in-btn" id="ov-btn-slide-close">modificar datos</button>
+                        <br>
+                        <p>Aqui podras modificar los datos de tu usuario </p>
+                        <a th:href="@{/inicio}">
+                    <button class="sign-in-btn" id="ov-btn-slide-close">Volver</button>
+                    </a>
                     </div>
                 </div>            
                 <form class="formulario" id="formulario1" th:action="@{/cliente/modificar}" method="POST">
+                    <div class="input-container">
                     <label for="nombre">Nombre:</label>
                     <input type="text" id="nombre" name="nombre"  th:value="${user.nombre}">
+                    </div>
+                    <div class="input-container">
                     <label for="apellido">Apellido:</label>
                     <input type="text" id="apellido" name="apellido"  th:value="${user.apellido}">
+                    </div>
+                                <br>
+
+                    <div class="input-container">
                     <label for="dni">DNI:</label>
                     <input type="text" id="dni" name="dni"  th:value="${user.dni}">
+                    </div>
+                    <div class="input-container">
                     <label for="domicilio">Dirección:</label>
                     <input type="text" id="domicilio" name="domicilio"  th:value="${user.domicilio}">
+                    </div>
+                    <div class="input-container">
                     <label for="telefono">Teléfono:</label>
                     <input type="text" id="telefono" name="telefono"  th:value="${user.telefono}">
+                    </div>
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" th:value="${user.email}">
 
                    <button class="sign-in-btn" id="ov-btn-slide-close">Guardar Datos</button>
-                </div>
+                </di>
                 </form>
-          
-
+        </body>
 
     
 </html>
