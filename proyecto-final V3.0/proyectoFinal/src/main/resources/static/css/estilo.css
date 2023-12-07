@@ -283,7 +283,7 @@ body{
 
 }
 #logo>img{
-    margin: -30px;
+    margin-right: 495px;
     height: 160px;
 }
 #presentacion{
@@ -307,19 +307,22 @@ body{
 }
 
 #animacion{
+    margin-top: -184px;
+    border-radius: 10px;
     width: 50%;
     margin-bottom: 55px;
     text-align: center;
-    padding: 25px;
+    padding: 0px;
     color: aqua;
     opacity: 0;
     background-color: rgba(0,0,0,0.5);
-    animation: intro 3s ;
+    animation: intro 3s;
     animation-delay: 2s;
     animation-fill-mode: forwards;
     box-shadow: -8px 3px 27px 0px rgba(0,0,0,0.75);
     -webkit-box-shadow: -8px 3px 27px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: -8px 3px 27px 0px rgba(0,0,0,0.75);
+    border-radius: 10px;
 }
 
 #animacion>h2{

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
-        <title>TODO supply a title</title>
+        <title>Service Pro M</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link th:href="@{/css/list.css}" type="text/css" rel="stylesheet"></link>
@@ -63,8 +63,6 @@
                                     <a>
                                         <div class="imagen-circulo">
                                             <div class="cada-boton perfil">                                      
-
-                            
                             <img <a th:if="${session.usuariosession.imagen != null}" id="logo"  th:src="@{/imagen/perfil/__${session.usuariosession.dni}__}" class="d-flex align-items-center">
                                 
                             </a>
@@ -96,7 +94,8 @@
                             <!--<a th:href="@{/proveedor/perfil/__${proveedor.dni}__}">-->
                             <div class="perfil-container" th:each="proveedor : ${proveedores}">
                                 <div class="perfil-header">
-                                    <div class="foto-perfil"></div>
+                                    <div class="foto-perfil">
+                                    </div>
                                     <h1 th:text="${proveedor.nombre}"></h1>
                                     <h1 th:text="${proveedor.apellido}"></h1>
                                 </div>

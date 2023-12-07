@@ -77,7 +77,9 @@
     width: 250px;
     transition: transform 0.3s ease-in-out;
     margin: 35px;
-    height: 450px
+    height: 450px;
+    margin-top: 102px;
+
 }
 
 .perfil-container:hover {
@@ -126,16 +128,16 @@ a:hover {
     color: #2070a0;
 }
 footer {
-    position: fixed; 
-    left: 0;
-    bottom: 0; 
-    width: 100%; 
-    background-color: rgba(0,0,0,0.5);
-    color: white; 
-    font-size: 14px; 
-    padding: 20px 0;
-    text-align: center; 
-    height: 80px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+  font-size: 14px;
+  padding: 5px 3px;
+  text-align: center;
+  height: 30px;
 }
 
 
@@ -244,15 +246,14 @@ footer a[href="#"]:hover {
 #perfil-dropdown:hover #dropdown-menu {
     display: block; /* Mostrar el menú al hacer hover sobre el contenedor */
 }
-
-.imagen-circulo {
-    width: 60px; 
-    height: 60px;
-    
-    border-radius: 50%;
-    border:solid 1px #0dcaf0;
+.imagen-circulo #logo{
+  margin-top: -24px;
+  width: 60px; 
+  height: 60px;
+  background-color: #0dcaf0;
+  border-radius: 50%;
+  
 }
-
 
 
 
