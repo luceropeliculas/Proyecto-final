@@ -253,6 +253,12 @@ footer a[href="#"]:hover {
     border:solid 1px #0dcaf0;
 }
 
+tbody{
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
 
 
 
