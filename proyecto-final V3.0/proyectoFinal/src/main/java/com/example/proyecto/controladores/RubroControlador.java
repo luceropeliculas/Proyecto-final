@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author AMD */
 @Controller
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    // @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 @RequestMapping("/rubro")
 public class RubroControlador {
     
