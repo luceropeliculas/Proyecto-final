@@ -203,7 +203,7 @@ public class ComentarioServicio {
             throw new MiException(" El comentario no puede estar vacio, por favor complete este campo");
 
         }
-        if (calificacion > 0 && calificacion <= 5) {
+        if (calificacion < 1 || calificacion > 5) {
             throw new MiException(" La calificacion no puede ser igual a cero, calificar entre 1 y 5");
 
         }
