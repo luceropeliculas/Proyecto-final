@@ -59,7 +59,7 @@
         <div id="animacion">
             <h2><b>Bienvenidos a ServicePro M</b></h2>
             <br>
-            <p> <b>bienvenido de nuevo chiquito</b></p>
+            <p th:if="${session.usuariosession != null}" th:text=" 'Bienvenido de nuevo '+ ${session.usuariosession.nombre} "> <b></b></p>
         </div>
     </div>
 
