@@ -22,7 +22,7 @@ import java.util.List;
 
 @Service
 public class TrabajoServicio {
-   Trabajo trabajo = new Trabajo(); 
+
    Cliente cliente = new Cliente();
    Proveedor proveedor = new Proveedor();
 
@@ -36,7 +36,7 @@ TrabajoRepositorio trabajoRepositorio;
 @Transactional
 public void solicitudTrabajo(String dniProveedor, String dniCliente, String detalleDeTrabajo) throws MiException{
 
-
+   Trabajo trabajo = new Trabajo(); 
    
    Optional<Cliente> clienteRespuesta = clienteRepositorio.findById(dniCliente);
 
