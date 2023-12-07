@@ -256,23 +256,28 @@ footer a[href="#"]:hover {
 }
 
 tbody{
-    background-color: rgba(0,0,0,0.5);
-    border-radius: 10px;
-    margin-right: 10px;
+  background-color: rgba(0,0,0,0.5);
+  border-radius: 10px;
+  margin-right: 10px;
 }
 
 .table {
-  border-collapse: separate; /* Separación de bordes */
-  border-spacing: 5px; /* Espacio entre celdas */
-  font-size: 10px; /* Tamaño de fuente */
-  border-radius: 10px; /* Radio de los bordes */
-  background-color: rgba(0, 0, 0, 0.5); /* Color de fondo con transparencia */
+  position: relative;
+
+border-collapse: separate; /* Separación de bordes */
+border-spacing: 5px; /* Espacio entre celdas */
+font-size: 20px; /* Tamaño de fuente */
+border-radius: 10px; /* Radio de los bordes */
+background-color: rgba(0, 0, 0, 0.5); /* Color de fondo con transparencia */
+color: #fff;
 }
+
+.table td, .table th {
+padding: 8px;
+}
+
 
 .table td, .table th {
   padding: 8px;
 }
-
-
-
 
