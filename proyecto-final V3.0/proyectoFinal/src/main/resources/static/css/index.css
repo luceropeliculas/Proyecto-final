@@ -74,6 +74,8 @@ body{
 }
 
 #animacion{
+    margin-top: -184px;
+    border-radius: 10px;
     width: 50%;
     margin-bottom: 55px;
     text-align: center;
@@ -81,7 +83,7 @@ body{
     color: aqua;
     opacity: 0;
     background-color: rgba(0,0,0,0.5);
-    animation: intro 3s ;
+    animation: intro 3s;
     animation-delay: 2s;
     animation-fill-mode: forwards;
     box-shadow: -8px 3px 27px 0px rgba(0,0,0,0.75);
@@ -366,10 +368,11 @@ footer a[href="#"]:hover {
     display: block; /* Mostrar el menú al hacer hover sobre el contenedor */
 }
 
-.imagen-circulo {
+.imagen-circulo #logo{
+    margin-top: -24px;
     width: 60px; 
     height: 60px;
     background-color: #0dcaf0;
     border-radius: 50%;
-    border:solid 1px #0dcaf0;
+    
 }
