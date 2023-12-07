@@ -48,18 +48,13 @@
             </div>
         </div>
 
-        <div th:if="${exito}!=null" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
-            <div class="card-body">
-                <h5 class="card-title">Exito!</h5>
-                <p class="card-text" th:text="${exito}"></p>
-            </div>
-        </div>
-        <div th:if="${error}!=null" class="card text-white bg-danger mb-3 mensajeError" >
-            <div class="card-body">
-                <h5 class="card-title">Error ð</h5>
-                <p class="card-text" th:text="${error}"></p>
-            </div>
-        </div>
+       <div th:if="${exito != null}" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 10px 20px; border-radius: 5px; background-color: #4CAF50; color: white; font-weight: bold; z-index: 1000;">
+    ¡Éxito! <span th:text="${exito}"></span>
+</div>
+
+<div th:if="${error != null}" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 10px 20px; border-radius: 5px; background-color: #F44336; color: white; font-weight: bold; z-index: 1000;">
+    Error ð <span th:text="${error}"></span>
+</div>
 
 
 
