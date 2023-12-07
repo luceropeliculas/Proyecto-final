@@ -41,7 +41,7 @@
  </div>
                     <div id="botones">
                         <div class="cada-boton">
-                            <a th:href="@{/index1}">
+                            <a th:href="@{/}">
                                 <button  type="button" class="btn btn-outline-info">
                                     Home
                                 </button>
@@ -71,17 +71,15 @@
                             <div id="perfil-dropdown">
 
                                         <div class="imagen-circulo">
-                                            <div class="cada-boton perfil">                                      +
-                            <img <a th:if="${session.usuariosession.imagen != null}" id="logo"  th:src="@{/imagen/perfil/__${session.usuariosession.dni}__}" class="d-flex align-items-center">
-                                
-                            </a>
+                                            <div class="cada-boton perfil">                                      
+                                                <a><img  th:if="${session.usuariosession.imagen != null}" id="logo"  th:src="@{/imagen/perfil/__${session.usuariosession.dni}__}" class="d-flex align-items-center"> </a>
                         </div>
                                         </div>
                                     </a>
                                
                                 <ul id="dropdown-menu">
                                     <li>
-                                        <a th:href="@{/}" class="btn btn-outline-info">
+                                        <a th:href="@{/}">
                                             <button class="btn btn-outline-info" id="dropdown-btn"> Perfil</button>
                                         </a>
                                     </li>
@@ -91,7 +89,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a th:href="@{/}" class="btn btn-outline-info">
+                                        <a th:href="@{/}" >
                                             <button class="btn btn-outline-info" id="dropdown-btn"> Logout</button>
                                         </a>
                                     </li>

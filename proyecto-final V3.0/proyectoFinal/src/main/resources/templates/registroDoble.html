@@ -21,12 +21,31 @@
             <div id="logo" >
                 <img th:src="@{/imagenes/logoServiceProM.png}" alt="">
             </div>
-            <div class="search-box">
+            <div id="botones">
+                <div class="cada-boton">
+                    <a th:href="@{/login1}">
+                        <button  type="button" class="btn btn-outline-info">
+                           Iniciar sesion
+                        </button>
+                    </a>
+                </div>         
+<br>
+
+                <div class="cada-boton">
+                    <a th:href="@{/}">
+                    <button type="button" class="btn btn-outline-info">
+                        Volver
+                    </button>
+                </a>
+                </div>
+            </div>
+            <!-- <div class="search-box">
                 <form class="search-box">
                     <input type="text" placeholder=" "/>
                     <button type="reset"></button>
                 </form>
-            </div>
+            </div> -->
+
             <div id="botones" sec:authorize="hasRole('ADMIN')">
                 <div class="cada-boton">
                     <a th:href="@{/proveedor/listar}">

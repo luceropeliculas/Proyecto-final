@@ -12,7 +12,31 @@
     </head>
 <body>
 
-  
+    <div id="presentacion">
+        <header id="header-index">
+            <div id="logo" >
+                <img th:src="@{/imagenes/logoServiceProM.png}" alt="">
+            </div>
+
+            <div id="botones">
+                <div class="cada-boton">
+                    <a th:href="@{/registrar}">
+                        <button  type="button" class="btn btn-outline-info">
+                           Registrarse
+                        </button>
+                    </a>
+                </div>         
+<br>
+
+                <div class="cada-boton">
+                    <a th:href="@{/}">
+                    <button type="button" class="btn btn-outline-info">
+                        Volver
+                    </button>
+                </a>
+                </div>
+            </div>
+        </header>
    
     <div class="login">
         <div class="form">
