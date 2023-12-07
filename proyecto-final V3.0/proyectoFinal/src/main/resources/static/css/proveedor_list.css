@@ -1,7 +1,6 @@
 :root {
-     
-    --primary-color: #02153f;
-    --secondary-color: #01aced;
+    background-color: rgba(0,0,0,0.1);
+    background-image: url("../imagenes/bg-inicio3.jpg");
 }
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap');
 
@@ -26,6 +25,7 @@ a {
 }
 
 .card-content {
+    margin-top: 114px;
     display: flex;
     align-items: center;
     gap:30px;
@@ -264,4 +264,32 @@ a {
         right: 10px;
         width: 100%;
     }
+}
+#header-index{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0px 80px 10px 55px;
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    align-items: center;
+
+}
+#logo>img{
+    margin: -30px;
+    height: 160px;
+}
+#presentacion{
+    text-align: center;
+}
+
+#botones{
+    display: flex;
+    justify-content: center;
+}
+.cada-boton{
+   
+    margin-left: 13px;
 }
