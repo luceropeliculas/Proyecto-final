@@ -91,4 +91,22 @@ Por ejemplo, al imprimir los comentarios en el código principal, podrías mostr
     public void setTrabajo(Trabajo trabajo) {
         this.trabajo = trabajo;
     }
+
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
+    }
+
+    public void setCalificacion(Integer calificacion) {
+        this.calificacion = calificacion;
+    }
+
+    public void setFechaHora(Date fechaHora) {
+        this.fechaHora = fechaHora;
+    }
+    
+    
+    
+    
+    
 }
+

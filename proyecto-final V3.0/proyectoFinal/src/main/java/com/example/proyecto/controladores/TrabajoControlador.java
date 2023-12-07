@@ -71,7 +71,7 @@ public class TrabajoControlador {
     @PostMapping("/comentar")
     public String comentar(Long idTrabajo, String contenido, Integer calificacion) {
         try {
-            comentarioServicio.CrearComentario(contenido, calificacion, idTrabajo);
+            comentarioServicio.crearComentario(contenido, calificacion, idTrabajo);
         } catch (MiException ex) {
         }
         /*
@@ -140,7 +140,7 @@ public class TrabajoControlador {
 
     @PostMapping("/presupuesto")
     public String presupuesto(Long idTrabajo, String respuestaProveedor,
-            Integer GastosAdicionales, Integer horasTrabajadasEstimadas) {
+            Integer GastosAdicionales, Integer horasTrabajadasEstimadas, ModelMap modelo) throws MiException{
         Boolean aceptacion = true;
 
         //esto de4spues se elimina
@@ -148,9 +148,12 @@ public class TrabajoControlador {
 
         String dniProveedor = trabajo.getProveedor().getDni();
 //hasta aqui
-
-        trabajoServicio.revisionDeTrabajo(idTrabajo, aceptacion,
-                respuestaProveedor, GastosAdicionales, horasTrabajadasEstimadas, dniProveedor);
+        try {
+            trabajoServicio.revisionDeTrabajo(idTrabajo, aceptacion,
+                    respuestaProveedor, GastosAdicionales, horasTrabajadasEstimadas, dniProveedor);
+        } catch (MiException ex) {
+            modelo.addAttribute("error", ex.getMessage());
+        }
 
         return "index1.html";
     }

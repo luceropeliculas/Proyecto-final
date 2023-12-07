@@ -47,52 +47,33 @@ public class ComentarioServicio {
         public void CrearComentario(String id, String contenido, Integer calificacion,
             LocalDateTime fechaHora, boolean altaBaja, Long idTrabajo) throws MiException {
     */
-    /*
+    
     @Transactional
-    public void CrearComentario(String contenido, Integer calificacion, Long idTrabajo) throws MiException {
+    public void crearComentario(String contenido, Integer calificacion, Long idTrabajo) throws MiException {
 
         Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idTrabajo);
-        
-        //el id no se valida el alta baja tampoco la fecha tampoco
-        ValidarComentarios(contenido, calificacion);
-        //esto le agregue
-Date fecha =new Date();
+      
+        validarComentarios(contenido, calificacion);
+       
+        Date fecha = new Date();
         
         if (trabajoRespuesta.isPresent()) {
             
             Trabajo trabajo = trabajoRespuesta.get();
             
             //esto lo agregue para que ande
-            trabajo.setEstadoTrabajo(EstadoTrabajo.FINALIZADO);
+            //trabajo.setEstadoTrabajo(EstadoTrabajo.FINALIZADO);
             
-
             if (trabajo.getEstadoTrabajo() == EstadoTrabajo.FINALIZADO) {
-                
-                ///MAS ADELANTE PROBAMOS COMO FUNCIONA ESTE, POR EL MOMENTO TRABAJEMOS CON EL DATE
-                LocalDateTime fechaHoraActual = LocalDateTime.now();
-
-                if (trabajoRespuesta.isPresent()) {
-
-                    //es esto
+               
                     Comentario comentario = new Comentario(contenido, calificacion, fecha, true);
-                    // Comentario comentario = new Comentario(contenido, calificacion, fechaHora, altaBaja);
-                    
-                   //o esto
-                    comentario.setContenido(contenido);
-                    comentario.setCalificacion(calificacion);
-                    comentario.setAltaBaja(true);
-                    comentario.setFechaHora(fecha);
-                    
-                    //tambien seteamos trabajo a comentario
-                    comentario.setTrabajo(trabajo);
-                    
+                               
+                    comentario.setTrabajo(trabajo);                    
                     
                     comentarioRepositorio.save(comentario);
 
                     //bien ahi chicos !!! no se me ocurrio poner eso 
-                } else {
-                    throw new MiException("No se pudo obtener la información completa de Cliente o Proveedor.");
-                }
+                
             } else {
                 throw new MiException("El trabajo debe estar en estado FINALIZADO para agregar un comentario.");
             }
@@ -100,27 +81,49 @@ Date fecha =new Date();
             throw new MiException("No se encontró un trabajo con el ID proporcionado: " + idTrabajo);
         }
     }
-*/
-      @Transactional
-    public void CrearComentario(String contenido, Integer calificacion, Long idTrabajo) throws MiException {
-        Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idTrabajo);
-     Date fecha =new Date();
+
+//      @Transactional
+//    public void CrearComentario(String contenido, Integer calificacion, Long idTrabajo) throws MiException {
+//        Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idTrabajo);
+//     Date fecha =new Date();
+//        
+//        if (trabajoRespuesta.isPresent()) {
+//            
+//            Trabajo trabajo = trabajoRespuesta.get();
+//          
+//                if (trabajoRespuesta.isPresent()) {
+//
+//                    Comentario comentario = new Comentario(contenido, calificacion, fecha, true);
+//                  
+//                    comentario.setTrabajo(trabajo);
+//                                        
+//                    comentarioRepositorio.save(comentario);
+//
+//                } }
+//    }
+ @Transactional
+    public void modificarComentarios(Long idTrabajo, String contenido, Integer calificacion, String id) throws MiException {
+
         
-        if (trabajoRespuesta.isPresent()) {
+        Optional<Comentario> respuesta = comentarioRepositorio.findById(id);
+        
+        validarComentarios(contenido, calificacion);
+
+        Date fecha = new Date();
+        
+        if (respuesta.isPresent()) {
             
-            Trabajo trabajo = trabajoRespuesta.get();
-          
-                if (trabajoRespuesta.isPresent()) {
-
-                    Comentario comentario = new Comentario(contenido, calificacion, fecha, true);
-                  
-                    comentario.setTrabajo(trabajo);
-                                        
-                    comentarioRepositorio.save(comentario);
-
-                } }
+            Comentario comentario = respuesta.get();
+            if (comentario.isAltaBaja()) {
+            comentario.setContenido(contenido);
+            comentario.setCalificacion(calificacion);
+            comentario.setFechaHora(fecha);            
+            comentarioRepositorio.save(comentario);
+            } else {
+                throw new MiException ("El comentario está dado de baja, no se puede modificar.");
+            }
+        }
     }
-    
     
     @Transactional
     public List<Comentario> ListaComentarios() {
@@ -173,7 +176,7 @@ Date fecha =new Date();
 
     @Transactional
     @Secured("ROLE_ADMIN")
-    public void BajaComentario(String id) throws MiException {
+    public void bajaComentario(String id) throws MiException {
 
         Optional<Comentario> comentarioRespuesta = comentarioRepositorio.findById(id);
        
@@ -194,19 +197,22 @@ Date fecha =new Date();
     //   }
 
     @Transactional
-    private void ValidarComentarios(String contenido, Integer calificacion) throws MiException {
+    private void validarComentarios(String contenido, Integer calificacion) throws MiException {
 
         if (contenido == null || contenido.isEmpty()) {
             throw new MiException(" El comentario no puede estar vacio, por favor complete este campo");
 
         }
         if (calificacion > 0 && calificacion <= 5) {
-            throw new MiException(" La calificacion no puede ser igual a cero,clasificarlo de 1 al 5");
+            throw new MiException(" La calificacion no puede ser igual a cero, calificar entre 1 y 5");
 
         }
         //  List<Comentario> comentario = new ArrayList<>();
         // comentario = ListaComentarios();
 
     }
-
 }
+
+
+
+
