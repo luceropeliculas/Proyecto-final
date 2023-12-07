@@ -22,7 +22,7 @@ import java.util.List;
 
 @Service
 public class TrabajoServicio {
-
+   Trabajo trabajo = new Trabajo(); 
    Cliente cliente = new Cliente();
    Proveedor proveedor = new Proveedor();
 
@@ -36,8 +36,8 @@ TrabajoRepositorio trabajoRepositorio;
 @Transactional
 public void solicitudTrabajo(String dniProveedor, String dniCliente, String detalleDeTrabajo) throws MiException{
 
-   Trabajo trabajo = new Trabajo(); 
-   
+    validarDetalleTrabajo(detalleDeTrabajo);
+    
    Optional<Cliente> clienteRespuesta = clienteRepositorio.findById(dniCliente);
 
          if (clienteRespuesta.isPresent()) {
@@ -58,8 +58,10 @@ public void solicitudTrabajo(String dniProveedor, String dniCliente, String deta
 }
     @Transactional
     public void revisionDeTrabajo(Long idtrabajo, Boolean aceptacion,
-            String respuestaProveedor, int gastosAdicionales, int horasTrabajadasEstimadas, String dniProveedor) {
-
+            String respuestaProveedor, Integer gastosAdicionales, Integer horasTrabajadasEstimadas, String dniProveedor) throws MiException{
+        
+        validarRevision(respuestaProveedor, gastosAdicionales, horasTrabajadasEstimadas);
+        
         Trabajo trabajo = new Trabajo();
 
         Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idtrabajo);
@@ -126,11 +128,11 @@ public void solicitudTrabajo(String dniProveedor, String dniCliente, String deta
     //eliminar idProvedor
     // proveedor es con dos EE
     @Transactional
-    public void finalizadoTrabajo(Long idTrabajo, String idProvedor, Boolean estado) throws MiException {
+    public void finalizadoTrabajo(Long idTrabajo, String idProveedor, Boolean estado) throws MiException {
         Trabajo trabajo = new Trabajo();
         Proveedor proveedor = new Proveedor();
         Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idTrabajo);
-        Optional<Proveedor> proveedorRespuesta = proveedorRepositorio.findById(idProvedor);
+        Optional<Proveedor> proveedorRespuesta = proveedorRepositorio.findById(idProveedor);
 
         if (trabajoRespuesta.isPresent()) {
             trabajo = trabajoRespuesta.get();
@@ -213,4 +215,36 @@ public void solicitudTrabajo(String dniProveedor, String dniCliente, String deta
     Trabajo trabajo =trabajoRepositorio.getOne(idTrabajo);
     return trabajo;
     }
-}
+      
+      
+      public void validarDetalleTrabajo (String detalleDeTrabajo) throws MiException {
+      
+          if (detalleDeTrabajo == null || detalleDeTrabajo.isEmpty()) {
+            throw new MiException("Por favor, tiene que detallar el trabajo que necesita.");
+        }
+      
+      }
+      
+      public void validarRevision (String respuestaProveedor, Integer gastosAdicionales,
+                                   Integer horasTrabajadasEstimadas) throws MiException {
+      
+        if (respuestaProveedor == null || respuestaProveedor.isEmpty()) {
+            throw new MiException("Por favor, describa el trabajo que realizará.");
+        }   
+        if (gastosAdicionales < 0) {
+           throw new MiException ("Los gastos adicionales no pueden ser menores que cero.");
+        }
+        
+        if (horasTrabajadasEstimadas <= 0) {
+           throw new MiException ("La estimación de las horas trabajadas no puede ser igual a cero.");
+        }
+        
+        }
+        
+        
+      
+      }
+      
+      
+      
+
