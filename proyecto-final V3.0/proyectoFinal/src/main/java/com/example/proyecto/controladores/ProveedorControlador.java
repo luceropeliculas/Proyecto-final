@@ -73,7 +73,7 @@ public class ProveedorControlador {
 
         modelo.addAttribute("proveedores", proveedores);
 
-        return "proveedor_list.html";
+        return "proveedor_list2.html";
     }
 
     @GetMapping("/")

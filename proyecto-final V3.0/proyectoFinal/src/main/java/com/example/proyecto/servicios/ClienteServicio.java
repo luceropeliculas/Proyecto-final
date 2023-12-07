@@ -94,10 +94,10 @@ public class ClienteServicio {
             String password2, String domicilio) throws MiException {
 
         if (nombre.isEmpty() || nombre == null) {
-            throw new MiException("el nombre no puede ser nulo o estar vacío");
+            throw new MiException("el Nombre no puede ser nulo o estar vacío");
         }
         if (apellido.isEmpty() || apellido == null) {
-            throw new MiException("El nombre no puede ser nulo o estar vacio");
+            throw new MiException("El Apellido no puede ser nulo o estar vacio");
         }
 
         if (domicilio.isEmpty() || domicilio == null) {
@@ -105,7 +105,7 @@ public class ClienteServicio {
         }
 
         if (dni.isEmpty() || dni == null) {
-            throw new MiException("El dni no puede ser nulo o estar vacio");
+            throw new MiException("El DNI no puede ser nulo o estar vacio");
         }
 
         if (clienteRepositorio.existsByDni(dni)) {
@@ -113,13 +113,13 @@ public class ClienteServicio {
         }
 
         if (telefono.isEmpty() || telefono == null) {
-            throw new MiException("El telefono no puede ser nulo o estar vacio");
+            throw new MiException("El Telefono no puede ser nulo o estar vacio");
         }
         if (email.isEmpty() || email == null) {
-            throw new MiException("el email no puede ser nulo o estar vacio");
+            throw new MiException("el Email no puede ser nulo o estar vacio");
         }
         if (clienteRepositorio.existsByEmail(email)) {
-            throw new MiException("El email ya se encuentra registrado en el sistema");
+            throw new MiException("El Email ya se encuentra registrado en el sistema");
         }
         if (password.isEmpty() || password == null || password.length() <= 5) {
             throw new MiException("La contraseña no puede estar vacía, y debe tener más de 5 dígitos");

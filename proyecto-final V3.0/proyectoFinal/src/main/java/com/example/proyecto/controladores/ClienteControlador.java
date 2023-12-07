@@ -57,7 +57,7 @@ return "cliente_form.html";
         } catch (MiException ex) {
                       
             modelo.put("error", ex.getMessage());
-            return "cliente_form.html";
+            return "registroDoble.html";
         }
         
         return "index.html";        
