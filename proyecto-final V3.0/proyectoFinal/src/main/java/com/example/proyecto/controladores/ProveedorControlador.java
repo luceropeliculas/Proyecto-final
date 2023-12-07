@@ -1,6 +1,7 @@
 package com.example.proyecto.controladores;
 
 import com.example.proyecto.entidades.Comentario;
+import com.example.proyecto.entidades.Persona;
 import com.example.proyecto.entidades.Proveedor;
 import com.example.proyecto.entidades.Rubro;
 import com.example.proyecto.entidades.Trabajo;
@@ -127,7 +128,7 @@ public class ProveedorControlador {
     Double precioHora, String idRubro, String domicilio, ModelMap modelo) {
 
         try {
-            proveedorServicio.modificar(archivo, nombre, apellido, dni, telefono, email, password, password2, matricula, descripcion, precioHora, idRubro, domicilio);
+            proveedorServicio.modificar(archivo, nombre, apellido, dni, telefono, email, matricula, descripcion, precioHora, idRubro, domicilio);
 
             modelo.put("exito", "Cliente actualizado correctamente!");
 
@@ -143,4 +144,42 @@ public class ProveedorControlador {
     
 }
     
+@PreAuthorize("hasAnyRole('ROLE_PROVEEDOR', 'ROLE_ADMIN')")
+    @GetMapping("/modificarProveedor")
+    public String perfil2(ModelMap modelo,HttpSession session){
+        Persona persona = (Proveedor) session.getAttribute("usuariosession");
+        if (persona instanceof Proveedor) {
+            Proveedor proveedor= (Proveedor) persona;
+            modelo.put("proveedor", proveedor);
+            return "modificarProvedor.html";
+        } else {
+            System.out.println("error aquiiiii");
+            // Manejar el caso en que la instancia no sea de tipo Cliente
+            // Puedes redirigir a una página de error o manejar de otra manera
+            return "index1";
+        }
+        
+    }
+    @PreAuthorize("hasAnyRole('ROLE_PROVEEDOR', 'ROLE_ADMIN')")
+    @PostMapping("/modificarProveedor/{dni}")
+    public String actualizar(@PathVariable String dni, @RequestParam MultipartFile archivo, String nombre, String apellido, String telefono, String email, 
+    String matricula, String descripcion,
+    Double precioHora,String domicilio,String idRubro, ModelMap modelo) {
+
+        try {
+            proveedorServicio.modificar(archivo, nombre, apellido, dni, telefono, email, matricula, descripcion, precioHora, domicilio,idRubro);
+
+            modelo.put("exito", "Proveedor actualizado correctamente!");
+
+            return "index1.html";
+        } catch (MiException ex) {
+
+            modelo.put("error", ex.getMessage());
+         
+
+            return "modificarProvedor.html";
+        }   
+        
+    }
+
 }

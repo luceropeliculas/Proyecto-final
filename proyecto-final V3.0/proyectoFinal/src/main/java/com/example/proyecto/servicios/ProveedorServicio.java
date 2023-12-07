@@ -75,10 +75,10 @@ public class ProveedorServicio {
     }
     
     @Transactional
-    public void modificar(MultipartFile archivo, String nombre, String apellido, String dni, String telefono, String email, String password,
-                               String password2, String matricula, String descripcion,
+    public void modificar(MultipartFile archivo, String nombre, String apellido, String dni, String telefono, String email, 
+                                String matricula, String descripcion,
                                Double precioHora, String idRubro, String domicilio) throws MiException {
-        validar(nombre, apellido, dni, telefono, email, password, password2, precioHora, domicilio );
+        validar2(nombre, apellido, dni, telefono, email,  precioHora, domicilio, descripcion);
         // falta domicilio
         Optional<Proveedor> respuesta = proveedorRepositorio.findById(dni);
         if (respuesta.isPresent()) {
@@ -90,7 +90,7 @@ public class ProveedorServicio {
         proveedor.setDomicilio(domicilio);
         proveedor.setTelefono(telefono);
         proveedor.setEmail(email);
-        proveedor.setPassword(new BCryptPasswordEncoder().encode(password));
+        //proveedor.setPassword(new BCryptPasswordEncoder().encode(password));
         proveedor.setDescripcion(descripcion); 
         proveedor.setPrecioHora(precioHora);                
         proveedor.setRol(Rol.PROVEEDOR);         
@@ -110,6 +110,42 @@ public class ProveedorServicio {
         }
     }
    
+    @Transactional   
+    private void validar2(String nombre, String apellido, String dni, String telefono,
+            String email, Double precioHora, String domicilio,String descripcion) throws MiException {
+        
+        if (nombre == null || nombre.isEmpty()) {
+            throw new MiException("El nombre no puede ser nulo o estar vacío");
+        }
+
+        if (apellido == null || apellido.isEmpty()) {
+            throw new MiException("El apellido no puede ser nulo o estar vacío");
+        }
+
+       
+        if (telefono == null || telefono.isEmpty()) {
+            throw new MiException("El teléfono no puede ser nulo o estar vacío");
+        }
+
+        if (email == null || email.isEmpty()) {
+            throw new MiException("El email no puede ser nulo o estar vacío");
+        }
+
+        if (precioHora == 0.0) {
+            throw new MiException("El campo honorarios/hora no puede estar vacío o ser cero");
+        }
+        
+      
+        if (domicilio == null || domicilio.isEmpty()) {
+            throw new MiException("El domicilio no puede estar vacío");
+        }
+             if (descripcion == null || descripcion.isEmpty()) {
+            throw new MiException("La descripcion no puede estar vacío");
+    }
+ 
+ }
+
+
     @Transactional(readOnly=true)
     public List<Proveedor> listarProveedores() {
        
