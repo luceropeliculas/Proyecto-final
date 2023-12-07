@@ -101,40 +101,73 @@
                     </a>
                     </div>
                 </div>            
-                <form class="formulario" id="formulario1" th:action="@{/cliente/modificar}" method="POST">
-                    <div class="input-container">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre"  th:value="${user.nombre}">
-                    </div>
-                   
-                    <div class="input-container">
-                    <label for="apellido">Apellido:</label>
-                    <input type="text" id="apellido" name="apellido"  th:value="${user.apellido}">
-                    </div>
-                    <br>
+                <form class="formulario" id="formulario" th:action="@{modificar/__${cliente.dni}__}" method="POST" enctype="multipart/form-data">
+                    <div class="container">
 
-                    <div class="input-container">
-                    <label for="dni">DNI:</label>
-                    <input type="text" id="dni" name="dni"  th:value="${user.dni}">
-                    </div>
-                    <div class="input-container">
-                    <label for="domicilio">Dirección:</label>
-                    <input type="text" id="domicilio" name="domicilio"  th:value="${user.domicilio}">
-                    </div>
-                    <div class="input-container">
-                    <label for="telefono">Teléfono:</label>
-                    <input type="text" id="telefono" name="telefono"  th:value="${user.telefono}">
-                    </div>
+                   <div class="row">
+    <!--
+   <div class="col-sm-3">
+                       <div class="text-center">
+                           
+                           <div class="image-container">
+                               <img id="profileImage" src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
+                           </div>
 
-                    <div class="input-container">
+                           <br>
+                           <label for="inputFile" class="custom-file-upload">
+                               <span>Seleccionar archivo</span>
+                               <input type="file" id="inputFile" onchange="changeProfileImage(this)">
+                           </label>
+                       </div>
+                       </div><br>
 
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" th:value="${user.email}">
-                    </div>
-                    <br>
-                    <button class="sign-in-btn" id="ov-btn-slide-close">Guardar Datos</button>
+                       <input type="file" name="archivo" accept="image/*" style="display: none;">
+                   </div>
+                   -->
+                   <div class="form-group my-3">
+       <input type="file" class="form-control" name="archivo">
+       </div>
+                   <div class="input-container">
+                       <label for="nombre">Nombre:</label>
+                       <input type="text" id="nombre" name="nombre"  th:value="${cliente.nombre}">
+                   </div>
 
-                </form>
+                   <div class="input-container">
+                       <label for="apellido">Apellido:</label>
+                       <input type="text" id="apellido" name="apellido"  th:value="${cliente.apellido}">
+                   </div>
+                   <br>
+
+                   <div class="input-container">
+                       <label for="domicilio">Dirección:</label>
+                       <input type="text" id="domicilio" name="domicilio"  th:value="${cliente.domicilio}">
+                   </div>
+                   <div class="input-container">
+                       <label for="telefono">Teléfono:</label>
+                       <input type="text" id="telefono" name="telefono"  th:value="${cliente.telefono}">
+                   </div>
+
+                   <div class="input-container">
+
+                       <label for="email">Email:</label>
+                       <input type="email" id="email" name="email" th:value="${cliente.email}">
+                   </div>
+                   <!--
+                   <div class="input-container">
+                       <input type="password" class="form-control" name="password" placeholder="PASSWORD">
+
+                   </div>
+                   <div class="input-container">
+                       <input type="password" class="form-control" name="password2" placeholder="PASSWORD">
+
+                   </div>
+                   -->
+                   <div class="form-group my-3">
+
+                       <br>
+                       <button class="sign-in-btn" id="ov-btn-slide-close">Guardar Datos</button>
+
+               </form>
                 
                 
                 <div th:if="${exito != null}" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 10px 20px; border-radius: 5px; background-color: #4CAF50; color: white; font-weight: bold; z-index: 1000;">
