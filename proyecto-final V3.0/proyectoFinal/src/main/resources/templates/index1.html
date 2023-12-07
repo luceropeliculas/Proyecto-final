@@ -49,7 +49,7 @@
                         </div>         
                         <br>
 
-                        <div id="botones">
+                        <div id="botones" >
                         <div class="cada-boton">
                             <a th:href="@{/cliente/listarTrabajo}">
                                 <button  type="button" class="btn btn-outline-info">
@@ -58,7 +58,7 @@
                             </a>
                         </div>    
 
-                        <div class="cada-boton">
+                        <div class="cada-boton" sec:authorize="hasRole('PROVEEDOR')">
                             <a th:href="@{/trabajo/listarProveedor/}">
                                 <button  type="button" class="btn btn-outline-info">
                                     Ver mis trabajos proveedor
