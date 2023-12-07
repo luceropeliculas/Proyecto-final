@@ -259,6 +259,18 @@ tbody{
     margin-right: 10px;
 }
 
+.table {
+  border-collapse: separate; /* Separación de bordes */
+  border-spacing: 5px; /* Espacio entre celdas */
+  font-size: 10px; /* Tamaño de fuente */
+  border-radius: 10px; /* Radio de los bordes */
+  background-color: rgba(0, 0, 0, 0.5); /* Color de fondo con transparencia */
+}
+
+.table td, .table th {
+  padding: 8px;
+}
+
 
 
 
