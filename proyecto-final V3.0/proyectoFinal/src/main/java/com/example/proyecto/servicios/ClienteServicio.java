@@ -94,10 +94,10 @@ public class ClienteServicio {
             String password2, String domicilio) throws MiException {
 
         if (nombre.isEmpty() || nombre == null) {
-            throw new MiException("el nombre no puede ser nulo o estar vacío");
+            throw new MiException("el Nombre no puede ser nulo o estar vacío");
         }
         if (apellido.isEmpty() || apellido == null) {
-            throw new MiException("El nombre no puede ser nulo o estar vacio");
+            throw new MiException("El Apellido no puede ser nulo o estar vacio");
         }
 
         if (domicilio.isEmpty() || domicilio == null) {
@@ -105,7 +105,7 @@ public class ClienteServicio {
         }
 
         if (dni.isEmpty() || dni == null) {
-            throw new MiException("El dni no puede ser nulo o estar vacio");
+            throw new MiException("El DNI no puede ser nulo o estar vacio");
         }
 
         if (clienteRepositorio.existsByDni(dni)) {
@@ -113,13 +113,13 @@ public class ClienteServicio {
         }
 
         if (telefono.isEmpty() || telefono == null) {
-            throw new MiException("El telefono no puede ser nulo o estar vacio");
+            throw new MiException("El Telefono no puede ser nulo o estar vacio");
         }
         if (email.isEmpty() || email == null) {
-            throw new MiException("el email no puede ser nulo o estar vacio");
+            throw new MiException("el Email no puede ser nulo o estar vacio");
         }
         if (clienteRepositorio.existsByEmail(email)) {
-            throw new MiException("El email ya se encuentra registrado en el sistema");
+            throw new MiException("El Email ya se encuentra registrado en el sistema");
         }
         if (password.isEmpty() || password == null || password.length() <= 5) {
             throw new MiException("La contraseña no puede estar vacía, y debe tener más de 5 dígitos");
@@ -161,9 +161,9 @@ public class ClienteServicio {
     // Modificar Cliente
     @Transactional
     public void actualizar(MultipartFile archivo, String nombre, String apellido, String dni, String telefono,
-            String email, String password, String password2, String domicilio) throws MiException {
+            String email, String domicilio) throws MiException {
 
-        validar(nombre, apellido, dni, email, telefono, password, password2, domicilio);
+        validar2(nombre, apellido, dni, email, telefono, domicilio);
         // `Optional<Cliente>` significa que la respuesta puede contener un objeto
         // `Cliente` o no (puede ser nulo).
         Optional<Cliente> respuesta = clienteRepositorio.findById(dni);// findById(dni)**: Este método busca un objeto
@@ -177,11 +177,11 @@ public class ClienteServicio {
             cliente.setDni(dni);
             cliente.setTelefono(telefono);
             cliente.setEmail(email);
-            cliente.setPassword(password);
+           // cliente.setPassword(password);
             cliente.setDomicilio(domicilio);
             // cliente.setRol(Rol.CLIENTE);
 
-            cliente.setPassword(new BCryptPasswordEncoder().encode(password));
+          //  cliente.setPassword(new BCryptPasswordEncoder().encode(password));
 
             String idImagen = null;
 
@@ -197,7 +197,29 @@ public class ClienteServicio {
         }
 
     }
+    @Transactional
+    public void validar2(String nombre, String apellido, String dni, String telefono, String email,
+             String domicilio) throws MiException {
 
+        if (nombre.isEmpty() || nombre == null) {
+            throw new MiException("el nombre no puede ser nulo o estar vacío");
+        }
+        if (apellido.isEmpty() || apellido == null) {
+            throw new MiException("El nombre no puede ser nulo o estar vacio");
+        }
+
+        if (domicilio.isEmpty() || domicilio == null) {
+            throw new MiException("El domicilio no puede ser nulo o estar vacio");
+        }
+     
+        
+        if (telefono.isEmpty() || telefono == null) {
+            throw new MiException("El telefono no puede ser nulo o estar vacio");
+        }
+        if (email.isEmpty() || email == null) {
+            throw new MiException("el email no puede ser nulo o estar vacio");
+        }
+    }
     @Transactional
     public void delete(String dni) {
         try {

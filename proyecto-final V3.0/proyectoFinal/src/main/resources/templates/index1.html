@@ -11,55 +11,95 @@
         <link rel="stylesheet" th:href="@{/css/index.css}">
     </head>
     <body>
-        <nav>        <div id="presentacion">
-                <header id="header-index">
-                    <div id="logo" >
-                        <img th:src="@{/imagenes/logoServiceProM.png}" alt="">
-                    </div>
-
+     <header id="header-index">
+            <div id="logo" >
+                <img th:src="@{/imagenes/logoServiceProM.png}" alt="">
+            </div>
+            <div class="search-box">
+                <form class="search-box">
+                    <input type="text" placeholder=" "/>
+                    <button type="reset"></button>
+                </form>
+            </div>
+            <div id="botones" sec:authorize="hasRole('ADMIN')">
+                <div class="cada-boton">
+                    <a th:href="@{/proveedor/listar}">
+                        <button  type="button" class="btn btn-outline-info">
+                            Proveedores
+                        </button>
+                    </a>
+                </div>
+                 </div>
+                <div id="botones" sec:authorize="hasRole('ADMIN')">
+                    <div class="cada-boton">
+                        <a th:href="@{/clientes/listar}">
+                            <button  type="button" class="btn btn-outline-info">
+                                Clientes
+                            </button>
+                        </a>
+                    </div>  
+ </div>
                     <div id="botones">
                         <div class="cada-boton">
-                            <a th:href="@{/cliente/listarTrabajo}">
+                            <a th:href="@{/index1}">
                                 <button  type="button" class="btn btn-outline-info">
-                                    Ver mis trabajos
+                                    Home
                                 </button>
                             </a>
-                        </div>    
-
-                        <div class="cada-boton">
-                            <a th:href="@{/trabajo/listarProveedor/}">
-                                <button  type="button" class="btn btn-outline-info">
-                                    Ver mis trabajos proveedor
-                                </button>
-                            </a>
-                        </div>          
+                        </div>         
                         <br>
 
                         <div class="cada-boton">
-                            <a th:href="@{/logout}">
-                                <button type="button" class="btn btn-outline-info">
-                                    Logout
+                            <a th:href="@{/}">
+                                <button  type="button" class="btn btn-outline-info">
+                                    Mis trabajos
                                 </button>
                             </a>
-                        </div>
-                        <div class="cada-boton perfil">
-                            <a th:href="@{/cliente/modificar}">                   
-                                <img src="imagenes/perfil.png" href alt="foto del perfil">
+                        </div>         
+                        <br>
+
+                        <div class="cada-boton ">
+
+                            <div id="perfil-dropdown">
+                                
+                                    <a>
+                                        <div class="imagen-circulo">
+                                            <div class="cada-boton perfil">                                      
+
+                            
+                            <img <a th:if="${session.usuariosession.imagen != null}" id="logo"  th:src="@{/imagen/perfil/__${session.usuariosession.dni}__}" class="d-flex align-items-center">
+                                
                             </a>
                         </div>
-                    </div>
+                                        </div>
+                                    </a>
+                               
+                                <ul id="dropdown-menu">
+                                    <li>
+                                        <a th:href="@{/}" class="btn btn-outline-info">
+                                            <button class="btn btn-outline-info" id="dropdown-btn"> Perfil</button>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a th:href="@{/cliente/modificar}" >
+                                            <button class="btn btn-outline-info" id="dropdown-btn"> Modificar Perfil</button>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a th:href="@{/}" class="btn btn-outline-info">
+                                            <button class="btn btn-outline-info" id="dropdown-btn"> Logout</button>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
 
-
-            </div>
-        </nav>
-
-    </header>
+                            </header>
 
     <div id="contenedor">
         <div id="animacion">
             <h2><b>Bienvenidos a ServicePro M</b></h2>
             <br>
-            <p> <b>bienvenido de nuevo chiquito</b></p>
+            <p th:if="${session.usuariosession != null}" th:text=" 'Bienvenido  '+ ${session.usuariosession.nombre} "> <b></b></p>
         </div>
     </div>
 

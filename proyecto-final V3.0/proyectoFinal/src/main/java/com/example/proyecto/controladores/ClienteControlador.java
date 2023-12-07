@@ -21,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,7 +58,7 @@ return "cliente_form.html";
         } catch (MiException ex) {
                       
             modelo.put("error", ex.getMessage());
-            return "cliente_form.html";
+            return "registroDoble.html";
         }
         
         return "index.html";        
@@ -90,10 +91,10 @@ return "cliente_form.html";
     @PreAuthorize("hasAnyRole('ROLE_CLIENTE', 'ROLE_ADMIN')")
     @PostMapping("/perfil/{id}")
     public String actualizar(@RequestParam String nombre,MultipartFile archivo, String apellido, String dni, String telefono,
-    String email, String password, String password2, String domicilio, ModelMap modelo) {
+    String email, String domicilio, ModelMap modelo) {
 
         try {
-            clienteServicio.actualizar(archivo, nombre, apellido, dni, telefono, email, password, password2, domicilio);
+            clienteServicio.actualizar(archivo, nombre, apellido, dni, telefono, email, domicilio);
 
             modelo.put("exito", "Cliente actualizado correctamente!");
 
@@ -106,7 +107,7 @@ return "cliente_form.html";
             return "cliente_modificar.html";
         }
     }
-    
+         /* 
     @GetMapping("/modificar")
     public String goToModificarCliente(ModelMap modelo, Principal principal){
         Cliente cliente = clienteServicio.getClienteByEmail(principal.getName());
@@ -115,7 +116,7 @@ return "cliente_form.html";
         }
 
 
-     
+
       @PostMapping("/modificar1")
     public String ModificarUsuario(@RequestParam String nombre,String apellido,String dni,String telefono, 
  String domicilio,String password, ModelMap modelo,MultipartFile archivo, String password2, Principal principal){
@@ -138,6 +139,56 @@ return "cliente_form.html";
             // Se retorna al index
         return "index1.html";        
     }
-  
+  */
+    @GetMapping("/login")
+    public String login(@RequestParam(required = false) String error, ModelMap modelo) {
+
+        if (error != null) {
+            modelo.put("error", "Cliente o Contraseña invalidos!");
+        }
+
+        return "login.html";
+    }
+
     
+    @PreAuthorize("hasAnyRole('ROLE_CLIENTE', 'ROLE_ADMIN')")
+    @GetMapping("/modificar")
+  public String modificar(ModelMap modelo, HttpSession session) {
+      Persona persona =  (Persona) session.getAttribute("usuariosession");
+
+      if (persona instanceof Cliente) {
+          System.out.println("entro a la istancia");
+          Cliente cliente = (Cliente) persona;
+          modelo.put("cliente", cliente);
+          return "modificarCliente.html";
+      } else {
+          System.out.println("error aquiiiii");
+          // Manejar el caso en que la instancia no sea de tipo Cliente
+          // Puedes redirigir a una página de error o manejar de otra manera
+          return "index1";
+      }
+  }
+@PreAuthorize("hasAnyRole('ROLE_CLIENTE', 'ROLE_ADMIN')")
+    @PostMapping("/modificar/{dni}")
+    public String actualizar(@PathVariable String dni, @RequestParam String nombre,MultipartFile archivo, String apellido, String telefono,
+    String email, String domicilio, ModelMap modelo) {
+
+        try {
+            clienteServicio.actualizar(archivo, nombre, apellido, dni, telefono, email,  domicilio);
+
+            modelo.put("exito", "Cliente actualizado correctamente!");
+
+            return "index1.html";
+        } catch (MiException ex) {
+
+            modelo.put("error", ex.getMessage());
+         
+
+            return "modificarCliente.html";
+        }
+    }
+
+
 }
+
+
