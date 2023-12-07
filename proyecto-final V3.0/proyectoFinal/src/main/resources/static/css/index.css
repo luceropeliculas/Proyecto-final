@@ -30,7 +30,8 @@ body{
 }
 
 #logo {
-  flex: 1; /* Hace que el logo ocupe todo el espacio disponible a la izquierda */
+  flex: 1;
+  position: initial;/* Hace que el logo ocupe todo el espacio disponible a la izquierda */
 }
 
 
@@ -51,7 +52,7 @@ body{
     color: #0dcaf0; 
     border-color: #0dcaf0;
     width:100px;
-    height: 45px;
+    height: 50px;
     border-radius: 10px;
     background-color: transparent;
    font-family: sans-serif;
