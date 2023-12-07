@@ -21,13 +21,15 @@
                     <button type="reset"></button>
                 </form>
             </div>
-            <div id="botones" sec:authorize="hasRole('ADMIN')">
+          <div id="botones" sec:authorize="hasRole('ADMIN')">
                 <div class="cada-boton">
                     <a th:href="@{/proveedor/listar}">
                         <button  type="button" class="btn btn-outline-info">
                             Proveedores
                         </button>
                     </a>
+                    </div>
+              </div>
                 </div>
                 <div id="botones" sec:authorize="hasRole('ADMIN')">
                     <div class="cada-boton">
@@ -37,7 +39,7 @@
                             </button>
                         </a>
                     </div>  
-
+                </div>
                     <div id="botones">
                         <div class="cada-boton">
                             <a th:href="@{/index1}">
