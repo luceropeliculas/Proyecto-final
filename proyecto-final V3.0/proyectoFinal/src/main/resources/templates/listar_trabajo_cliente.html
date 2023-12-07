@@ -4,7 +4,7 @@
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link th:href="@{/css/proveedor_list.css}" type="text/css" rel="stylesheet"></link>
+        <link th:href="@{/css/list.css}" type="text/css" rel="stylesheet"></link>
     </head>
     <body>
 
@@ -18,8 +18,7 @@
                                         <tr>
                                             <th scope="col">Estado del trabajo</th>
                                             <th scope="col">Detalle</th>
-                                            <th scope="col">Repuesta Proveedor</th>
-                                            <th scope="col">Telefono Proveedor</th>
+                                            <th scope="col">Repuesta Proveedor</th>                     
                                             <th scope="col">Precio Final</th>
                                             <th scope="col">Precio Final</th>
                                             <th scope="col">Precio Final</th>
@@ -33,8 +32,7 @@
                                         <tr>
                                             <th scope="row" th:text="${trabajo.estadoTrabajo}"></th>
                                             <th scope="row" th:text="${trabajo.detalleDeSolicitud}"></th>
-                                            <td scope="row" th:text="${trabajo.respuestaProveedor}"></td>
-                                            <td scope="row" th:text="${proveedor.telefono}"></td>
+                                            <td scope="row" th:text="${trabajo.respuestaProveedor}"></td>                                    
                                             <td scope="row" th:text="${trabajo.precioFinal}"></td>
                                             <td scope="row" th:text="${trabajo.cliente.domicilio}"></td>
                                             <td scope="row" th:text="${trabajo.cliente.telefono}"></td>
