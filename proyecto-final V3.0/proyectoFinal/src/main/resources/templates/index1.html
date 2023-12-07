@@ -11,7 +11,7 @@
         <link rel="stylesheet" th:href="@{/css/index.css}">
     </head>
     <body>
-      <header id="header-index">
+     <header id="header-index">
             <div id="logo" >
                 <img th:src="@{/imagenes/logoServiceProM.png}" alt="">
             </div>
@@ -21,16 +21,15 @@
                     <button type="reset"></button>
                 </form>
             </div>
-          <div id="botones" sec:authorize="hasRole('ADMIN')">
+            <div id="botones" sec:authorize="hasRole('ADMIN')">
                 <div class="cada-boton">
                     <a th:href="@{/proveedor/listar}">
                         <button  type="button" class="btn btn-outline-info">
                             Proveedores
                         </button>
                     </a>
-                    </div>
-              </div>
                 </div>
+                 </div>
                 <div id="botones" sec:authorize="hasRole('ADMIN')">
                     <div class="cada-boton">
                         <a th:href="@{/clientes/listar}">
@@ -39,7 +38,7 @@
                             </button>
                         </a>
                     </div>  
-                </div>
+ </div>
                     <div id="botones">
                         <div class="cada-boton">
                             <a th:href="@{/index1}">
@@ -65,7 +64,13 @@
                                 
                                     <a>
                                         <div class="imagen-circulo">
-                                            <img src="imagenes/perfil.png" alt="">
+                                            <div class="cada-boton perfil">                                      
+
+                            
+                            <img <a th:if="${session.usuariosession.imagen != null}" id="logo"  th:src="@{/imagen/perfil/__${session.usuariosession.dni}__}" class="d-flex align-items-center">
+                                
+                            </a>
+                        </div>
                                         </div>
                                     </a>
                                

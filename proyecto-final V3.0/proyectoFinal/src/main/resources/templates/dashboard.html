@@ -24,6 +24,7 @@
                         </button>
                     </a>
                 </div>
+                 </div>
                 <div id="botones" sec:authorize="hasRole('ADMIN')">
                     <div class="cada-boton">
                         <a th:href="@{/clientes/listar}">
@@ -31,7 +32,8 @@
                                 Clientes
                             </button>
                         </a>
-                    </div>  
+                    </div>
+                     </div>
 
                     <div id="botones">
                         <div class="cada-boton">
@@ -58,7 +60,13 @@
                                 
                                     <a>
                                         <div class="imagen-circulo">
-                                            <img src="imagenes/perfil.png" alt="">
+                                            <div class="cada-boton perfil">                                      
+
+                            
+                            <img <a th:if="${session.usuariosession.imagen != null}" id="logo"  th:src="@{/imagen/perfil/__${session.usuariosession.dni}__}" class="d-flex align-items-center">
+                                
+                            </a>
+                        </div>
                                         </div>
                                     </a>
                                
