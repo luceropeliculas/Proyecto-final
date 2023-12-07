@@ -15,12 +15,12 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 320px;
-    height: 450px;
+    height: 495px;
     border: 1px solid #CCC;
     background-color: rgb(53, 51, 51, 0.602);
     z-index: 1;
     border-radius: 20px;
-    height: 600PX;
+    margin-top: 44px;
     /* Otras propiedades que desees aplicar */
 }
   .login .form {
@@ -35,21 +35,12 @@
     text-align: center;
     font-weight: normal;
     font-size: 18px;
-    margin-top: 60px;
-    margin-bottom: 80px;
-
-  
-
-
+    margin-top: 23px;
+    margin-bottom: 32px;
   }
 .login img{
   height: 150px;
 opacity: 0.8;
-
-
-
-
-
 } 
 
 
@@ -79,7 +70,64 @@ opacity: 0.8;
     font-weight: bold;
   }
 
+  #header-index {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 80px 10px 55px;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 90px;
+    margin-top: 0.1px;
+}
 
+
+
+
+#botones {
+  display: flex;
+  align-items: center; /* Centra verticalmente los elementos */
+  margin-right: 20px;
+}
+
+#logo {
+  position: initial;/* Hace que el logo ocupe todo el espacio disponible a la izquierda */
+}
+
+
+#logo>img{
+    margin: -25px;
+    height: 110px;
+}
+#presentacion{
+    text-align: center;
+}
+
+
+.cada-boton{
+
+    margin-left: 13px;
+}
+.btn-outline-info {
+    color: #0dcaf0; 
+    border-color: #0dcaf0;
+    width:100px;
+    height: 50px;
+    border-radius: 10px;
+    background-color: transparent;
+   font-family: sans-serif;
+   font-size: 15px;
+
+
+}
+
+.btn-outline-info:hover {
+    background-color: #0dcaf0; 
+    color: black;
+    cursor: pointer;
+}
 
 
 

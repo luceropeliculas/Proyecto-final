@@ -95,6 +95,7 @@
 }
 
 .foto-perfil {
+  background-image: url(https://iili.io/JIXQgcB.jpg);
     width: 150px;
     height: 150px;
     background: #fff; /* Puedo cambiar esto por  imagen de perfil */
