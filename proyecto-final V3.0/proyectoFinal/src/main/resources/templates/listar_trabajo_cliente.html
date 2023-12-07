@@ -8,15 +8,15 @@
     </head>
     <body>
 
-        <section th:each="trabajo : ${trabajos}"class="card">
- <h1 class="title" th:text="${trabajo.id}"></h1>
+        <section class="card">
+ 
  
             <div class="main">
                 <div class="container">
                                 <table class="table table-dark">
                                     <thead>
                                         <tr>
-                                            <th scope="col"></th>
+                                            <th scope="col">Estado del trabajo</th>
                                             <th scope="col">Detalle</th>
                                             <th scope="col">Repuesta Proveedor</th>
                                             <th scope="col">Telefono Proveedor</th>
@@ -29,9 +29,9 @@
 
                                         </tr>
                                     </thead>
-                                    <tbody th:text="${trabajo.estadoTrabajo}">
+                                    <tbody th:each="trabajo : ${trabajos}" class="tbody">
                                         <tr>
-                                            <th scope="row"> <img src=th:img="${proveedor.imagen}" alt="Foto proveedor"></th>
+                                            <th scope="row" th:text="${trabajo.estadoTrabajo}"></th>
                                             <th scope="row" th:text="${trabajo.detalleDeSolicitud}"></th>
                                             <td scope="row" th:text="${trabajo.respuestaProveedor}"></td>
                                             <td scope="row" th:text="${proveedor.telefono}"></td>
