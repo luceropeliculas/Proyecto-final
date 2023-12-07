@@ -140,7 +140,10 @@ public class TrabajoControlador {
 
     @PostMapping("/presupuesto")
     public String presupuesto(Long idTrabajo, String respuestaProveedor,
-            Integer GastosAdicionales, Integer horasTrabajadasEstimadas, ModelMap modelo) throws MiException{
+
+
+            Integer GastosAdicionales, Integer horasTrabajadasEstimadas, ModelMap modelo) throws MiException {
+
         Boolean aceptacion = true;
 
         //esto de4spues se elimina

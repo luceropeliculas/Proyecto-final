@@ -1,7 +1,7 @@
 
 package com.example.proyecto.entidades;
 
-import java.time.LocalDateTime;
+
 import java.util.Date;
 import java.util.logging.Logger;
 import javax.persistence.Entity;
@@ -103,10 +103,8 @@ Por ejemplo, al imprimir los comentarios en el código principal, podrías mostr
     public void setFechaHora(Date fechaHora) {
         this.fechaHora = fechaHora;
     }
-    
-    
-    
-    
+
+
     
 }
 
