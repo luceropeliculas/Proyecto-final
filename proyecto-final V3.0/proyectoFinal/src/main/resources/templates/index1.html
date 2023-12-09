@@ -224,6 +224,17 @@
     });
 
     swiper.slideTo(1, false, false);
+    
+    const perfilDropdown = document.getElementById("perfil-dropdown");
+                        const dropdownMenu = document.getElementById("dropdown-menu");
+
+                        perfilDropdown.addEventListener("click", function() {
+                        if (dropdownMenu.style.display === "none") {
+                        dropdownMenu.style.display = "block";
+                        } else {
+                        dropdownMenu.style.display = "none";
+                        }
+                        });
 </script>
 </body>
 </html>

@@ -8,7 +8,9 @@ body{
     background-image: url("../imagenes/bg-inicio3.jpg");
     background-size: cover;
     background-attachment: fixed;
-   
+     height: 100vh;
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
 }
 #header-index {
   display: flex;
@@ -66,7 +68,7 @@ body{
     cursor: pointer;
 }
 #contenedor{
-    margin-top: 300px;
+    margin-top: 350px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -285,19 +287,22 @@ footer a[href="#"]:hover {
 }
 
 .search-box {
-  font-size: 20px;
-  border: solid 1px #0dcaf0;
+    justify-content:flex-end;
+  font-size: 14px;
+  
   display: inline-block;
   position: relative;
   border-radius: 2.5em;
+  left: 100px;
 }
 .search-box input[type=text] {
+    
   font-family: inherit;
   font-weight: bold;
   width: 2.5em;
   height: 2.5em;
   padding: 0.3em 2.1em 0.3em 0.4em;
-  border: none;
+  border: solid 1px #0dcaf0;
   box-sizing: border-box;
   border-radius: 2.5em;
   transition: width 800ms cubic-bezier(0.68, -0.55, 0.27, 1.55) 150ms;
@@ -353,7 +358,7 @@ footer a[href="#"]:hover {
     position: absolute;
     border-right: 0px;
     margin-right: 66px;
-    top: 80px; /* Ajusta la distancia desde la parte superior */
+    top: calc(100% ); /* Ajusta la distancia desde la parte superior */
     right: 0; /* Ajusta la distancia desde la derecha */
    background-color: rgba(0,0,0,0.5);
     border:0px 0px 0px 0px;
