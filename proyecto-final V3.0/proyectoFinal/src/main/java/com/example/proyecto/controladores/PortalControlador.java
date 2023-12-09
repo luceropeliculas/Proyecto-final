@@ -5,6 +5,7 @@
  */
 package com.example.proyecto.controladores;
 
+import com.example.proyecto.entidades.Persona;
 import java.util.List;
 
 
@@ -22,6 +23,7 @@ import com.example.proyecto.entidades.Rubro;
 
 import com.example.proyecto.servicios.ClienteServicio;
 import com.example.proyecto.servicios.RubroServicio;
+import javax.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
@@ -43,8 +45,13 @@ public class PortalControlador {
 
     @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN','ROLE_PROVEEDOR')")
     @GetMapping("/inicio")
-    public String index1() {
-        return "index1.html";
+    public String index1(HttpSession session) {
+         Persona logueado = (Persona) session.getAttribute("usuariosession");
+         
+         if (logueado.getRol().toString().equals("ADMIN")) {
+            return "redirect:/admin/dashboard";
+        }
+    return "index1.html";
     }
 
     @GetMapping("/login1")
