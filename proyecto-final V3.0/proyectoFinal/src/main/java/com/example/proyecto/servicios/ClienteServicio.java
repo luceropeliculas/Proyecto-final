@@ -19,6 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+
+//para ver entre todos
+
 @Service
 public class ClienteServicio {
 
@@ -96,7 +99,9 @@ public class ClienteServicio {
         if (nombre.isEmpty() || nombre == null) {
             throw new MiException("el Nombre no puede ser nulo o estar vacío");
         }
-        if (apellido.isEmpty() || apellido == null) {
+        
+        //INVErtir todos para evitar el error en amarillo
+        if (apellido == null || apellido.isEmpty() ) {
             throw new MiException("El Apellido no puede ser nulo o estar vacio");
         }
 
@@ -205,7 +210,8 @@ public class ClienteServicio {
             throw new MiException("el nombre no puede ser nulo o estar vacío");
         }
         if (apellido.isEmpty() || apellido == null) {
-            throw new MiException("El nombre no puede ser nulo o estar vacio");
+            throw new MiException("El Apellido no puede ser nulo o estar vacio");
+        //    throw new MiException("El nombre no puede ser nulo o estar vacio");
         }
 
         if (domicilio.isEmpty() || domicilio == null) {

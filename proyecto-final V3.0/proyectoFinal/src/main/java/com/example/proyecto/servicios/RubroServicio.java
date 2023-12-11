@@ -5,18 +5,15 @@
  */
 package com.example.proyecto.servicios;
 
-import com.example.proyecto.entidades.Imagen;
 import com.example.proyecto.entidades.Rubro;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.repositorios.RubroRepositorio;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -24,31 +21,23 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Service
 public class RubroServicio {
+
     @Autowired
     RubroRepositorio rubroRepositorio;
 
     @Transactional
-public void CrearRubro(String nombreRubro, String descripcion, MultipartFile file) throws MiException {
-    try {
+    public void CrearRubro(String nombreRubro, String descripcion) throws MiException {
+        // recordar que el id rubro es autogenerable
+
+        ValidarDatos(nombreRubro, descripcion);
         Rubro rubro = new Rubro();
+
         rubro.setNombreRubro(nombreRubro);
         rubro.setDescripcion(descripcion);
 
-        Imagen imagen = new Imagen();
-        imagen.setNombre(file.getOriginalFilename());
-        imagen.setMime(file.getContentType());
-        imagen.setContenido(file.getBytes());
-        
-        imagen.setRubro(rubro);
-        rubro.setImagen(imagen);
-
-        
         rubroRepositorio.save(rubro);
-    } catch (IOException ex) {
-        throw new MiException("Error al procesar la imagen");
-    }
-}
 
+    }
 
     @Transactional
     public List<Rubro> ListaRubros() {
@@ -62,7 +51,7 @@ public void CrearRubro(String nombreRubro, String descripcion, MultipartFile fil
 
     @Transactional
     public void ModificarRubro(String IdRubro, String descripcion, String nombreRubro) throws MiException {
-         ValidarDatos(nombreRubro,descripcion);
+        ValidarDatos(nombreRubro, descripcion);
         // recordar que el id rubro es autogenerable
         // ValidarDatos(nombreRubro,idRubro);
         // faltan exepciones
@@ -89,20 +78,19 @@ public void CrearRubro(String nombreRubro, String descripcion, MultipartFile fil
         }
         if (descripcion == null || descripcion.isEmpty()) {
             throw new MiException(" La descripcion no puede estar vacia, por favor explicar qeu hace este rubro.");
+        }
+        
+        List<Rubro> rubros = new ArrayList<>();
+        rubros = ListaRubros();
+
+        for (Rubro rubro : rubros) {
+            if (rubro.getNombreRubro().equalsIgnoreCase(nombreRubro)) {
+                throw new MiException("El rubro ya se encuentra presente en la lista de rubros");
+
+            }
 
         }
-        List <Rubro> rubros = new ArrayList<>();
-        rubros = ListaRubros();
-                    
-          for (Rubro rubro : rubros) { 
-              if (rubro.getNombreRubro().equalsIgnoreCase(nombreRubro)) {
-                  throw new MiException("El rubro ya se encuentra presente en la lista de rubros");
-                  
-              }
-            
-        }
-        
-        
+
     }
 
 }

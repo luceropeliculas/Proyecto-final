@@ -30,9 +30,11 @@ public class Imagen {
     
     private String nombre;
     
+    //  @Column(columnDefinition = "LONGBLOB", length = 100000)
     @Lob @Basic(fetch = FetchType.LAZY)
     private byte[] contenido;
 
+    //ESTO QUE HACE???????????
     @Enumerated(EnumType.STRING)
     private Rol rol;
     

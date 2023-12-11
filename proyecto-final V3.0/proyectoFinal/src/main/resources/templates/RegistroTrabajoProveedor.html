@@ -14,9 +14,8 @@
                 <div class="data">
                     <div class="trabajo">
                         <h2>Detalles del Trabajo</h2>
-                           <h1 class="title" th:text="${trabajo.estadoTrabajo}"></h1>
-                        <!--   <p>Estado: <span th:text="${trabajo.estadoTrabajo}"></span></p> 
-                           <p>Fecha de alta: <span th:text="${trabajo.fechaInicio}"></span></p> -->
+                           <h1 class="title" th:text="${trabajo.estadoTrabajo.toString()}"></h1>
+                        
                     </div>
                     <div class="cliente">
                         <h2>Solicitante</h2>

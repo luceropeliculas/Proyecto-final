@@ -1,4 +1,3 @@
-
 package com.example.proyecto.servicios;
 
 import com.example.proyecto.entidades.Cliente;
@@ -24,32 +23,31 @@ public class ProveedorServicio {
 
     @Autowired
     private ProveedorRepositorio proveedorRepositorio;
-    
-    @Autowired 
+
+    @Autowired
     private RubroRepositorio rubroRepositorio;
-    
+
     @Autowired
     private ImagenServicio imagenServicio;
-    
-    //@Autowired
-   // private RubroServicio rubroServicio; 
-    
-    @Transactional
-    public void crearProveedor(MultipartFile archivo, String nombre, String apellido, String dni, String telefono, String email, String password,
-                               String password2, String matricula, String descripcion,
-                               Double precioHora, String domicilio, String idRubro) throws MiException {
+
+      @Transactional
+    public void crearProveedor(MultipartFile archivo, String nombre, 
+            String apellido, String dni, String telefono, String email, String password,
+            String password2, String matricula, String descripcion,
+            Double precioHora, String domicilio, String idRubro) throws MiException {
         //recordar el que rol se lo seteamos en el servicio. no lo traemos del controlador
-                
+
         validar(nombre, apellido, dni, telefono, email, password, password2, precioHora, domicilio);
-        
         Proveedor proveedor = new Proveedor();
-        
+
         Rubro rubro = new Rubro();
+
         Optional<Rubro> rubroRespuesta = rubroRepositorio.findById(idRubro);
-        
-         if (rubroRespuesta.isPresent()) {
-            rubro = rubroRespuesta.get();
-         }
+
+        if (rubroRespuesta.isPresent()) {
+          
+        rubro = rubroRespuesta.get();
+        }
         proveedor.setRubro(rubro);
 
         proveedor.setAlta(true);
@@ -65,7 +63,7 @@ public class ProveedorServicio {
         proveedor.setPrecioHora(precioHora); //Es el valor de los honorarios por hora.         
         proveedor.setFechaAlta(new Date());
         proveedor.setRol(Rol.PROVEEDOR);
-        
+
         Imagen imagen = imagenServicio.guardar(archivo);
 
         proveedor.setImagen(imagen);
@@ -73,27 +71,27 @@ public class ProveedorServicio {
         proveedor.setImagen(imagen);
         proveedorRepositorio.save(proveedor);
     }
-    
+
     @Transactional
-    public void modificar(MultipartFile archivo, String nombre, String apellido, String dni, String telefono, String email, 
-                                String matricula, String descripcion,
-                               Double precioHora, String idRubro, String domicilio) throws MiException {
-        validar2(nombre, apellido, dni, telefono, email,  precioHora, domicilio, descripcion);
+    public void modificar(MultipartFile archivo, String nombre, String apellido, String dni, String telefono, String email,
+            String matricula, String descripcion,
+            Double precioHora, String idRubro, String domicilio) throws MiException {
+        validar2(nombre, apellido, dni, telefono, email, precioHora, domicilio, descripcion);
         // falta domicilio
         Optional<Proveedor> respuesta = proveedorRepositorio.findById(dni);
         if (respuesta.isPresent()) {
 
-        Proveedor proveedor = respuesta.get();
-        proveedor.setNombre(nombre);
-        proveedor.setApellido(apellido);
-        proveedor.setDni(dni);
-        proveedor.setDomicilio(domicilio);
-        proveedor.setTelefono(telefono);
-        proveedor.setEmail(email);
-        //proveedor.setPassword(new BCryptPasswordEncoder().encode(password));
-        proveedor.setDescripcion(descripcion); 
-        proveedor.setPrecioHora(precioHora);                
-        proveedor.setRol(Rol.PROVEEDOR);         
+            Proveedor proveedor = respuesta.get();
+            proveedor.setNombre(nombre);
+            proveedor.setApellido(apellido);
+            proveedor.setDni(dni);
+            proveedor.setDomicilio(domicilio);
+            proveedor.setTelefono(telefono);
+            proveedor.setEmail(email);
+            //proveedor.setPassword(new BCryptPasswordEncoder().encode(password));
+            proveedor.setDescripcion(descripcion);
+            proveedor.setPrecioHora(precioHora);
+            proveedor.setRol(Rol.PROVEEDOR);
 
             String idImagen = null;
 
@@ -106,14 +104,14 @@ public class ProveedorServicio {
             proveedor.setImagen(imagen);
 
             proveedorRepositorio.save(proveedor);
-           
+
         }
     }
-   
-    @Transactional   
+
+    @Transactional
     private void validar2(String nombre, String apellido, String dni, String telefono,
-            String email, Double precioHora, String domicilio,String descripcion) throws MiException {
-        
+            String email, Double precioHora, String domicilio, String descripcion) throws MiException {
+
         if (nombre == null || nombre.isEmpty()) {
             throw new MiException("El nombre no puede ser nulo o estar vacío");
         }
@@ -122,7 +120,6 @@ public class ProveedorServicio {
             throw new MiException("El apellido no puede ser nulo o estar vacío");
         }
 
-       
         if (telefono == null || telefono.isEmpty()) {
             throw new MiException("El teléfono no puede ser nulo o estar vacío");
         }
@@ -134,24 +131,21 @@ public class ProveedorServicio {
         if (precioHora == 0.0) {
             throw new MiException("El campo honorarios/hora no puede estar vacío o ser cero");
         }
-        
-      
+
         if (domicilio == null || domicilio.isEmpty()) {
             throw new MiException("El domicilio no puede estar vacío");
         }
-             if (descripcion == null || descripcion.isEmpty()) {
+        if (descripcion == null || descripcion.isEmpty()) {
             throw new MiException("La descripcion no puede estar vacío");
+        }
+
     }
- 
- }
 
-
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public List<Proveedor> listarProveedores() {
-       
-     
+
         List<Proveedor> proveedores = new ArrayList<>();
- 
+
         proveedores = proveedorRepositorio.findAll();
         List<Proveedor> proveedore = new ArrayList<>();
         for (Proveedor proveedor : proveedores) {
@@ -178,6 +172,7 @@ public class ProveedorServicio {
         return proveedoresPorRubro;
 
     }
+
     public void cambiarEstadoPoveedor(String dni, boolean activar) throws MiException { // VICTOR
 
         Optional<Proveedor> proveedorRepuest = proveedorRepositorio.findById(dni);
@@ -190,9 +185,9 @@ public class ProveedorServicio {
         } else {
             throw new MiException("No se encontró el cliente con el DNI proporcionado: " + dni);
 
-        } 
+        }
     }
-    
+
     @Transactional
     public void eliminar(String dni) throws MiException {
 
@@ -220,11 +215,10 @@ public class ProveedorServicio {
         return proveedorRepositorio.findAll();
     }
 
-
-    @Transactional   
+    @Transactional
     private void validar(String nombre, String apellido, String dni, String telefono,
             String email, String password, String password2, Double precioHora, String domicilio) throws MiException {
-        
+
         if (nombre == null || nombre.isEmpty()) {
             throw new MiException("El nombre no puede ser nulo o estar vacío");
         }
@@ -234,9 +228,9 @@ public class ProveedorServicio {
         }
 
         if (dni == null || dni.isEmpty()) {
-            throw new MiException("El DNI no puede ser nulo o estar vacío");            
+            throw new MiException("El DNI no puede ser nulo o estar vacío");
         }
-        
+
         if (telefono == null || telefono.isEmpty()) {
             throw new MiException("El teléfono no puede ser nulo o estar vacío");
         }
@@ -247,7 +241,7 @@ public class ProveedorServicio {
 
         if (password == null || password.isEmpty() || password.length() <= 5) {
             throw new MiException("La contraseña no puede estar vacía y debe tener más de 5 dígitos");
-        }  
+        }
 
         if (!password.equals(password2)) {
             throw new MiException("Las contraseñas ingresadas deben ser iguales");
@@ -256,7 +250,7 @@ public class ProveedorServicio {
         if (precioHora == 0.0) {
             throw new MiException("El campo honorarios/hora no puede estar vacío o ser cero");
         }
-        
+
         if (proveedorRepositorio.existsByDni(dni)) {
             throw new MiException("El DNI ya está registrado en el sistema");
         }
@@ -266,14 +260,29 @@ public class ProveedorServicio {
         }
         if (domicilio == null || domicilio.isEmpty()) {
             throw new MiException("El domicilio no puede estar vacío");
+        }
+
     }
- 
- }
+
+    @Transactional
+    public void validar3(Double precioHora, String idRubro, String matricula) throws MiException {
+
+        
+        if (precioHora == null || precioHora == 0.0  ) {
+            throw new MiException("El campo honorarios/hora no puede estar vacío o ser cero");
+        }
+
+        if (idRubro == null || idRubro.isEmpty()) {
+            throw new MiException("debes seleccionar un rubro");
+        }
+        
+           if (matricula == null || matricula.isEmpty()) {
+            throw new MiException("debes ingresar una matricula");
+        }
+    }
 
     public Proveedor getOne(String dni) {
-        
         return proveedorRepositorio.getOne(dni);
     }
-    
-    
+
 }

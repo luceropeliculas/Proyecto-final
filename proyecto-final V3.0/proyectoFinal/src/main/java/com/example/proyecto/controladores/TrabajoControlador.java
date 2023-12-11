@@ -1,19 +1,15 @@
 package com.example.proyecto.controladores;
 
-import com.example.proyecto.entidades.Cliente;
-import com.example.proyecto.entidades.Comentario;
 import com.example.proyecto.entidades.Persona;
 import com.example.proyecto.entidades.Proveedor;
 import com.example.proyecto.entidades.Trabajo;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.servicios.ClienteServicio;
 import com.example.proyecto.servicios.ComentarioServicio;
+import com.example.proyecto.servicios.PersonaServicio;
 import com.example.proyecto.servicios.ProveedorServicio;
 import com.example.proyecto.servicios.TrabajoServicio;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN','ROLE_PROVEEDOR')")
@@ -38,6 +33,8 @@ public class TrabajoControlador {
     ComentarioServicio comentarioServicio;
     @Autowired
     ClienteServicio clienteServicio;
+    @Autowired
+    PersonaServicio personaServicio;
 
     //id trabajo, comentario, calificacion 
     @GetMapping("/comentar/{idTrabajo}")
@@ -47,15 +44,15 @@ public class TrabajoControlador {
         Trabajo trabajo = trabajoServicio.getOne(idTrabajo);
         modelo.addAttribute("trabajo", trabajo);
 
-        
-           String dniProveedor = trabajo.getProveedor().getDni();
+        String dniProveedor = trabajo.getProveedor().getDni();
         Proveedor proveedor = proveedorServicio.getOne(dniProveedor);
+
         String dniCliente = trabajo.getCliente().getDni();
-        Cliente cliente = clienteServicio.getOne(dniCliente);
+        Persona cliente = personaServicio.getOne(dniCliente);
+
         modelo.put("cliente", cliente);
         modelo.addAttribute("proveedor", proveedor);
-        
-        
+
         return "comentarTrabajo.html";
     }
 
@@ -69,10 +66,18 @@ public class TrabajoControlador {
     EL BOOLEAN ALTA ES AUTOSETEABLE
             @RequestParam Boolean altaBaja){*/
     @PostMapping("/comentar")
-    public String comentar(Long idTrabajo, String contenido, Integer calificacion) {
+    public String comentar(Long idTrabajo, String contenido, Integer calificacion, ModelMap modelo, HttpSession session) {
         try {
+            
             comentarioServicio.crearComentario(contenido, calificacion, idTrabajo);
+            
+            modelo.put("exito", "Comentario Registrado correctamente!");
+            
         } catch (MiException ex) {
+            
+            modelo.put("error", ex.getMessage());
+            
+            return "comentarTrabajo.html";
         }
         /*
         try {
@@ -81,7 +86,11 @@ public class TrabajoControlador {
             return "comentarTrabajo.html";
         }
          */
-        return "index1.html";
+        Persona proveedor = (Persona) session.getAttribute("usuariosession");
+        List<Trabajo> trabajos = trabajoServicio.listarTrabajoProveedor(proveedor.getDni());
+        modelo.addAttribute("trabajos", trabajos);
+
+        return "lista_trabajo_proveedor.html";
     }
 
     @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN','ROLE_PROVEEDOR')")
@@ -102,15 +111,21 @@ public class TrabajoControlador {
     }
 
     @PostMapping("/registro")
-    public String registro(String dniProveedor, String dniCliente, String detalleDeSolicitud) {
+    public String registro(String dniProveedor, String dniCliente, String detalleDeSolicitud, ModelMap modelo) {
 
         try {
             trabajoServicio.solicitudTrabajo(dniProveedor, dniCliente, detalleDeSolicitud);
+            
+              modelo.put("exito", "Trabajo Contratado correctamente!");
+              
+               return "index1.html";
+               
         } catch (MiException ex) {
+            
             return "registroTrabajo.html";
+            
         }
-
-        return "index1.html";
+      
     }
 
     @GetMapping("/presupuestar/{idTrabajo}")
@@ -124,7 +139,7 @@ public class TrabajoControlador {
 
         String dniCliente = trabajo.getCliente().getDni();
 
-        Cliente cliente = clienteServicio.getOne(dniCliente);
+        Persona cliente = personaServicio.getOne(dniCliente);
 
         modelo.put("cliente", cliente);
 
@@ -140,9 +155,8 @@ public class TrabajoControlador {
 
     @PostMapping("/presupuesto")
     public String presupuesto(Long idTrabajo, String respuestaProveedor,
-
-
-            Integer GastosAdicionales, Integer horasTrabajadasEstimadas, ModelMap modelo) throws MiException {
+            Integer GastosAdicionales, Integer horasTrabajadasEstimadas,
+            ModelMap modelo, HttpSession session) throws MiException {
 
         Boolean aceptacion = true;
 
@@ -152,34 +166,37 @@ public class TrabajoControlador {
         String dniProveedor = trabajo.getProveedor().getDni();
 //hasta aqui
         try {
+            
             trabajoServicio.revisionDeTrabajo(idTrabajo, aceptacion,
                     respuestaProveedor, GastosAdicionales, horasTrabajadasEstimadas, dniProveedor);
+            
+            modelo.put("exito", "Trabajo Presupuestado correctamente!");
+            
         } catch (MiException ex) {
+            
             modelo.addAttribute("error", ex.getMessage());
+            
         }
 
-        return "index1.html";
+        Persona proveedor = (Persona) session.getAttribute("usuariosession");
+        List<Trabajo> trabajos = trabajoServicio.listarTrabajoProveedor(proveedor.getDni());
+        modelo.addAttribute("trabajos", trabajos);
+
+        return "lista_trabajo_proveedor.html";
     }
 
     @GetMapping("/aceptar/{idTrabajo}")
     public String aceptar(@PathVariable Long idTrabajo, ModelMap modelo, HttpSession session) throws MiException {
-        /*
-          Trabajo trabajo = trabajoServicio.getOne(idTrabajo);
-       String dniProveedor = trabajo.getProveedor().getDni();
-        Proveedor proveedor = proveedorServicio.getOne(dniProveedor);
-        String dniCliente = trabajo.getCliente().getDni();
-        Cliente cliente = clienteServicio.getOne(dniCliente);
-        modelo.put("cliente", cliente);
-        modelo.addAttribute("proveedor", proveedor);
-        modelo.addAttribute("trabajo", trabajo);
-        modelo.put("numero", 1);
-                return "AceptarTrabajoCliente.html";
-         */
+    
         Boolean aceptacion = true;
 
         trabajoServicio.aceptacionCliente(idTrabajo, aceptacion);
 
-        return "index1.html";
+        Persona cliente = (Persona) session.getAttribute("usuariosession");
+          List<Trabajo> trabajos = trabajoServicio.listarTrabajoCliente(cliente.getDni());
+        modelo.put("trabajos", trabajos);
+        
+        return "listar_trabajo_cliente.html";
 
     }
 
@@ -187,7 +204,12 @@ public class TrabajoControlador {
     public String rechazar(@PathVariable Long idTrabajo, ModelMap modelo, HttpSession session) throws MiException {
         Boolean aceptacion = false;
         trabajoServicio.aceptacionCliente(idTrabajo, aceptacion);
-        return "index1.html";
+
+        Persona cliente = (Persona) session.getAttribute("usuariosession");
+            List<Trabajo> trabajos = trabajoServicio.listarTrabajoCliente(cliente.getDni());
+        modelo.put("trabajos", trabajos);
+        
+        return "listar_trabajo_cliente.html";
     }
 
     @GetMapping("/finalizar/{idTrabajo}")
@@ -199,37 +221,44 @@ public class TrabajoControlador {
         //hast a aqui
 
         trabajoServicio.finalizadoTrabajo(idTrabajo, idProvedor, aceptacion);
-        return "index1.html";
+
+        Persona proveedor = (Persona) session.getAttribute("usuariosession");
+        List<Trabajo> trabajos = trabajoServicio.listarTrabajoProveedor(proveedor.getDni());
+        modelo.addAttribute("trabajos", trabajos);
+
+        return "lista_trabajo_proveedor.html";
     }
 
     @GetMapping("/cancelaProveedor/{idTrabajo}")
     public String cancelaProveedor(@PathVariable Long idTrabajo, ModelMap modelo, HttpSession session) throws MiException {
         Boolean aceptacion = false;
+        
         //despues se elimina
         Trabajo trabajo = trabajoServicio.getOne(idTrabajo);
         String idProvedor = trabajo.getProveedor().getDni();
         //hast a aqui
+        
+        trabajoServicio.CancelarTrabajo(idTrabajo, idProvedor, aceptacion);
 
-        trabajoServicio.finalizadoTrabajo(idTrabajo, idProvedor, aceptacion);
-        return "index1.html";
+        Persona proveedor = (Persona) session.getAttribute("usuariosession");
+        List<Trabajo> trabajos = trabajoServicio.listarTrabajoProveedor(proveedor.getDni());
+        modelo.addAttribute("trabajos", trabajos);
+
+        return "lista_trabajo_proveedor.html";
+
     }
 
     @GetMapping("/listarProveedor/")
     public String listarProveedor(ModelMap modelo, HttpSession session) {
 
         Persona cliente = (Persona) session.getAttribute("usuariosession");
-
-        String dniProveedor = cliente.getDni();
-
-        List<Trabajo> trabajos = trabajoServicio.listarTrabajoProveedor(dniProveedor);
-
-        //  List <Trabajo> trabajos = trabajoServicio.listarTodos();
+        List<Trabajo> trabajos = trabajoServicio.listarTrabajoProveedor(cliente.getDni());
         modelo.addAttribute("trabajos", trabajos);
 
         return "lista_trabajo_proveedor.html";
     }
-
 }
+
 /*
  public void revisionDeTrabajo(Long idtrabajo, Boolean aceptacion,
             String respuestaProveedor, int gastosAdicionales,
