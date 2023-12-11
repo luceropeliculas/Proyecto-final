@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaft.org">
+<html xmlns:th="https://www.thymeleaft.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
         <meta charset="UTF-8">
         <title>Inicio</title>
@@ -107,7 +107,8 @@
         </div>
     </div>
 
-</div>
+<!--
+                        
 <div id="carrusel-container">
     <div class="swiper">
         <div class="swiper-wrapper">
@@ -186,6 +187,29 @@
                         <a class="show-more" th:href ="@{/proveedor/listar/__${'plomero'}__}" ><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path>
                             </svg></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+<div id="carrusel-container">
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <div th:each="rubro : ${rubros}" class="swiper-slide">
+                <div class="swiper-slide-img">
+                    <img th:src="@{'/imagenes/' + ${rubro.imagen.nombre}}" alt="">
+                </div>
+                <div class="swiper-slide-content">
+                    <div>
+                        <br>
+                        <h2 th:text="${rubro.nombreRubro}">Nombre del Rubro</h2>
+                        <p th:text="${rubro.descripcion}">Reseña</p>
+                        <a class="show-more" th:href="@{'/proveedor/listar/' + ${rubro.nombreRubro}}">
+                            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>

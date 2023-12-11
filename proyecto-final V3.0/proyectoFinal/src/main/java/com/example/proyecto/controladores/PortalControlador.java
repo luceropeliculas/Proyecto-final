@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 import com.example.proyecto.entidades.Rubro;
+import com.example.proyecto.enumeraciones.Rol;
 
 import com.example.proyecto.servicios.ClienteServicio;
 import com.example.proyecto.servicios.RubroServicio;
@@ -42,18 +43,21 @@ public class PortalControlador {
     public String index() {
         return "index.html";
     }
-
-    @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN','ROLE_PROVEEDOR')")
+ 
     @GetMapping("/inicio")
-    public String index1(HttpSession session) {
-         Persona logueado = (Persona) session.getAttribute("usuariosession");
-         
-         if (logueado.getRol().toString().equals("ADMIN")) {
+    public String index(HttpSession session, ModelMap modelo) {
+        Persona logueado = (Persona) session.getAttribute("usuariosession");
+        List<Rubro> rubros = rubroServicio.ListaRubros();
+        modelo.addAttribute("rubros", rubros); 
+        if (logueado != null && logueado.getRol() == Rol.ADMIN) {
             return "redirect:/admin/dashboard";
         }
-    return "index1.html";
+        return "index1.html";
     }
 
+ 
+
+    
     @GetMapping("/login1")
     public String loginInicio() {
         return "login1.html";
