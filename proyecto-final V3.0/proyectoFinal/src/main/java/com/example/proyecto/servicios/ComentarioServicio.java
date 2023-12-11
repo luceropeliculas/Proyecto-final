@@ -10,7 +10,6 @@ import com.example.proyecto.enumeraciones.EstadoTrabajo;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.repositorios.ComentarioRepositorio;
 import com.example.proyecto.repositorios.TrabajoRepositorio;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,10 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author aprig
- */
+//para ver entre todos
+
+
 @Service
 public class ComentarioServicio {
 
@@ -66,6 +64,13 @@ public class ComentarioServicio {
             
             if (trabajo.getEstadoTrabajo() == EstadoTrabajo.FINALIZADO) {
                
+                
+                ///se agrego enum calificado y se setea calificado
+                trabajo.setEstadoTrabajo(EstadoTrabajo.CALIFICADO);
+                trabajoRepositorio.save(trabajo);
+                
+                
+                
                     Comentario comentario = new Comentario(contenido, calificacion, fecha, true);
                                
                     comentario.setTrabajo(trabajo);                    

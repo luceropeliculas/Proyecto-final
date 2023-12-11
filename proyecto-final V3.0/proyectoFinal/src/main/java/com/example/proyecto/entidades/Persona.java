@@ -20,13 +20,14 @@ public class Persona {
     automáticamente por la base de datos utilizando una estrategia de identidad (autoincremental).
     */
   @Id
-  private String dni;//
+  private String dni;
   private String nombre;
   private String apellido;
   private String domicilio;
   private String telefono;
   private String email;
   private String password;
+  private String token;
   
   @Temporal(TemporalType.DATE)
   private Date fechaAlta; 

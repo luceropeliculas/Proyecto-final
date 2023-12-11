@@ -1,9 +1,7 @@
-
 package com.example.proyecto.entidades;
 
-
 import java.util.Date;
-import java.util.logging.Logger;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,41 +13,39 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Comentario {
+
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     private String contenido;
     private Integer calificacion;
-    
-      @Temporal(TemporalType.DATE)
-  private Date fechaHora; 
+
+    @Temporal(TemporalType.DATE)
+    private Date fechaHora;
     //este se los cambie por que no se como se usa
-  //  private LocalDateTime fechaHora;  // Agrega la fecha y hora al comentario
+    //  private LocalDateTime fechaHora;  // Agrega la fecha y hora al comentario
     private boolean altaBaja;
-    
+
     //tambien le agregue el atributo Trabajo que esta en la lista de tareas
     @OneToOne
     private Trabajo trabajo;
 
-  /*
+    /*
       public Comentario(String id, String contenido, Integer calificacion, LocalDateTime fechaHora, boolean altaBaja) {
         this.id = id;
-    */
-
+     */
     public Comentario() {
     }
 
-    
-    
     public Comentario(String contenido, Integer calificacion, Date fechaHora, boolean altaBaja) {
-       
+
         this.contenido = contenido;
         this.calificacion = calificacion;
         this.fechaHora = fechaHora;
         this.altaBaja = altaBaja;
     }
-    
+
     // Métodos getter para la fecha y hora
     public Date getFechaHora() {
         return fechaHora;
@@ -61,12 +57,13 @@ public class Comentario {
 
     public Integer getCalificacion() {
         return calificacion;
-    } 
-  /*  
+    }
+
+    /*  
     Con esta modificación, cada vez que se crea un nuevo comentario, se registra la fecha y hora actual. Luego, puedes acceder a esta información a través del método getFechaHora().
 
 Por ejemplo, al imprimir los comentarios en el código principal, podrías mostrar la fecha y hora junto con el contenido y la calificación:
-*/
+     */
 
     public String getId() {
         return id;
@@ -104,7 +101,4 @@ Por ejemplo, al imprimir los comentarios en el código principal, podrías mostr
         this.fechaHora = fechaHora;
     }
 
-
-    
 }
-

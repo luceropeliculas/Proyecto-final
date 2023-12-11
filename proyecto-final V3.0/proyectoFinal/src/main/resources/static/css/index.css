@@ -30,6 +30,7 @@ body{
 }
 
 #logo {
+  flex: 1;
   position: initial;/* Hace que el logo ocupe todo el espacio disponible a la izquierda */
 }
 
@@ -73,11 +74,10 @@ body{
 }
 
 #animacion{
-    margin-right: 312px;
-    margin-top: -100px;
+    margin-top: -184px;
     border-radius: 10px;
-    width: 99%;
-    margin-bottom: 63px;
+    width: 50%;
+    margin-bottom: 55px;
     text-align: center;
     padding: 25px;
     color: aqua;
@@ -111,7 +111,7 @@ body{
 #carrusel-container{
     position: relative;
     width: calc(min(60rem, 60%));
-    margin: -126px auto;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     column-gap: 3rem;
@@ -352,8 +352,8 @@ footer a[href="#"]:hover {
     display: none; /* Inicialmente ocultar el menú */
     position: absolute;
     border-right: 0px;
-    margin-right: 66px;
-    top: 80px; /* Ajusta la distancia desde la parte superior */
+    margin-right: 110px;
+    top: 50px; /* Ajusta la distancia desde la parte superior */
     right: 0; /* Ajusta la distancia desde la derecha */
    background-color: rgba(0,0,0,0.5);
     border:0px 0px 0px 0px;

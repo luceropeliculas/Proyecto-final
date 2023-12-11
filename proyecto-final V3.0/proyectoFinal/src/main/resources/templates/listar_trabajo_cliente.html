@@ -21,12 +21,16 @@
                                             <th scope="col">Repuesta Proveedor</th>
                                            
                                             <th scope="col">Precio Final</th>
-                                            <th scope="col">Domicilio</th>
-                                            <th scope="col">Telefono del Cliente</th>
+                                            <th scope="col">RUBRO</th>
+                                            <th scope="col">Telefono del Proveedor</th>
+                                            <th scope="col">Nombre del Proveedor</th>
+                                             <th scope="col">Email del Proveedor</th>
+                                              <th scope="col">Iteraccion</th>
+                                             <!--
                                             <th scope="col">Aceptar</th>
                                             <th scope="col">Rechazar</th>
                                             <th scope="col">Calificar</th>
-
+-->
                                         </tr>
                                     </thead>
                                     <tbody th:each="trabajo : ${trabajos}" class="tbody">
@@ -36,11 +40,20 @@
                                             <td scope="row" th:text="${trabajo.respuestaProveedor}"></td>
                                             
                                             <td scope="row" th:text="${trabajo.precioFinal}"></td>
-                                            <td scope="row" th:text="${trabajo.cliente.domicilio}"></td>
-                                            <td scope="row" th:text="${trabajo.cliente.telefono}"></td>
-                                            <td><a  th:href="@{/trabajo/aceptar/__${trabajo.id}__}"><button>Aceptar</button> </a></td>
-                                            <td><a  th:href="@{/trabajo/rechazar/__${trabajo.id}__}"><button>Rechazar</button> </a></td>
-                                            <td><a  th:href="@{/trabajo/comentar/__${trabajo.id}__}"><button>Calificar</button> </a></td>
+                                            <td scope="row" th:text="${trabajo.proveedor.rubro.nombreRubro}"></td>
+                                            <td scope="row" th:text="${trabajo.proveedor.telefono}"></td>
+                                                   <td scope="row" th:text="${trabajo.proveedor.nombre}"></td>
+                                                     <td scope="row" th:text="${trabajo.proveedor.email}"></td>
+                                                     
+                                                     
+                                                     <td ><a th:href="@{/trabajo/aceptar/__${trabajo.id}__}"> <button th:if="${trabajo.estadoTrabajo.toString()} == 'REVISION'">Aceptar</button> </a>
+                                            <a  th:href="@{/trabajo/rechazar/__${trabajo.id}__}"><button th:if="${trabajo.estadoTrabajo.toString()} != 'CANCELADO' and ${trabajo.estadoTrabajo.toString()} !='FINALIZADO' and ${trabajo.estadoTrabajo.toString()} !='CALIFICADO'">Cancelar</button> </a>
+                                            <a  th:href="@{/trabajo/comentar/__${trabajo.id}__}"><button th:if="${trabajo.estadoTrabajo.toString()} == 'FINALIZADO' and ${trabajo.estadoTrabajo.toString()} !='CALIFICADO'">Calificar</button> </a></td>
+                                                <!--
+                                            <td ><a th:href="@{/trabajo/aceptar/__${trabajo.id}__}"> <button th:if="${trabajo.estadoTrabajo.toString()} == 'REVISION'">Aceptar</button> </a></td>
+                                            <td><a  th:href="@{/trabajo/rechazar/__${trabajo.id}__}"><button th:if="${trabajo.estadoTrabajo.toString()} != 'CANCELADO'">Cancelar</button> </a></td>
+                                            <td><a  th:href="@{/trabajo/comentar/__${trabajo.id}__}"><button th:if="${trabajo.estadoTrabajo.toString()} == 'FINALIZADO'">Calificar</button> </a></td>
+                                       -->
                                         </tr>
                                     </tbody> 
 

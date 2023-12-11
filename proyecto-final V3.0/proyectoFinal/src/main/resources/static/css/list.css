@@ -23,7 +23,7 @@
   position: fixed;
   top: 0;
   width: 100%;
-  height: 90px; /* Ajusta la altura de la navbar */
+  height: 100px; /* Ajusta la altura de la navbar */
   margin-top: 0.1px;
 }
 
@@ -74,10 +74,10 @@
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    width: 250px;
+    width: 300px;   /*ancho*/
     transition: transform 0.3s ease-in-out;
     margin: 35px;
-    height: 450px;
+    height: 600px;
     margin-top: 102px;
 
 }
@@ -89,24 +89,61 @@
 .perfil-header {
     text-align: center;
     padding-top: 10px;
-    /*background: linear-gradient(to bottom, #F14770, #2980b9);   /*color 1 y 2 del perfil*/ 
-    background: linear-gradient(to bottom, #00cccc, #2980b9);
+    background: linear-gradient(to bottom, #F14770, #2980b9);   /*color 1 y 2 del perfil*/
+
     color: #fff; /*color de letra*/
 }
 
 .foto-perfil {
-  background-image: url(https://iili.io/JIXQgcB.jpg);
-    width: 150px;
+    width: 150px;    /*tamaño*/
     height: 150px;
     background: #fff; /* Puedo cambiar esto por  imagen de perfil */
     border-radius: 50%;
-    margin: 0 auto 5px;
+    margin: 0 auto 5px;    /*imagen redonda*/
+    overflow:hidden;     /*oculta las parte q supera el radio*/
 }
-
+.foto-perfil img{
+    width:100%;
+    height: 100%;
+    object-fit:cover;   /*ajusto dentro del contenedor*/ 
+}
 h1 {
     margin: 10px 0 5px;
     
 }
+#rating{
+    width: 200px;
+    height: 60px
+}
+#rating {
+    display: flex; /* Utilizar flexbox para alinear elementos horizontalmente */
+    align-items: center; /* Alinear elementos verticalmente en el centro */
+}
+
+#rating p {
+    margin-right: 10px; /* Ajustar el espacio entre el texto y las estrellas */
+}
+
+#rating span {
+    font-size: 24px; /* Ajustar el tamaño de las estrellas según tus necesidades */
+    margin-right: 5px; /* Ajustar el espacio entre las estrellas */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .perfil-info {
     padding: 20px;
@@ -282,3 +319,49 @@ padding: 8px;
   padding: 8px;
 }
 
+.texto-negro{
+    color: black;
+}
+
+
+
+
+.ov-btn-grow-spin {
+    background: #1d90bb; /* color de fondo */
+    color: white; /* color de fuente */
+   
+    padding: 10px 16px;
+    border-radius: 60px; /* redondear bordes */
+    position: relative;
+   border: 0;
+    z-index: 1;
+    overflow: hidden;
+    display: inline-block;
+  }
+  .ov-btn-grow-spin:hover {
+    color: white;/* color de fuente hover */
+  }
+  .ov-btn-grow-spin::after {
+    content: "";
+        background: linear-gradient(to bottom, #F14770, #2980b9);   /*color 1 y 2 del perfil*/
+
+    position: absolute;
+    z-index: -1;
+    padding: 16px 20px;
+    display: block;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transform: scale(0, 0) rotate(-180deg);
+    transition: all 0.3s ease;
+  }
+  .ov-btn-grow-spin:hover::after {
+    transition: all 0.3s ease-out;
+    transform: scale(1, 1) rotate(0deg);
+  }
+  
+  #rating{
+      color:#f1d60d;
+  }
+ 

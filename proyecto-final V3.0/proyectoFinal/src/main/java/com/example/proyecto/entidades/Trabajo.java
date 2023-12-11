@@ -1,4 +1,3 @@
-
 package com.example.proyecto.entidades;
 
 import com.example.proyecto.enumeraciones.EstadoTrabajo;
@@ -29,18 +28,24 @@ public class Trabajo {
 
     private Integer puntuacionTrabajo; // del 1 al 5
     private EstadoTrabajo estadoTrabajo;
+
+    //VAMOS A USAR ESTE?!!!!!!!!!!!!!!!!!!!!
     private String cometarioTrabajoTerminado;
     private String detalleDeSolicitud; //Lo detalla el cliente cuando solicita
+
+    //VAMOS A IMPLEMENTARLO?!!!!!!!!!!!!!!
     private String observacionCancelado;
     private Integer horasTrabajoEstimadas;// Lo completa el provedor x horas de trabajo
     private Integer gastosAdicionales;
-    private double precioFinal;// este campo se completa con la horas trabajas x precio hora trabajada x el
-                            // provedor
+    //CLASES PADRE!!!!
+// private double precioFinal;// este campo se completa con la horas trabajas x precio hora trabajada x el
+    private Double precioFinal;// este campo se completa con la horas trabajas x precio hora trabajada x el
+    // provedor
     private String respuestaProveedor; // el proovedor comenta el trabajo que va a realizar
     @OneToOne
     private Proveedor proveedor;
     @OneToOne
-    private Cliente cliente;
+    private Persona cliente;
 }
 
 // recordar Escribir las Tarjetas de servicios a ServicioServicios.

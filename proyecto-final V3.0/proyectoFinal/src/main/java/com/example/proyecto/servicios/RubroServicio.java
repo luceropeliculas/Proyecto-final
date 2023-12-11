@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RubroServicio {
+
     @Autowired
     RubroRepositorio rubroRepositorio;
 
@@ -28,14 +29,14 @@ public class RubroServicio {
     public void CrearRubro(String nombreRubro, String descripcion) throws MiException {
         // recordar que el id rubro es autogenerable
 
-        ValidarDatos(nombreRubro,descripcion);
+        ValidarDatos(nombreRubro, descripcion);
         Rubro rubro = new Rubro();
 
         rubro.setNombreRubro(nombreRubro);
         rubro.setDescripcion(descripcion);
 
         rubroRepositorio.save(rubro);
-     
+
     }
 
     @Transactional
@@ -50,7 +51,7 @@ public class RubroServicio {
 
     @Transactional
     public void ModificarRubro(String IdRubro, String descripcion, String nombreRubro) throws MiException {
-         ValidarDatos(nombreRubro,descripcion);
+        ValidarDatos(nombreRubro, descripcion);
         // recordar que el id rubro es autogenerable
         // ValidarDatos(nombreRubro,idRubro);
         // faltan exepciones
@@ -77,20 +78,19 @@ public class RubroServicio {
         }
         if (descripcion == null || descripcion.isEmpty()) {
             throw new MiException(" La descripcion no puede estar vacia, por favor explicar qeu hace este rubro.");
+        }
+        
+        List<Rubro> rubros = new ArrayList<>();
+        rubros = ListaRubros();
+
+        for (Rubro rubro : rubros) {
+            if (rubro.getNombreRubro().equalsIgnoreCase(nombreRubro)) {
+                throw new MiException("El rubro ya se encuentra presente en la lista de rubros");
+
+            }
 
         }
-        List <Rubro> rubros = new ArrayList<>();
-        rubros = ListaRubros();
-                    
-          for (Rubro rubro : rubros) { 
-              if (rubro.getNombreRubro().equalsIgnoreCase(nombreRubro)) {
-                  throw new MiException("El rubro ya se encuentra presente en la lista de rubros");
-                  
-              }
-            
-        }
-        
-        
+
     }
 
 }

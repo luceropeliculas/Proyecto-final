@@ -10,6 +10,11 @@ import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.repositorios.ImagenRepositorio;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+
+
+//para ver entre todos
+
 @Service
 public class ImagenServicio {
      @Autowired
