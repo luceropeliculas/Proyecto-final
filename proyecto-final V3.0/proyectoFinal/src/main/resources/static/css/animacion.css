@@ -1,0 +1,44 @@
+#contenedor{
+    margin-top: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#animacion{
+    margin-right: 312px;
+    margin-top: -100px;
+    border-radius: 10px;
+    width: 99%;
+    margin-bottom: 63px;
+    text-align: center;
+    padding: 25px;
+    color: aqua;
+    opacity: 0;
+    background-color: rgba(0,0,0,0.5);
+    animation: intro 3s;
+    animation-delay: 2s;
+    animation-fill-mode: forwards;
+    box-shadow: -8px 3px 27px 0px rgba(0,0,0,0.75);
+    -webkit-box-shadow: -8px 3px 27px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: -8px 3px 27px 0px rgba(0,0,0,0.75);
+}
+
+#animacion>h2{
+    font-size: 30px;
+}
+#animacion>p{
+    font-size: 20px;
+}
+@keyframes intro {
+    0%{
+        opacity: 0.25;
+    }
+    100%{
+        opacity: 1;
+        position: relative;
+        transform: translateX(50%);
+    }
+}
+
+

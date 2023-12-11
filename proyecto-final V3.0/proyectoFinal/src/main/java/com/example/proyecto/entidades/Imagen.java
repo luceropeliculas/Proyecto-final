@@ -11,7 +11,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 import org.hibernate.annotations.GenericGenerator;
 
 import lombok.Data;
@@ -33,5 +35,9 @@ public class Imagen {
 
     @Enumerated(EnumType.STRING)
     private Rol rol;
+    
+    @OneToOne
+    @JoinColumn(name = "rubro_id")
+    private Rubro rubro;
     
 }
