@@ -38,8 +38,10 @@ public class Imagen {
     @Enumerated(EnumType.STRING)
     private Rol rol;
     
+//EL RUBRO NO DEBERIA ESTAR EN IMAGEN???
+    /*
     @OneToOne
     @JoinColumn(name = "rubro_id")
     private Rubro rubro;
-    
+    */
 }
