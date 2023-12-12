@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.proyecto.entidades.Persona;
+import com.example.proyecto.entidades.Rubro;
 import com.example.proyecto.servicios.PersonaServicio;
+import com.example.proyecto.servicios.RubroServicio;
 
 @Controller
 @RequestMapping("/imagen")
@@ -19,9 +21,29 @@ public class ImagenControlador { // VERIFICAR!!!   - IMAGEN CONTROLADOR PERSONA 
     
     @Autowired
     PersonaServicio personaServicio;
+        @Autowired
+    RubroServicio rubroServicio;
     
     @GetMapping("/perfil/{id}")
     public ResponseEntity<byte[]> imagenUsuario (@PathVariable String id){
+
+     Persona persona = personaServicio.getOne(id);
+     
+       byte[] imagen= persona.getImagen().getContenido();
+       
+    HttpHeaders headers = new  HttpHeaders();    
+    
+    headers.setContentType(MediaType.IMAGE_JPEG);    
+    
+    String mime = persona.getImagen().getMime().toLowerCase(); // Asegúrate de que el MIME esté en minúsculas
+
+    MediaType tipo = MediaType.parseMediaType("image/" + mime.replace("/", "_"));
+    
+    headers.setContentType(tipo);
+             
+    return new ResponseEntity<> (imagen, headers, HttpStatus.OK);
+    }
+        /*
         Persona persona = personaServicio.getOne(id);
         
        byte[] imagen= persona.getImagen().getContenido();
@@ -31,6 +53,26 @@ public class ImagenControlador { // VERIFICAR!!!   - IMAGEN CONTROLADOR PERSONA 
        headers.setContentType(MediaType.IMAGE_JPEG);
        
        return new ResponseEntity<>(imagen,headers, HttpStatus.OK); 
-    }
+       */
+  
+       @GetMapping("/rubro/{id}")
+      public ResponseEntity<byte[]> imagenRubro (@PathVariable String id){
+
+Rubro rubro = rubroServicio.getOne(id);
+     
+       byte[] imagen= rubro.getImagen().getContenido();
+       
+    HttpHeaders headers = new  HttpHeaders();    
+    
+    headers.setContentType(MediaType.IMAGE_JPEG);    
+    
+    String mime = rubro.getImagen().getMime().toLowerCase(); // Asegúrate de que el MIME esté en minúsculas
+
+    MediaType tipo = MediaType.parseMediaType("image/" + mime.replace("/", "_"));
+    
+    headers.setContentType(tipo);
+             
+    return new ResponseEntity<> (imagen, headers, HttpStatus.OK);
+      }
 }
 

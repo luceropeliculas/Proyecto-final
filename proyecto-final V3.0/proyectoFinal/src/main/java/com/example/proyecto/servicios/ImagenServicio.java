@@ -44,6 +44,8 @@ System.out.println("entrro a la imagen linea 20");
         }
         return null;
     }
+    
+    
        @Transactional
     public Imagen actualizar(MultipartFile archivo, String idImagen) throws MiException{
         if (archivo != null) {

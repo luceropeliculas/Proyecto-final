@@ -5,6 +5,7 @@
  */
 package com.example.proyecto.servicios;
 
+import com.example.proyecto.entidades.Imagen;
 import com.example.proyecto.entidades.Rubro;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.repositorios.RubroRepositorio;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -24,20 +26,50 @@ public class RubroServicio {
 
     @Autowired
     RubroRepositorio rubroRepositorio;
+     @Autowired
+    ImagenServicio imagenServicio;
 
-    @Transactional
-    public void CrearRubro(String nombreRubro, String descripcion) throws MiException {
-        // recordar que el id rubro es autogenerable
-
-        ValidarDatos(nombreRubro, descripcion);
+      @Transactional
+public void CrearRubro(String nombreRubro, String descripcion, MultipartFile file) throws MiException {
+          ValidarDatos(nombreRubro, descripcion);
+       /*
+    try {
         Rubro rubro = new Rubro();
-
         rubro.setNombreRubro(nombreRubro);
         rubro.setDescripcion(descripcion);
+    
+        Imagen imagen = new Imagen();
+        imagen.setNombre(file.getOriginalFilename());
+        imagen.setMime(file.getContentType());
+        imagen.setContenido(file.getBytes());
+        
+        imagen.setRubro(rubro);
+        rubro.setImagen(imagen);
 
+        
+      //  proveedor.setImagen(cliente.getImagen());
+        
         rubroRepositorio.save(rubro);
+    } catch (IOException ex) {
+        throw new MiException("Error al procesar la imagen");
+    */
+       
+        try {
+        Rubro rubro = new Rubro();
+        rubro.setNombreRubro(nombreRubro);
+        rubro.setDescripcion(descripcion);
+        
+          Imagen imagen = imagenServicio.guardar(file);
+        rubro.setImagen(imagen);
+        rubroRepositorio.save(rubro);
+           } catch (Exception ex) {
+        throw new MiException("Error al procesar la imagen");
+       
+       
+        }
+}
+        
 
-    }
 
     @Transactional
     public List<Rubro> ListaRubros() {
@@ -93,4 +125,8 @@ public class RubroServicio {
 
     }
 
+      public Rubro getOne(String idRubro){
+    Rubro rubro = rubroRepositorio.getOne(idRubro);
+    return rubro;
+    }
 }

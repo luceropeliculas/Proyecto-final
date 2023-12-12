@@ -20,9 +20,9 @@ public class Rubro {
     private String descripcion;//Detalle de los trabajo
     private String nombreRubro;
     
-   @OneToOne(cascade = CascadeType.ALL)
-    private Imagen imagen;
-   
+    //se agrego
+      @OneToOne(cascade = CascadeType.ALL)
+        private Imagen imagen;
 
     
     

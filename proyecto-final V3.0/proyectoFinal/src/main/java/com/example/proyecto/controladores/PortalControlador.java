@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.proyecto.entidades.Rubro;
+import com.example.proyecto.enumeraciones.Rol;
 import com.example.proyecto.excepciones.MiException;
 
 import com.example.proyecto.servicios.ClienteServicio;
@@ -24,6 +25,7 @@ import com.example.proyecto.servicios.RubroServicio;
 import com.example.proyecto.servicios.WhatsappServicio;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,15 +51,23 @@ public class PortalControlador {
     ClienteServicio clienteServicio;
 
     @GetMapping("/")
-    public String index() {
+    public String index(ModelMap modelo) {
+            List<Rubro> rubros = rubroServicio.ListaRubros();
+        modelo.addAttribute("rubros", rubros); 
         return "index.html";
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN','ROLE_PROVEEDOR')")
-    @GetMapping("/inicio")
-    public String index1() {
+      @GetMapping("/inicio")
+    public String index(HttpSession session, ModelMap modelo) {
+        Persona logueado = (Persona) session.getAttribute("usuariosession");
+        List<Rubro> rubros = rubroServicio.ListaRubros();
+        modelo.addAttribute("rubros", rubros); 
+        if (logueado != null && logueado.getRol() == Rol.ADMIN) {
+            return "redirect:/admin/dashboard";
+        }
         return "index1.html";
     }
+
 
     @GetMapping("/login1")
     public String login(@RequestParam(required = false) String error, ModelMap modelo) {

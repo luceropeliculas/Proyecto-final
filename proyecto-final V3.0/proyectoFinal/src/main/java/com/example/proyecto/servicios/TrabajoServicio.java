@@ -28,6 +28,7 @@ public class TrabajoServicio {
     Cliente cliente = new Cliente();
     Proveedor proveedor = new Proveedor();
     Persona persona = new Persona();
+    
 
     @Autowired
     ClienteRepositorio clienteRepositorio;
@@ -207,10 +208,7 @@ public class TrabajoServicio {
                 if (puntuacion > 0 && puntuacion <= 5) {
                     trabajo.setPuntuacionTrabajo(puntuacion);
                     trabajo.setCometarioTrabajoTerminado(comentario);
-
-                    trabajoRepositorio.save(trabajo);
-                    
-                    
+                    trabajoRepositorio.save(trabajo);                                        
                     //es mas facil validar los datos en otro metodo
                 } else {
                     throw new MiException("La puntuación debe estar entre 1 y 5");
@@ -249,9 +247,7 @@ public class TrabajoServicio {
             if (trabajo1.getProveedor().getDni().equalsIgnoreCase(dniProveedor)) {
                 trabajosProveedor.add(trabajo1);
             }
-
         }
-
         return trabajosProveedor;
     }
 
