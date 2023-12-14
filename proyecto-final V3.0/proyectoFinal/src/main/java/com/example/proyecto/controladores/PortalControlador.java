@@ -52,21 +52,22 @@ public class PortalControlador {
 
     @GetMapping("/")
     public String index(ModelMap modelo) {
-        List<Rubro> rubros = rubroServicio.ListaRubros();
-        modelo.addAttribute("rubros", rubros);
+            List<Rubro> rubros = rubroServicio.ListaRubros();
+        modelo.addAttribute("rubros", rubros); 
         return "index.html";
     }
 
-    @GetMapping("/inicio")
+      @GetMapping("/inicio")
     public String index(HttpSession session, ModelMap modelo) {
         Persona logueado = (Persona) session.getAttribute("usuariosession");
         List<Rubro> rubros = rubroServicio.ListaRubros();
-        modelo.addAttribute("rubros", rubros);
+        modelo.addAttribute("rubros", rubros); 
         if (logueado != null && logueado.getRol() == Rol.ADMIN) {
             return "redirect:/admin/dashboard";
         }
         return "index1.html";
     }
+
 
     @GetMapping("/login1")
     public String login(@RequestParam(required = false) String error, ModelMap modelo) {
@@ -78,7 +79,7 @@ public class PortalControlador {
 
     @GetMapping("/registrar")
     public String registrar(ModelMap modelo) {
-
+        
         List<Rubro> rubros = rubroServicio.ListaRubros();
         modelo.addAttribute("rubros", rubros);
 
@@ -108,30 +109,23 @@ public class PortalControlador {
     }
 
     @PostMapping("/cambioContraseña")
-    public String cambiarContrasena(String email, String token, String password, String password2, ModelMap modelo) {
-        Persona persona = personaServicio.buscarPorEmail(email);
+    public String cambiarContrasena(String email, String token, String password,String password2, ModelMap modelo) {
+          Persona persona = personaServicio.buscarPorEmail(email);       
         try {
-
-            personaServicio.actualizarContrasena(email, token, password, password2);
+                    
+             personaServicio.actualizarContrasena(email, token, password, password2);
             modelo.put("exito", "contraseña actualizada correctamente, ya puedes iniciar sesion");
             return "login1.html";
-        } catch (MiException ex) {
-            modelo.put("persona", persona);
-            modelo.put("numero", 1);
-            modelo.put("token", token);
+        } catch (MiException ex) {   
+             modelo.put("persona", persona);
+             modelo.put("numero", 1);
+              modelo.put("token", token);
             modelo.put("error", ex.getMessage());
             return "contrasenaOlvidada.html";
         }
+
+        
+
     }
 
-    
-    @GetMapping("/listaPersonas")
-    public String listar(ModelMap modelo) {
-
-        List<Persona> personas = personaServicio.listarPersonas();
-
-        modelo.put("personas", personas);
-
-        return "Lista_personas.html";
-    }
 }

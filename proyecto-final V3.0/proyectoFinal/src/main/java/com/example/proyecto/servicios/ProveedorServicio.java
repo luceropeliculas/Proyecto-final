@@ -30,7 +30,8 @@ public class ProveedorServicio {
 
     @Autowired
     private ImagenServicio imagenServicio;
-       @Autowired
+
+    @Autowired
     private PersonaRepositorio personaRepositorio;
 
     @Transactional
@@ -51,8 +52,8 @@ public class ProveedorServicio {
 
             rubro = rubroRespuesta.get();
         }
-        proveedor.setRubro(rubro);
 
+        proveedor.setRubro(rubro);
         proveedor.setAlta(true);
         proveedor.setMatricula(matricula);
         proveedor.setDomicilio(domicilio);
@@ -65,16 +66,26 @@ public class ProveedorServicio {
         proveedor.setDescripcion(descripcion);        //Descripcion de cada proveedor Ej: horarios, presentación breve, etc.
         proveedor.setPrecioHora(precioHora); //Es el valor de los honorarios por hora.         
         proveedor.setFechaAlta(new Date());
-             if (personaRepositorio.count()==0){
-proveedor.setRol(Rol.ADMIN);}
-else {
-        proveedor.setRol(Rol.PROVEEDOR);
-             }
+        
+        if (personaRepositorio.count()==0){
+            proveedor.setRol(Rol.ADMIN);
+        }
+
+            else {
+            proveedor.setRol(Rol.PROVEEDOR);
+        }
+       
+       
+       
+   
+
         Imagen imagen = imagenServicio.guardar(archivo);
 
         proveedor.setImagen(imagen);
 
         proveedor.setImagen(imagen);
+
+        
         proveedorRepositorio.save(proveedor);
     }
 

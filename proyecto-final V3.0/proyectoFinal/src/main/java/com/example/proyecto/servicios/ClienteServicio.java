@@ -32,8 +32,9 @@ public class ClienteServicio {
     ProveedorServicio proveedorServicio;
     @Autowired
     ProveedorRepositorio proveedorRepositorio;
-         @Autowired
-    private PersonaRepositorio personaRepositorio;
+     @Autowired
+     PersonaRepositorio personaRepositorio;
+
 
     @Transactional
     public void crearCliente(MultipartFile archivo, String nombre, String apellido, String dni, String telefono,
@@ -50,12 +51,14 @@ public class ClienteServicio {
         cliente.setPassword(new BCryptPasswordEncoder().encode(password));
         cliente.setAlta(true);
         cliente.setFechaAlta(new Date());
-        
-                    if (personaRepositorio.count()==0){
-cliente.setRol(Rol.ADMIN);}
-else {
-        cliente.setRol(Rol.CLIENTE);
-             }
+
+        if (personaRepositorio.count()==0){
+            cliente.setRol(Rol.ADMIN);
+        }
+
+            else {
+            cliente.setRol(Rol.CLIENTE);
+        }
        
 
         // llamamos al metodo guardar q se encargara de guardar la foto en la base de

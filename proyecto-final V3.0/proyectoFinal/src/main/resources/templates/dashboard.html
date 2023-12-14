@@ -6,10 +6,94 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <!--   <link th:href="@{/css/list.css}" type="text/css" rel="stylesheet"></link>  -->
         <link th:href="@{/css/animacion.css}" type="text/css" rel="stylesheet"></link>
-         <link th:href="@{/css/nav.css}" type="text/css" rel="stylesheet"></link>
     </head>
     <body>
-        <header th:replace="/Fragments/navb :: navb"> </header>
+       <!--
+        <header id="header-index">
+            <div id="logo" >
+                <img th:src="@{/imagenes/logoServiceProM.png}" alt="">
+            </div>
+            <div class="search-box">
+                <form class="search-box">
+                    <input type="text" placeholder=" "/>
+                    <button type="reset"></button>
+                </form>
+            </div>
+            <div id="botones" sec:authorize="hasRole('ADMIN')">
+                <div class="cada-boton">
+                    <a th:href="@{/proveedor/listar}">
+                        <button  type="button" class="btn btn-outline-info">
+                            Proveedores
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <div id="botones" sec:authorize="hasRole('ADMIN')">
+                <div class="cada-boton">
+                    <a th:href="@{/clientes/listar}">
+                        <button  type="button" class="btn btn-outline-info">
+                            Clientes
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+            <div id="botones">
+                <div class="cada-boton">
+                    <a th:href="@{/rubro/registrar}">
+                        <button  type="button" class="btn btn-outline-info">
+                            Registrar Rubro
+                        </button>
+                    </a>
+                </div>         
+                <br>
+            </div>
+            <div class="cada-boton">
+                <a th:href="@{/}">
+                    <button  type="button" class="btn btn-outline-info">
+                        Mis trabajos
+                    </button>
+                </a>
+            </div>         
+            <br>
+
+            <div class="cada-boton ">
+
+                <div id="perfil-dropdown">
+
+                    <a>
+                        <div class="imagen-circulo">
+                            <div class="cada-boton perfil">                                      
+
+
+                                <img <a th:if="${session.usuariosession.imagen != null}" id="logo"  th:src="@{/imagen/perfil/__${session.usuariosession.dni}__}" class="d-flex align-items-center">
+
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+
+                    <ul id="dropdown-menu">
+                        <li>
+                            <a th:href="@{/}" class="btn btn-outline-info">
+                                <button class="btn btn-outline-info" id="dropdown-btn"> Perfil</button>
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/cliente/modificar}" >
+                                <button class="btn btn-outline-info" id="dropdown-btn"> Modificar Perfil</button>
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/}" class="btn btn-outline-info">
+                                <button class="btn btn-outline-info" id="dropdown-btn"> Logout</button>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+        </header>
+   -->
 
         <div id="contenedor">
             <div id="animacion">
@@ -48,7 +132,7 @@
                     <br>
                     <a href="#" class="ov-btn-grow-skew-reverse">Mayor Calificacion</a>
                     <a href="#" class="ov-btn-grow-skew-reverse">Menor Calificacion</a>
-                    <a th:href="@{/comentario/listar}" class="ov-btn-grow-skew-reverse">Listar Todos</a>
+                    <a href="#" class="ov-btn-grow-skew-reverse">Bajo Revision</a>
                     <a href="#" class="ov-btn-grow-skew-reverse">Palabras Prohibidas</a>
 
                 </div>
@@ -98,7 +182,7 @@
                 <div class="back">
                     <br>
                     <br>
-                    <a th:href="@{/trabajo/listartodos}" class="ov-btn-grow-skew-reverse">Todos</a>
+                    <a href="#" class="ov-btn-grow-skew-reverse">Pendientes</a>
                     <a href="#" class="ov-btn-grow-skew-reverse">Aceptados</a>
                     <a href="#" class="ov-btn-grow-skew-reverse">Rechazados</a>
                     <a href="#" class="ov-btn-grow-skew-reverse">Finalizados</a>
@@ -122,7 +206,7 @@
                     <br>
                     <a href="#" class="ov-btn-grow-skew-reverse"> Dados de Baja</a>
                     <a href="#" class="ov-btn-grow-skew-reverse">  A-Z Ordenar</a>
-                    <a th:href="@{/cliente/listarTodos}" class="ov-btn-grow-skew-reverse">Ver Todos</a>
+                    <a href="#" class="ov-btn-grow-skew-reverse">Ver Todos</a>
                    
                 </div>
             </div>
@@ -141,7 +225,7 @@
                     <br>
                     <br>
                     <a href="#" class="ov-btn-grow-skew-reverse">Pegar Token</a>
-                    <a th:href="@{/mensajes/crear}" class="ov-btn-grow-skew-reverse">Crear Mensajes</a>
+                    <a href="#" class="ov-btn-grow-skew-reverse">Crear Mensajes</a>
                  
                 </div>
             </div>
@@ -163,7 +247,7 @@
                     <a href="#" class="ov-btn-grow-skew-reverse">A-Z Ordenar</a>
                     <a href="#" class="ov-btn-grow-skew-reverse">Dados de Baja</a>
                     <a href="#" class="ov-btn-grow-skew-reverse">Cambio de Rol</a>
-                    <a th:href="@{/listaPersonas}" class="ov-btn-grow-skew-reverse">ver todos</a>
+                    <a href="#" class="ov-btn-grow-skew-reverse">Info</a>
                 </div>
             </div>
         </div>

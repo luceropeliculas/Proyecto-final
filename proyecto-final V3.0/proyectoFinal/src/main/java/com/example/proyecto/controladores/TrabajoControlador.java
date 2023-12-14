@@ -272,14 +272,6 @@ public class TrabajoControlador {
 
         return "lista_trabajo_proveedor.html";
     }
-    
-    @GetMapping("/listartodos")
-    public String listarTodos(ModelMap modelo, HttpSession session) {
-        List<Trabajo> trabajos = trabajoServicio.listarTodos();
-        modelo.addAttribute("trabajos", trabajos);
-
-        return "trabajos_list.html";
-    }
 }
 
 /*

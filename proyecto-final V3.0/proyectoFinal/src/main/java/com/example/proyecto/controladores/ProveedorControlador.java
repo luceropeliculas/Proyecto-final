@@ -153,14 +153,16 @@ public class ProveedorControlador {
     public String modificaPersonales(String dni, String nombre,
             MultipartFile archivo, String apellido, String telefono,
             String matricula, Double precioHora, String descripcion, String idRubro,
-            String email, String domicilio, ModelMap modelo, String validador , HttpSession session) {
+            String email, String domicilio, ModelMap modelo, String validador, HttpSession session) {
 
        
         try {
-             Proveedor proveedorActualizado = proveedorServicio.getOne(dni);
-     session.setAttribute("usuariosession", proveedorActualizado);
+             
 
             proveedorServicio.modificar(archivo, nombre, apellido, dni, telefono, email, domicilio);
+           
+            Proveedor proveedorActualizado = proveedorServicio.getOne(dni);
+            session.setAttribute("usuariosession", proveedorActualizado);
             modelo.put("exito", "Proveedor actualizado correctamente!");
           
 
@@ -208,18 +210,5 @@ public class ProveedorControlador {
          List<Rubro> rubros = rubroServicio.ListaRubros();
             modelo.addAttribute("rubros", rubros);
         return "index1.html";
-    }
-    
-    
-    
-      @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN','ROLE_PROVEEDOR')")
-    @GetMapping("/listarAdmin")
-    public String listarAdmin(ModelMap modelo) {
-        
-        List<Proveedor> proveedores = proveedorServicio.listarProveedores();
-
-        modelo.addAttribute("proveedores", proveedores);
-
-        return "proveedor_list_admin.html";
     }
 }

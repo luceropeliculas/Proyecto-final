@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.example.proyecto.servicios;
 
 import com.example.proyecto.entidades.Comentario;
@@ -32,9 +37,6 @@ public class ComentarioServicio {
 
     @Autowired
     ProveedorRepositorio proveedorRepositorio;
-    
-    @Autowired
-    WhatsappServicio whatsappServicio;
 
     private List<String> forbiddenWords = Arrays.asList("palabra1", "palabra2", "groseria1", "groseria2");
 
@@ -54,7 +56,9 @@ public class ComentarioServicio {
         if (trabajoRespuesta.isPresent()) {
 
             Trabajo trabajo = trabajoRespuesta.get();
-        
+
+            //esto lo agregue para que ande
+            //trabajo.setEstadoTrabajo(EstadoTrabajo.FINALIZADO);
             if (trabajo.getEstadoTrabajo() == EstadoTrabajo.FINALIZADO) {
 
                 Proveedor proveedor = trabajo.getProveedor();
@@ -66,7 +70,14 @@ public class ComentarioServicio {
                 if(contador==null){
                 contador=0;
                 }
-                                              
+                
+                
+                System.out.println(contador);
+                   System.out.println(califProm);
+                   
+                   System.out.println("|calificacion");
+                  System.out.println(calificacion);
+                
                 Integer general = ((califProm * contador) + calificacion) / (contador + 1);
 
                 proveedor.setContdTrabajoRealizado((contador + 1));
@@ -77,13 +88,6 @@ public class ComentarioServicio {
 
                 trabajo.setEstadoTrabajo(EstadoTrabajo.CALIFICADO);
                 
-                
-                         String mensaje = trabajo.getProveedor().getNombre()
-                    + " " + trabajo.getProveedor().getApellido() + " Ha calificado tu Trabajo";
-            whatsappServicio.Notoficacion(trabajo.getCliente().getTelefono(), mensaje);
-                
-                
-                
                 trabajoRepositorio.save(trabajo);
 
                 Comentario comentario = new Comentario(contenido, calificacion, fecha, true);
@@ -92,7 +96,8 @@ public class ComentarioServicio {
 
                 comentarioRepositorio.save(comentario);
 
-                          } else {
+                //bien ahi chicos !!! no se me ocurrio poner eso 
+            } else {
                 throw new MiException("El trabajo debe estar en estado FINALIZADO para agregar un comentario.");
             }
         } else {
@@ -100,7 +105,25 @@ public class ComentarioServicio {
         }
     }
 
-
+//      @Transactional
+//    public void CrearComentario(String contenido, Integer calificacion, Long idTrabajo) throws MiException {
+//        Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idTrabajo);
+//     Date fecha =new Date();
+//        
+//        if (trabajoRespuesta.isPresent()) {
+//            
+//            Trabajo trabajo = trabajoRespuesta.get();
+//          
+//                if (trabajoRespuesta.isPresent()) {
+//
+//                    Comentario comentario = new Comentario(contenido, calificacion, fecha, true);
+//                  
+//                    comentario.setTrabajo(trabajo);
+//                                        
+//                    comentarioRepositorio.save(comentario);
+//
+//                } }
+//    }
     @Transactional
     public void modificarComentarios(Long idTrabajo, String contenido, Integer calificacion, String id) throws MiException {
 
@@ -153,6 +176,25 @@ public class ComentarioServicio {
         return comentariosProveedor;
     }
 
+    /*
+    se los comente por que me me da errores, despues revisen en base a crear, tiene que quedar parecido
+    @Transactional
+    public void ModificarComentarios(String id, String contenido, Integer calificacion, boolean altaBaja, LocalDateTime fechaHora) throws MiException {
+
+        ValidarComentarios(contenido, calificacion);
+        Optional<Comentario> respuesta = comentarioRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+
+            Comentario comentario = respuesta.get();
+
+            comentario.setContenido(contenido);
+            comentario.setCalificacion(calificacion);
+            comentario.setFechaHora(fechaHora);
+            comentarioRepositorio.save(comentario);
+        }
+
+    }*/
     @Transactional
     @Secured("ROLE_ADMIN")
     public void bajaComentario(String id) throws MiException {
@@ -247,5 +289,6 @@ public class ComentarioServicio {
 
         // Guardar el proveedor actualizado
         proveedorRepositorio.save(proveedor);
-    }   
+    }
+
 }

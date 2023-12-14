@@ -446,7 +446,7 @@ text-align: center;
     outline: none;
     padding: .2rem 0;
     font-size: .9rem;
-    color: rgb(42, 205, 241); /*color de letra de llenado*/
+    color: #000000; /*color de letra de llenado*/
   cursor: pointer; 
     
 }

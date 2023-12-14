@@ -28,6 +28,7 @@ public class TrabajoServicio {
     Cliente cliente = new Cliente();
     Proveedor proveedor = new Proveedor();
     Persona persona = new Persona();
+    
 
     @Autowired
     ClienteRepositorio clienteRepositorio;
@@ -37,8 +38,6 @@ public class TrabajoServicio {
     TrabajoRepositorio trabajoRepositorio;
     @Autowired
     PersonaRepositorio personaRepositorio;
-    @Autowired
-    WhatsappServicio whatsappServicio;
 
     @Transactional
     public void solicitudTrabajo(String dniProveedor, String dniCliente, String detalleDeTrabajo) throws MiException {
@@ -49,11 +48,12 @@ public class TrabajoServicio {
         Proveedor proveedor1 = new Proveedor();
         Trabajo trabajo1 = new Trabajo();
 
+        //   Optional<Cliente> clienteRespuesta = clienteRepositorio.findById(dniCliente);
         Optional<Persona> clienteRespuesta = personaRepositorio.findById(dniCliente);
 
         if (clienteRespuesta.isPresent()) {
             persona1 = clienteRespuesta.get();
-
+            // cliente = clienteRespuesta.get();
         }
         Optional<Proveedor> proveedorRespuesta = proveedorRepositorio.findById(dniProveedor);
 
@@ -68,13 +68,13 @@ public class TrabajoServicio {
         trabajo1.setDetalleDeSolicitud(detalleDeTrabajo);
         trabajoRepositorio.save(trabajo1);
 
-        String mensaje = "Has recibido una nueva solicitud de trabajo de " + trabajo1.getCliente().getNombre()
-                + " " + trabajo1.getCliente().getApellido();
-
-        whatsappServicio.Notoficacion(trabajo1.getProveedor().getTelefono(), mensaje);
-
     }
 
+    
+    //bien hecho!!!!!!!!!! ver si podemos hacer algo parecido con las calificaciones
+    /*
+    SERIA LISTAR TODAS LAS CALIFICACIONES DE ESTE PROVEEDOR, PROMEDIAR, REDONDEAR Y SETEAR AL PROVEEDOR 
+    */
     @Transactional
     public void revisionDeTrabajo(Long idtrabajo, Boolean aceptacion,
             String respuestaProveedor, Integer gastosAdicionales, Integer horasTrabajadasEstimadas, String dniProveedor) throws MiException {
@@ -114,10 +114,6 @@ public class TrabajoServicio {
             trabajo.setRespuestaProveedor(respuestaProveedor);
         }
 
-        String mensaje = trabajo.getProveedor().getNombre()
-                + " " + trabajo.getProveedor().getApellido() + " Ha presupuestado tu Trabajo";
-        whatsappServicio.Notoficacion(trabajo.getCliente().getTelefono(), mensaje);
-
         trabajoRepositorio.save(trabajo);
     }
 
@@ -141,12 +137,6 @@ public class TrabajoServicio {
                 trabajo.setEstadoTrabajo(EstadoTrabajo.CANCELADO);
             }
 
-            String mensaje = trabajo.getProveedor().getNombre()
-                    + " " + trabajo.getProveedor().getApellido() + " Ha Aceptado tu Presupesto";
-            whatsappServicio.Notoficacion(trabajo.getCliente().getTelefono(), mensaje);
-
-            trabajoRepositorio.save(trabajo);
-
             trabajoRepositorio.save(trabajo);
         } else {
             throw new MiException("No se encontró un trabajo con el ID proporcionado: " + idTrabajo);
@@ -155,7 +145,8 @@ public class TrabajoServicio {
 
     //eliminar idProvedor
     // proveedor es con dos EE
-    // recordar setear el contador de trabajos fginalizados!!!!!!!!!!!!
+    
+   // recordar setear el contador de trabajos fginalizados!!!!!!!!!!!!
     @Transactional
     public void finalizadoTrabajo(Long idTrabajo, String idProveedor, Boolean estado) throws MiException {
         Trabajo trabajo = new Trabajo();
@@ -168,10 +159,6 @@ public class TrabajoServicio {
 
             trabajo.setEstadoTrabajo(EstadoTrabajo.FINALIZADO);
             trabajoRepositorio.save(trabajo);
-
-            String mensaje = trabajo.getProveedor().getNombre()
-                    + " " + trabajo.getProveedor().getApellido() + " Ha dado por Finalizado el Trabajo";
-            whatsappServicio.Notoficacion(trabajo.getCliente().getTelefono(), mensaje);
         }
 
         if (proveedorRespuesta.isPresent()) {
@@ -193,10 +180,6 @@ public class TrabajoServicio {
 
         if (trabajoRespuesta.isPresent()) {
             trabajo = trabajoRespuesta.get();
-
-            String mensaje = trabajo.getProveedor().getNombre()
-                    + " " + trabajo.getProveedor().getApellido() + " Ha Cancelado el Trabajo";
-            whatsappServicio.Notoficacion(trabajo.getCliente().getTelefono(), mensaje);
 
             trabajo.setEstadoTrabajo(EstadoTrabajo.CANCELADO);
             trabajoRepositorio.save(trabajo);
@@ -225,7 +208,7 @@ public class TrabajoServicio {
                 if (puntuacion > 0 && puntuacion <= 5) {
                     trabajo.setPuntuacionTrabajo(puntuacion);
                     trabajo.setCometarioTrabajoTerminado(comentario);
-                    trabajoRepositorio.save(trabajo);
+                    trabajoRepositorio.save(trabajo);                                        
                     //es mas facil validar los datos en otro metodo
                 } else {
                     throw new MiException("La puntuación debe estar entre 1 y 5");
@@ -295,11 +278,6 @@ public class TrabajoServicio {
             throw new MiException("La estimación de las horas trabajadas no puede ser igual a cero.");
         }
 
-    }
-    
-    public List<Trabajo> listarTodos() {
-        List<Trabajo> trabajos = trabajoRepositorio.findAll();
-        return trabajos;
     }
 
 }

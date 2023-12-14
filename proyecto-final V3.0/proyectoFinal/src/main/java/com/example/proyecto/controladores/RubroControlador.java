@@ -55,15 +55,5 @@ public String obtenerRubros(ModelMap modelo) {
     return "index1.html";
 }
 
- @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/listar")
-public String listarRubro(ModelMap modelo) {
-    List<Rubro> rubros = rubroServicio.ListaRubros();
-    modelo.addAttribute("rubros", rubros);
-    return "rubro_list";
-}
-
-
-
     
 }

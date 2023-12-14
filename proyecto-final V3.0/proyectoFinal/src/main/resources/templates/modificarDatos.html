@@ -24,11 +24,11 @@
     
        <form  th:if="${verificador==3}" class="formulario" id="formulario5" th:action="@{/cliente/modificado/}" method="POST" enctype="multipart/form-data">
              <br> 
-           <h2>WLCOME: <span th:text="${cliente.nombre}"></span></h2>
+           <h2>BIENVENIDO/A: <span th:text="${cliente.nombre}"></span></h2>
            
                <br> 
            <img th:src="@{/imagenes/grupo.jpg}" alt="Logo de tu sitio web" class="logo">
-            <h2 class="create-account">modificar Datos</h2>
+            <h2 class="create-account">Modificar datos</h2>
 <input hidden name="dni"  th:value="${cliente.dni}" class="c4">
             
             <div class="input-container">
@@ -37,36 +37,36 @@
             </div>
 
             <div class="input-container">
-                <label>domicilio</label>
+                <label>Domicilio</label>
                 <input type="text" placeholder="Direccion" name="domicilio"  th:value="${cliente.domicilio}" class="c3">
             </div>
 
             <br>
 
             <div class="input-container">
-                <label>apellido</label>
+                <label>Apellido</label>
                 <input type="text" placeholder="Apellido"  name="apellido" th:value="${cliente.apellido}" class="c3">
             </div>
             <div class="input-container">
-                <label>nombre</label>
+                <label>Nombre</label>
                 <input type="text" placeholder="Nombre" name="nombre"  th:value="${cliente.nombre}" class="c3">
             </div>
 
             <br>
 
             <div class="input-container">
-                <label>telefono</label>
+                <label>Teléfono</label>
                 <input type="text" placeholder="Telefono" name="telefono"  th:value="${cliente.telefono}" class="c3">
             </div>
 
             <div class="input-container">
-                <label>email</label>
+                <label>Email</label>
                 <input type="text" placeholder="Email" name="email"  th:value="${cliente.email}" class="c3">
             </div>
 
             <br>
 
-            <label>Carga tu Foto de Perfil</label>
+            <label>Carga tu foto de perfil</label>
             <br>
             <br>
             <div class="form-group my-3">
@@ -87,9 +87,9 @@
     <div th:if="${verificador==2}" class="container-form sign-up">
         <div class="welcome-back">
             <div class="messeger">
-                <h2>BIENVENIDO </h2>
-                <h2>Aqui podras Registrarte como usuario</h2>
-                <h2>o como proveedor.</h2>
+                
+                <h2>Aqui podrás modificar tus datos</h2>
+                <h2>como proveedor.</h2>
             </div>
         </div>
 
@@ -97,7 +97,7 @@
         <form class="formulario" id="formulario1" th:action="@{/proveedor/modificado/}" method="POST" enctype="multipart/form-data">
             <h2>BIENVENIDO: <span th:text="${cliente.nombre}"></span></h2>
             <img th:src="@{/imagenes/grupo.jpg}" alt="Logo de tu sitio web" class="logo">
-            <h2 class="create-account">modificar Datos</h2>
+            <h2 class="create-account">Modificar Datos</h2>
 
             <div class="input-container">
                 <label>DNI</label>
@@ -105,36 +105,36 @@
             </div>
 
             <div class="input-container">
-                <label>domicilio</label>
+                <label>Domicilio</label>
                 <input type="text" placeholder="Direccion" name="domicilio"  th:value="${cliente.domicilio}" class="c3">
             </div>
 
             <br>
 
             <div class="input-container">
-                <label>apellido</label>
+                <label>Apellido</label>
                 <input type="text" placeholder="Apellido"  name="apellido" th:value="${cliente.apellido}" class="c3">
             </div>
             <div class="input-container">
-                <label>nombre</label>
+                <label>Nombre</label>
                 <input type="text" placeholder="Nombre" name="nombre"  th:value="${cliente.nombre}" class="c3">
             </div>
 
             <br>
 
             <div class="input-container">
-                <label>telefono</label>
+                <label>Teléfono</label>
                 <input type="text" placeholder="Telefono" name="telefono"  th:value="${cliente.telefono}" class="c3">
             </div>
 
             <div class="input-container">
-                <label>email</label>
+                <label>Email</label>
                 <input type="text" placeholder="Email" name="email"  th:value="${cliente.email}" class="c3">
             </div>
 
             <br>
 
-            <label>Carga tu Foto de Perfil</label>
+            <label>Carga tu foto de perfil</label>
             <br>
             <br>
             <div class="form-group my-3">

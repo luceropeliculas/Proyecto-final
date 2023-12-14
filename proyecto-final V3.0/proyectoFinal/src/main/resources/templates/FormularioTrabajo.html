@@ -9,12 +9,97 @@
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-         <link th:href="@{/css/nav.css}" type="text/css" rel="stylesheet"></link>
     </head>
     <body>
- <header th:replace="/Fragments/navb :: navb"> </header>
 
 
+        <header id="header-index">
+            <div id="logo" >
+                <img th:src="@{/imagenes/logoServiceProM.png}" alt="">
+            </div>
+            <div class="search-box">
+                <form class="search-box">
+                    <input type="text" placeholder=" "/>
+                    <button type="reset"></button>
+                </form>
+            </div>
+            <div id="botones" sec:authorize="hasRole('ADMIN')">
+                <div class="cada-boton">
+                    <a th:href="@{/proveedor/listar}">
+                        <button  type="button" class="btn btn-outline-info">
+                            Proveedores
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <div id="botones" sec:authorize="hasRole('ADMIN')">
+                <div class="cada-boton">
+                    <a th:href="@{/clientes/listar}">
+                        <button  type="button" class="btn btn-outline-info">
+                            Clientes
+                        </button>
+                    </a>
+                </div>  
+            </div>
+            <div id="botones">
+                <div class="cada-boton">
+                    <a th:href="@{/index1}">
+                        <button  type="button" class="btn btn-outline-info">
+                            Home
+                        </button>
+                    </a>
+                </div>         
+                <br>
+
+                <div id="botones" >
+                    <div class="cada-boton">
+                        <a th:href="@{/cliente/listarTrabajo}">
+                            <button  type="button" class="btn btn-outline-info">
+                                Ver mis trabajos
+                            </button>
+                        </a>
+                    </div>    
+
+                    <div class="cada-boton" sec:authorize="hasRole('PROVEEDOR')">
+                        <a th:href="@{/trabajo/listarProveedor/}">
+                            <button  type="button" class="btn btn-outline-info">
+                                Ver mis trabajos proveedor
+                            </button>
+                        </a>
+                    </div>          
+                    <br>
+                    <div class="cada-boton ">
+
+                        <!--  <div id="perfil-dropdown">  -->
+
+                        <div class="imagen-circulo">
+                            <div class="cada-boton perfil">                                      +
+                                <img <a th:if="${session.usuariosession.imagen != null}" id="logo"  th:src="@{/imagen/perfil/__${session.usuariosession.dni}__}" class="d-flex align-items-center">
+
+                                </a>
+                            </div>
+                        </div>
+
+                        <ul id="dropdown-menu">
+                            <li>
+                                <a th:href="@{/}" class="btn btn-outline-info">
+                                    <button class="btn btn-outline-info" id="dropdown-btn"> Perfil</button>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/cliente/modificar}" >
+                                    <button class="btn btn-outline-info" id="dropdown-btn"> Modificar Perfil</button>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/}" class="btn btn-outline-info">
+                                    <button class="btn btn-outline-info" id="dropdown-btn"> Logout</button>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    </header>
 
 
 

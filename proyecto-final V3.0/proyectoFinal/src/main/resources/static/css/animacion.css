@@ -121,14 +121,18 @@ h6{
    
   a {
     padding: 0.3em 0.5em;
-       text-decoration: none;
+    background: #d12525;
+    color: #fff;
+    text-decoration: none;
     border-radius: 1px;
     font-size: 0.9em;
     transition: all 0.2s ease 0s;
   }
    
   a:hover {
-       text-shadow: 0 0 1px #333;
+    background: #fff;
+    color: #333;
+    text-shadow: 0 0 1px #333;
   }
 
   .cardBox:nth-child(1) .card .back {

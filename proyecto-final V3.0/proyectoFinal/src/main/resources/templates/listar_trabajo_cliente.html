@@ -5,10 +5,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link th:href="@{/css/list.css}" type="text/css" rel="stylesheet"></link>
-        <link th:href="@{/css/nav.css}" type="text/css" rel="stylesheet"></link>
     </head>
     <body>
- <header th:replace="/Fragments/navb :: navb"> </header>
+
         <section class="card">
 
 
@@ -60,10 +59,9 @@
                                 <td scope="row" th:text="${trabajo.proveedor.email}"></td>
 
 
-                                <td ><a th:href="@{/trabajo/aceptar/__${trabajo.id}__}"> <button class="btn-outline-info" th:if="${trabajo.estadoTrabajo.toString()} == 'REVISION'">Aceptar</button> </a>
-                                    <a  th:href="@{/trabajo/rechazar/__${trabajo.id}__}"><button class="btn-outline-info" th:if="${trabajo.estadoTrabajo.toString()} != 'CANCELADO' and ${trabajo.estadoTrabajo.toString()} !='FINALIZADO' and ${trabajo.estadoTrabajo.toString()} !='CALIFICADO'">Cancelar</button> </a>
-                                    <a  th:href="@{/trabajo/comentar/__${trabajo.id}__}"><button class="btn-outline-info" th:if="${trabajo.estadoTrabajo.toString()} == 'FINALIZADO' and ${trabajo.estadoTrabajo.toString()} !='CALIFICADO'">Calificar</button> </a></td>
-                                    <a  th:href="@{/trabajo/finalizar/__${trabajo.id}__}"><button class="btn-outline-info" th:if="${trabajo.estadoTrabajo.toString()} == 'ACEPTADO'">Finalizar</button> </a></td>
+                                <td ><a th:href="@{/trabajo/aceptar/__${trabajo.id}__}"> <button th:if="${trabajo.estadoTrabajo.toString()} == 'REVISION'">Aceptar</button> </a>
+                                    <a  th:href="@{/trabajo/rechazar/__${trabajo.id}__}"><button th:if="${trabajo.estadoTrabajo.toString()} != 'CANCELADO' and ${trabajo.estadoTrabajo.toString()} !='FINALIZADO' and ${trabajo.estadoTrabajo.toString()} !='CALIFICADO'">Cancelar</button> </a>
+                                    <a  th:href="@{/trabajo/comentar/__${trabajo.id}__}"><button th:if="${trabajo.estadoTrabajo.toString()} == 'FINALIZADO' and ${trabajo.estadoTrabajo.toString()} !='CALIFICADO'">Calificar</button> </a></td>
                                 <!--
                             <td ><a th:href="@{/trabajo/aceptar/__${trabajo.id}__}"> <button th:if="${trabajo.estadoTrabajo.toString()} == 'REVISION'">Aceptar</button> </a></td>
                             <td><a  th:href="@{/trabajo/rechazar/__${trabajo.id}__}"><button th:if="${trabajo.estadoTrabajo.toString()} != 'CANCELADO'">Cancelar</button> </a></td>
@@ -75,7 +73,39 @@
 
                     </table>
 
-               
+                    <!-- <div class="card-content">
+                         <h1 class="title" th:text="${trabajo.estadoTrabajo}"></h1>
+                         <div class="Information">
+                             <div class="animated_text">
+                                 <h1 class="title" th:text="${trabajo.detalleDeSolicitud}"></h1>
+                                  <h1 class="title" th:text="${trabajo.respuestaProveedor}"></h1>
+                                  <h1 class="title" th:text="${trabajo.precioFinal}"></h1>
+                                  <h1 class="title" th:text="${trabajo.cliente.nombre}"></h1> 
+                             </div>
+                           
+                             <div>
+                                 <h1  th:text="${trabajo.cliente.domicilio}"></h1>
+                                 <h2 th:text="${trabajo.cliente.telefono}"></h2>
+                             </div>
+                                         
+                         </div>
+                         
+      
+                         <div class="btn-container">
+                                                            
+                                      <a th:href="@{/trabajo/aceptar/__${trabajo.id}__}"> 
+                                     <button class="sign-up-btn" id="ov-btn-slide-close" type="submit">aceptar</button>
+                                      </a>
+                             
+                                 <a th:href="@{/trabajo/rechazar/__${trabajo.id}__}"> 
+                                     <button class="sign-up-btn" id="ov-btn-slide-close" type="submit">rechazar</button>
+                                      </a>
+                             
+                               <a th:href="@{/trabajo/comentar/__${trabajo.id}__}"> 
+                                     <button class="sign-up-btn" id="ov-btn-slide-close" type="submit">calificar</button>
+                                      </a>
+                             
+                         </div>-->
                 </div>
             </div>
         </section> 

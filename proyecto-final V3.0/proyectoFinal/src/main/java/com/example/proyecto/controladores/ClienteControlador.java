@@ -194,15 +194,15 @@ Cliente cliente=clienteServicio.getOne(persona.getDni());
     @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN','ROLE_PROVEEDOR')")
     @PostMapping("/modificado")
     public String actualizar(String dni, String nombre, MultipartFile archivo, String apellido, String telefono,
-            String email, String domicilio, ModelMap modelo, HttpSession session) {
-       
+            String email, String domicilio, ModelMap modelo,HttpSession session) {
+    
         try {
             clienteServicio.actualizar(archivo, nombre, apellido, dni, telefono, email, domicilio);
-            
-     Cliente clienteActualizado = clienteServicio.getOne(dni);
-      // Actualizar la información del usuario en la sesión
-     session.setAttribute("usuariosession", clienteActualizado);
+// Recuperar al cliente actualizad0 de la base de datos
      
+Cliente clienteActualizado = clienteServicio.getOne(dni);
+// Actualizar la información del usuario en la sesión
+session.setAttribute("usuariosession", clienteActualizado);
             modelo.put("exito", "Cliente actualizado correctamente!");
 
             return "index1.html";
@@ -215,14 +215,4 @@ Cliente cliente=clienteServicio.getOne(persona.getDni());
 
     }
 
-     @PreAuthorize("hasRole('ROLE_ADMIN')")
-       @GetMapping("/listarTodos")
-    public String listartodos( ModelMap modelo) {
-
-      List <Cliente> clientes = clienteServicio.listarCliente();
-modelo.put("clientes", clientes);
-        return "Cliente_list2.html";
-    }
-    
-    
 }
