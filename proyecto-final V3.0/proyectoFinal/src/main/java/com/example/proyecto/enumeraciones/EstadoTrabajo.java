@@ -15,6 +15,7 @@ public enum EstadoTrabajo {
     REVISION,
     ACEPTADO,
     CANCELADO,
-    FINALIZADO
+    FINALIZADO,
+    CALIFICADO
 
 }

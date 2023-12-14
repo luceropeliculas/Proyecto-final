@@ -3,6 +3,7 @@ package com.example.proyecto.entidades;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 import lombok.Data;
 
 @Data
@@ -15,21 +16,17 @@ private int puntuacionPromedio;//esto es para las estrellitas
 
 @OneToOne
 private Rubro rubro;
-//private EstadoTrabajo estadoTrabajo;//visualiza en el perfil del proveedor 
 private boolean estadoActual;//Depende del estado actual
 
 
 private Double precioHora;
+@Temporal(javax.persistence.TemporalType.DATE)
 private Date fechaAlta;
-private int contdTrabajoRealizado;//esto permite scar un promedio de los trabajos realizados
 
+///USAR CLASES PADRE!!!!!!!!!!!!!
+//private int contdTrabajoRealizado;//esto permite scar un promedio de los trabajos realizados
+private Integer contdTrabajoRealizado;
 
- // se elimino lista de roles
-/*
-se puso el rol en la entidad persona
-@Enumerated(EnumType.STRING)
-    private Rol rol;
- */
  @OneToOne
  private Imagen imagen;
  

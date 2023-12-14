@@ -5,9 +5,5 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Cliente extends Persona{
-
- 
-  
-    
+public class Cliente extends Persona{    
 }

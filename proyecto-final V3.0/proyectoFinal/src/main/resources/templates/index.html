@@ -11,7 +11,7 @@
 
         <div id="presentacion">
             <header id="header-index">
-                <div id="logo" >
+                <div id="logo" style="display: flex; align-items: center;">
                     <img th:src="@{/imagenes/logoServiceProM.png}" alt="">
                 </div>
 
@@ -19,18 +19,18 @@
                     <div class="cada-boton">
                         <a th:href="@{/registrar}">
                             <button  type="button" class="btn btn-outline-info">
-                               Registrarse
+                                Registrarse
                             </button>
                         </a>
                     </div>         
-<br>
+                    <br>
 
                     <div class="cada-boton">
                         <a th:href="@{/login1}">
-                        <button type="button" class="btn btn-outline-info">
-                            Iniciar Sesion
-                        </button>
-                    </a>
+                            <button type="button" class="btn btn-outline-info">
+                                Iniciar Sesion
+                            </button>
+                        </a>
                     </div>
                 </div>
             </header>
@@ -38,7 +38,7 @@
             <div id="contenedor">
                 <div id="animacion">
                     <h2><b>Bienvenidos a ServicePro M</b></h2>
-                    <br>
+                    
                     <p> <b>Nuestra aplicación de servicios generales simplifica la vida diaria al ofrecer
                             acceso rápido y confiable a una variedad de servicios esenciales. Desde reparaciones
                             menores, mayores, etc. Nuestra plataforma conecta a usuarios con profesionales verificados,
@@ -46,7 +46,7 @@
                             comodidad y seguridad</b></p>
                 </div>
             </div>
-     
+
         </div>
         <div id="carrusel-container">
             <div class="swiper">

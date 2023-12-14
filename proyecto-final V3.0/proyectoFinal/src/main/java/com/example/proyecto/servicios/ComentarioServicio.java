@@ -4,14 +4,20 @@
  * and open the template in the editor.
  */
 package com.example.proyecto.servicios;
+
 import com.example.proyecto.entidades.Comentario;
+import com.example.proyecto.entidades.Proveedor;
 import com.example.proyecto.entidades.Trabajo;
 import com.example.proyecto.enumeraciones.EstadoTrabajo;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.repositorios.ComentarioRepositorio;
+import com.example.proyecto.repositorios.ProveedorRepositorio;
 import com.example.proyecto.repositorios.TrabajoRepositorio;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -19,10 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author aprig
- */
+//para ver entre todos
 @Service
 public class ComentarioServicio {
 
@@ -32,35 +35,115 @@ public class ComentarioServicio {
     @Autowired
     TrabajoRepositorio trabajoRepositorio;
 
+    @Autowired
+    ProveedorRepositorio proveedorRepositorio;
+
+    private List<String> forbiddenWords = Arrays.asList("palabra1", "palabra2", "groseria1", "groseria2");
+
+    public boolean containsForbiddenWords(String comment) {
+        return forbiddenWords.stream().anyMatch(comment::contains);
+    }
+
     @Transactional
-    public void CrearComentario(String id, String contenido, Integer calificacion, LocalDateTime fechaHora, boolean altaBaja, Long idTrabajo) throws MiException {
+    public void crearComentario(String contenido, Integer calificacion, Long idTrabajo) throws MiException {
 
         Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idTrabajo);
-        ValidarComentarios(id, contenido, calificacion, altaBaja, fechaHora);
+
+        validarComentarios(contenido, calificacion);
+
+        Date fecha = new Date();
 
         if (trabajoRespuesta.isPresent()) {
+
             Trabajo trabajo = trabajoRespuesta.get();
 
+            //esto lo agregue para que ande
+            //trabajo.setEstadoTrabajo(EstadoTrabajo.FINALIZADO);
             if (trabajo.getEstadoTrabajo() == EstadoTrabajo.FINALIZADO) {
-                LocalDateTime fechaHoraActual = LocalDateTime.now();
 
-                if (trabajoRespuesta.isPresent()) {
+                Proveedor proveedor = trabajo.getProveedor();
 
-                    Comentario comentario = new Comentario(id, contenido, calificacion, fechaHora, altaBaja);
-                    comentario.setContenido(contenido);
-                    comentario.setCalificacion(calificacion);
-                    comentario.setAltaBaja(true);
-                    comentario.setFechaHora(fechaHora);
-                    comentarioRepositorio.save(comentario);
+                Integer contador = proveedor.getContdTrabajoRealizado();
 
-                } else {
-                    throw new MiException("No se pudo obtener la información completa de Cliente o Proveedor.");
+                Integer califProm = proveedor.getPuntuacionPromedio();
+
+                if(contador==null){
+                contador=0;
                 }
+                
+                
+                System.out.println(contador);
+                   System.out.println(califProm);
+                   
+                   System.out.println("|calificacion");
+                  System.out.println(calificacion);
+                
+                Integer general = ((califProm * contador) + calificacion) / (contador + 1);
+
+                proveedor.setContdTrabajoRealizado((contador + 1));
+
+                proveedor.setPuntuacionPromedio(general);
+
+                proveedorRepositorio.save(proveedor);
+
+                trabajo.setEstadoTrabajo(EstadoTrabajo.CALIFICADO);
+                
+                trabajoRepositorio.save(trabajo);
+
+                Comentario comentario = new Comentario(contenido, calificacion, fecha, true);
+
+                comentario.setTrabajo(trabajo);
+
+                comentarioRepositorio.save(comentario);
+
+                //bien ahi chicos !!! no se me ocurrio poner eso 
             } else {
                 throw new MiException("El trabajo debe estar en estado FINALIZADO para agregar un comentario.");
             }
         } else {
             throw new MiException("No se encontró un trabajo con el ID proporcionado: " + idTrabajo);
+        }
+    }
+
+//      @Transactional
+//    public void CrearComentario(String contenido, Integer calificacion, Long idTrabajo) throws MiException {
+//        Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idTrabajo);
+//     Date fecha =new Date();
+//        
+//        if (trabajoRespuesta.isPresent()) {
+//            
+//            Trabajo trabajo = trabajoRespuesta.get();
+//          
+//                if (trabajoRespuesta.isPresent()) {
+//
+//                    Comentario comentario = new Comentario(contenido, calificacion, fecha, true);
+//                  
+//                    comentario.setTrabajo(trabajo);
+//                                        
+//                    comentarioRepositorio.save(comentario);
+//
+//                } }
+//    }
+    @Transactional
+    public void modificarComentarios(Long idTrabajo, String contenido, Integer calificacion, String id) throws MiException {
+
+        Optional<Comentario> respuesta = comentarioRepositorio.findById(id);
+
+        validarComentarios(contenido, calificacion);
+
+        Date fecha = new Date();
+
+        if (respuesta.isPresent()) {
+
+            Comentario comentario = respuesta.get();
+            if (comentario.isAltaBaja()) {
+                comentario.setContenido(contenido);
+                comentario.setCalificacion(calificacion);
+                comentario.setFechaHora(fecha);
+                comentarioRepositorio.save(comentario);
+            } else {
+                throw new MiException("El comentario está dado de baja, no se puede modificar.");
+            }
         }
     }
 
@@ -74,10 +157,31 @@ public class ComentarioServicio {
         return comentarios;
     }
 
+    //este lo agregue si no entienden pregunte
+    @Transactional
+    public List<Comentario> ListaComentariosPorProveedor(String idProveedor) {
+        List<Comentario> comentarios = new ArrayList<>();
+        comentarios = comentarioRepositorio.findAll();
+        for (Comentario comentario : comentarios) {
+        }
+
+        List<Comentario> comentariosProveedor = new ArrayList<>();
+
+        for (Comentario comentario : comentarios) {
+            if (comentario.getTrabajo().getProveedor().getDni().equalsIgnoreCase(idProveedor)) {
+                comentariosProveedor.add(comentario);
+            }
+        }
+
+        return comentariosProveedor;
+    }
+
+    /*
+    se los comente por que me me da errores, despues revisen en base a crear, tiene que quedar parecido
     @Transactional
     public void ModificarComentarios(String id, String contenido, Integer calificacion, boolean altaBaja, LocalDateTime fechaHora) throws MiException {
 
-        ValidarComentarios(id, contenido, calificacion, altaBaja, fechaHora);
+        ValidarComentarios(contenido, calificacion);
         Optional<Comentario> respuesta = comentarioRepositorio.findById(id);
 
         if (respuesta.isPresent()) {
@@ -90,14 +194,13 @@ public class ComentarioServicio {
             comentarioRepositorio.save(comentario);
         }
 
-    }
-
+    }*/
     @Transactional
     @Secured("ROLE_ADMIN")
-    public void BajaComentario(String id) throws MiException {
+    public void bajaComentario(String id) throws MiException {
 
         Optional<Comentario> comentarioRespuesta = comentarioRepositorio.findById(id);
-       
+
         if (comentarioRespuesta.isPresent()) {
             Comentario comentario = comentarioRespuesta.get();
 
@@ -115,19 +218,77 @@ public class ComentarioServicio {
     //   }
 
     @Transactional
-    private void ValidarComentarios(String id, String contenido, Integer calificacion, boolean altaBaja, LocalDateTime fechaHora) throws MiException {
+    private void validarComentarios(String contenido, Integer calificacion) throws MiException {
 
         if (contenido == null || contenido.isEmpty()) {
             throw new MiException(" El comentario no puede estar vacio, por favor complete este campo");
 
         }
-        if (calificacion > 0 && calificacion <= 5) {
-            throw new MiException(" La calificacion no puede ser igual a cero,clasificarlo de 1 al 5");
+        if (calificacion < 1 || calificacion > 5) {
+            throw new MiException(" La calificacion no puede ser igual a cero, calificar entre 1 y 5");
 
         }
         //  List<Comentario> comentario = new ArrayList<>();
         // comentario = ListaComentarios();
 
+    }
+
+    //SE AGREGO AL ULTIMO
+    //por fecha
+    @Transactional
+    public List<Comentario> ListaComentariosOrdenadosPorFecha() {
+        List<Comentario> comentarios = ListaComentarios();
+
+        Collections.sort(comentarios, Comparator.comparing(Comentario::getFechaHora));
+
+        return comentarios;
+    }
+
+    // Calificación de menor a mayor
+    @Transactional
+    public List<Comentario> ListaComentariosOrdenadosPorCalificacion() {
+        List<Comentario> comentarios = ListaComentarios();
+
+        Collections.sort(comentarios, Comparator.comparingInt(Comentario::getCalificacion));
+
+        return comentarios;
+    }
+    // Calificación de mayor a menor
+
+    @Transactional
+    public List<Comentario> ListaComentariosOrdenadosPorCalificacionMayor() {
+        List<Comentario> comentarios = ListaComentarios();
+
+        Collections.sort(comentarios, Comparator.comparingInt(Comentario::getCalificacion).reversed());
+
+        return comentarios;
+    }
+
+    public void calificacionPromedio(String dniProveedor) throws MiException {
+        // Obtener el proveedor por su DNI
+        Proveedor proveedor = proveedorRepositorio.findById(dniProveedor)
+                .orElseThrow(() -> new MiException("Proveedor no encontrado con DNI: " + dniProveedor));
+
+        ///////////////////  ver este
+        /*
+        // Obtener todos los comentarios del proveedor
+        List<Comentario> comentarios = comentarioRepositorio.findByTrabajoProveedorDniAndAltaBaja(dniProveedor, true);
+         */
+        List<Comentario> comentarios = new ArrayList();
+
+        // Calcular la suma de las calificaciones
+        int sumaCalificaciones = comentarios.stream()
+                .mapToInt(Comentario::getCalificacion)
+                .sum();
+
+        // Calcular el promedio
+        double promedioCalificaciones = comentarios.isEmpty() ? 0.0 : (double) sumaCalificaciones / comentarios.size();
+
+        // Actualizar la puntuación promedio del proveedor
+        proveedor.setPuntuacionPromedio((int) Math.round(promedioCalificaciones));
+
+        // Guardar el proveedor actualizado
+        proveedorRepositorio.save(proveedor);
     }
 
 }

@@ -9,20 +9,23 @@
     <body>
 
         <section th:each="proveedor : ${proveedores}"class="card">
-
+  <img th:src="@{/imagen/perfil/__${session.usuariosession.dni}__}" alt="Foto proveedor">
             <div class="main">
                 <div class="card-content">
                     <div class="images">
                         <div class="blue-bg-outer">
                             <div class="white-bg">
                                 <div class="blue-bg">
-                                    <img th:src="@{${proveedor.imagen}}" alt="Foto proveedor">
+                                    <img th:src="@{/imagen/perfil/__${session.usuariosession.dni}__}" alt="Foto proveedor">
+                                    
+                                    th:src="@{/imagen/perfil/__${proveedor.dni}__}"
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="Information">
                         <div class="animated_text">
+                           
                             <h1 class="title" th:text="${proveedor.nombre}"></h1>
                             <h1 class="title" th:text="${proveedor.apellido}"></h1>
                         </div>

@@ -56,16 +56,15 @@ display: inline-block;
     text-align: center;
 
 }
-.messeger{
+.messege{
 padding: 1rem;
 }
-.messeger h2{
+.messege h2{
     font-size: 1.7rem;
     padding: 1rem 0;
     
 }
-
-.messeger button {
+.messege button {
     padding: 1rem;
     font-weight: 400;
     background-color: #4a4aee;
@@ -78,15 +77,15 @@ padding: 1rem;
     transition: all .3s ease-in;
     color: #fff;
 }
-.messeger button:hover{
+.messege button:hover{
     
     background-color: #6464f8;
 }
 .formulario{
-    margin: 4rem;
-    height: 90%;
+    height: 250%;
     width: 400px;
     padding: 1rem;
+    margin: 2rem;
     background-color: rgb(53,51,51,0.602); /*color de fondo del form*/
     text-align: center;
 }
@@ -284,7 +283,7 @@ body{
 
 }
 #logo>img{
-    margin: -30px;
+    margin-right: 495px;
     height: 160px;
 }
 #presentacion{
@@ -308,19 +307,22 @@ body{
 }
 
 #animacion{
+    margin-top: -184px;
+    border-radius: 10px;
     width: 50%;
     margin-bottom: 55px;
     text-align: center;
-    padding: 25px;
+    padding: 0px;
     color: aqua;
     opacity: 0;
     background-color: rgba(0,0,0,0.5);
-    animation: intro 3s ;
+    animation: intro 3s;
     animation-delay: 2s;
     animation-fill-mode: forwards;
     box-shadow: -8px 3px 27px 0px rgba(0,0,0,0.75);
     -webkit-box-shadow: -8px 3px 27px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: -8px 3px 27px 0px rgba(0,0,0,0.75);
+    border-radius: 10px;
 }
 
 #animacion>h2{
@@ -329,6 +331,8 @@ body{
 #animacion>p{
     font-size: 20px;
 }
+
+
 @keyframes intro {
     0%{
         opacity: 0.25;
@@ -480,210 +484,3 @@ body{
 .cada-boton .perfil , img{
 height: 38px;
 }
-
-#header-index{
-    display:flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 0px 80px 10px 55px;
-    background-color: rgba(0,0,0,0.5);
-    position: fixed;
-    top: 0;
-    width: 100%;
-    align-items: center;
-    height: 90px;
-margin-top: 0.1px;
-
-}
-#logo>img{
-    margin: -25px;
-    height: 100px;
-}
-#presentacion{
-    text-align: center;
-}
-
-#botones{
-    display: flex;
-    justify-content: center;
-    margin-right: 100px;
-}
-.cada-boton{
-   
-    margin-left: 13px;
-}
-.btn-outline-info {
-    color: #0dcaf0; 
-    border-color: #0dcaf0;
-    width:100px;
-    height: 45px;
-    border-radius: 10px;
-    background-color: transparent;
-   font-family: sans-serif;
-   font-size: 15px;
-       
-}
-
-.btn-outline-info:hover {
-    background-color: #0dcaf0; 
-    color: black;
-    cursor: pointer;
-}
-.perfil-container {
-    background: #fff;   /*fondo de abajo*/
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    width: 250px;
-    transition: transform 0.3s ease-in-out;
-    margin: 35px;
-    height: 500px
-}
-
-.perfil-container:hover {
-    transform: scale(1.4);   
-}
-
-.perfil-header {
-    text-align: center;
-    padding: 20px;
-    background: linear-gradient(to bottom, #F14770, #2980b9);   /*color 1 y 2 del perfil*/
-    color: #fff; /*color de letra*/
-}
-
-.foto-perfil {
-    width: 100px;
-    height: 100px;
-    background: #fff; /* Puedo cambiar esto por  imagen de perfil */
-    border-radius: 50%;
-    margin: 0 auto 20px;
-}
-
-h1 {
-    margin: 10px 0 5px;
-}
-
-.perfil-info {
-    padding: 20px;
-}
-
-.perfil-info p {
-    margin: 10px 0;
-}
-
-a {
-    color: #F14770;   /*color de links*/
-    text-decoration: none;
-    margin-right: 10px;
-    transition: color 0.3s ease-in-out;
-}
-
-a:hover {
-    color: #2070a0;
-}
-footer {
-    position: fixed; 
-    left: 0;
-    bottom: 0; 
-    width: 100%; 
-    background-color: rgba(0,0,0,0.5);
-    color: white; 
-    font-size: 14px; 
-    padding: 20px 0;
-    text-align: center; 
-    height: 80px;
-}
-
-
-footer a {
-    color: white;
-    text-decoration: none; 
-}
-
-footer a:hover {
-    text-decoration: underline; 
-}
-
-
-footer a[href="#"] {
-    text-decoration: none; 
-    color: #6c757d; 
-    display: inline-block; 
-    transition: all 0.3s ease-in-out; 
-}
-
-footer a[href="#"]:hover {
-    color: #000;
-    transform: translateY(-3px); 
-}
-
-.search-box {
-  font-size: 20px;
-  border: solid 1px #0dcaf0;
-  display: inline-block;
-  position: relative;
-  border-radius: 2.5em;
-}
-.search-box input[type=text] {
-  font-family: inherit;
-  font-weight: bold;
-  width: 2.5em;
-  height: 2.5em;
-  padding: 0.3em 2.1em 0.3em 0.4em;
-  border: none;
-  box-sizing: border-box;
-  border-radius: 2.5em;
-  transition: width 800ms cubic-bezier(0.68, -0.55, 0.27, 1.55) 150ms;
-}
-.search-box input[type=text]:focus {
-  outline: none;
-}
-.search-box input[type=text]:focus, .search-box input[type=text]:not(:placeholder-shown) {
-  width: 18em;
-  transition: width 800ms cubic-bezier(0.68, -0.55, 0.27, 1.55);
-}
-.search-box input[type=text]:focus + button[type=reset], .search-box input[type=text]:not(:placeholder-shown) + button[type=reset] {
-  transform: rotate(-45deg) translateY(0);
-  transition: transform 150ms ease-out 800ms;
-}
-.search-box input[type=text]:focus + button[type=reset]:after, .search-box input[type=text]:not(:placeholder-shown) + button[type=reset]:after {
-  opacity: 1;
-  transition: top 150ms ease-out 950ms, right 150ms ease-out 950ms, opacity 150ms ease 950ms;
-}
-.search-box button[type=reset] {
-  background-color: transparent;
-  width: 1.4em;
-  height: 1.4em;
-  border: 0;
-  padding: 0;
-  outline: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 0.55em;
-  right: 0.55em;
-  transform: rotate(-45deg) translateY(2.2em);
-  transition: transform 150ms ease-out 150ms;
-}
-.search-box button[type=reset]:before, .search-box button[type=reset]:after {
-  content: "";
-  background-color: #0dcaf0;
-  width: 0.3em;
-  height: 1.4em;
-  position: absolute;
-}
-.search-box button[type=reset]:after {
-  transform: rotate(90deg);
-  opacity: 0;
-  transition: transform 150ms ease-out, opacity 150ms ease-out;
-}
-
-.input-container {
-    display: inline-block;
-}
-
-input {
-    margin-right: 10px; /* Espacio entre los inputs, ajusta según sea necesario */
-}
-

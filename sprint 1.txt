@@ -1,6 +1,0 @@
-Sprint 1
-CRUD de al menos una entidad completa.
-Query de búsqueda personalizada
-Una vista disponible
-Una interacción con la BD disponible
-UML de entidades
