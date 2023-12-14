@@ -5,8 +5,8 @@
  */
 package com.example.proyecto.servicios;
 
-import static com.example.proyecto.controladores.mensajeControlador.ACCOUNT_SID;
-import static com.example.proyecto.controladores.mensajeControlador.AUTH_TOKEN;
+import static com.example.proyecto.controladores.MensajeControlador.ACCOUNT_SID;
+import static com.example.proyecto.controladores.MensajeControlador.AUTH_TOKEN;
 import com.example.proyecto.excepciones.MiException;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
@@ -21,7 +21,7 @@ public class WhatsappServicio {
 
     public static final String ACCOUNT_SID = "ACcc20b39020dc7cd0bdd6879a64d90e78";
     /*twilio cid de max*/
-    public static final String AUTH_TOKEN = "3fced43a36732efdb30779f9c07c3a69";
+    public static final String AUTH_TOKEN = "442ce73ca60164432287e21e55b5ba75";
     /*token de max*/
 
     public String enviarMensaje(String numero, String mensaje) throws MiException {

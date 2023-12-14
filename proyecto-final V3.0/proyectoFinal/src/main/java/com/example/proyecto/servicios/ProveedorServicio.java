@@ -6,6 +6,7 @@ import com.example.proyecto.entidades.Proveedor;
 import com.example.proyecto.entidades.Rubro;
 import com.example.proyecto.enumeraciones.Rol;
 import com.example.proyecto.excepciones.MiException;
+import com.example.proyecto.repositorios.PersonaRepositorio;
 import com.example.proyecto.repositorios.ProveedorRepositorio;
 import com.example.proyecto.repositorios.RubroRepositorio;
 import java.util.ArrayList;
@@ -30,8 +31,11 @@ public class ProveedorServicio {
     @Autowired
     private ImagenServicio imagenServicio;
 
-      @Transactional
-    public void crearProveedor(MultipartFile archivo, String nombre, 
+    @Autowired
+    private PersonaRepositorio personaRepositorio;
+
+    @Transactional
+    public void crearProveedor(MultipartFile archivo, String nombre,
             String apellido, String dni, String telefono, String email, String password,
             String password2, String matricula, String descripcion,
             Double precioHora, String domicilio, String idRubro) throws MiException {
@@ -45,11 +49,11 @@ public class ProveedorServicio {
         Optional<Rubro> rubroRespuesta = rubroRepositorio.findById(idRubro);
 
         if (rubroRespuesta.isPresent()) {
-          
-        rubro = rubroRespuesta.get();
-        }
-        proveedor.setRubro(rubro);
 
+            rubro = rubroRespuesta.get();
+        }
+
+        proveedor.setRubro(rubro);
         proveedor.setAlta(true);
         proveedor.setMatricula(matricula);
         proveedor.setDomicilio(domicilio);
@@ -62,22 +66,35 @@ public class ProveedorServicio {
         proveedor.setDescripcion(descripcion);        //Descripcion de cada proveedor Ej: horarios, presentación breve, etc.
         proveedor.setPrecioHora(precioHora); //Es el valor de los honorarios por hora.         
         proveedor.setFechaAlta(new Date());
-        proveedor.setRol(Rol.PROVEEDOR);
+        
+        if (personaRepositorio.count()==0){
+            proveedor.setRol(Rol.ADMIN);
+        }
+
+            else {
+            proveedor.setRol(Rol.PROVEEDOR);
+        }
+       
+       
+       
+   
 
         Imagen imagen = imagenServicio.guardar(archivo);
 
         proveedor.setImagen(imagen);
 
         proveedor.setImagen(imagen);
+
+        
         proveedorRepositorio.save(proveedor);
     }
 
     @Transactional
-    public void modificar(MultipartFile archivo, String nombre, String apellido, String dni, String telefono, String email,
-            String matricula, String descripcion,
-            Double precioHora, String idRubro, String domicilio) throws MiException {
-        validar2(nombre, apellido, dni, telefono, email, precioHora, domicilio, descripcion);
-        // falta domicilio
+    public void modificar(MultipartFile archivo, String nombre,
+            String apellido, String dni, String telefono, String email,
+            String domicilio) throws MiException {
+        validar2(nombre, apellido, dni, telefono, email, domicilio);
+     
         Optional<Proveedor> respuesta = proveedorRepositorio.findById(dni);
         if (respuesta.isPresent()) {
 
@@ -88,20 +105,18 @@ public class ProveedorServicio {
             proveedor.setDomicilio(domicilio);
             proveedor.setTelefono(telefono);
             proveedor.setEmail(email);
-            //proveedor.setPassword(new BCryptPasswordEncoder().encode(password));
-            proveedor.setDescripcion(descripcion);
-            proveedor.setPrecioHora(precioHora);
-            proveedor.setRol(Rol.PROVEEDOR);
 
             String idImagen = null;
 
-            if (proveedor.getImagen() != null) {
-                idImagen = proveedor.getImagen().getId();
-            }
+            if (proveedor.getImagen() != null  && !archivo.isEmpty()) {
 
-            Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
+                idImagen = proveedor.getImagen().getId();
+                
+                Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
 
             proveedor.setImagen(imagen);
+            }
+            
 
             proveedorRepositorio.save(proveedor);
 
@@ -109,8 +124,35 @@ public class ProveedorServicio {
     }
 
     @Transactional
+    public void modificarOficio(String dni,
+            String matricula, String descripcion,
+            Double precioHora, String idRubro) throws MiException {
+        validar3(precioHora, idRubro, matricula,descripcion);
+
+        Proveedor proveedor = null;
+        // falta domicilio
+        Optional<Proveedor> respuesta = proveedorRepositorio.findById(dni);
+
+        if (respuesta.isPresent()) {
+            proveedor = respuesta.get();
+            proveedor.setDescripcion(matricula);
+            proveedor.setDescripcion(descripcion);
+            proveedor.setPrecioHora(precioHora);
+            proveedorRepositorio.save(proveedor);
+            Optional<Rubro> respuestaRubro = rubroRepositorio.findById(idRubro);
+
+            if (respuestaRubro.isPresent()) {
+                Rubro rubro = respuestaRubro.get();
+                proveedor.setRubro(rubro);
+            }
+            proveedorRepositorio.save(proveedor);
+        }
+
+    }
+
+    @Transactional
     private void validar2(String nombre, String apellido, String dni, String telefono,
-            String email, Double precioHora, String domicilio, String descripcion) throws MiException {
+            String email, String domicilio) throws MiException {
 
         if (nombre == null || nombre.isEmpty()) {
             throw new MiException("El nombre no puede ser nulo o estar vacío");
@@ -128,17 +170,14 @@ public class ProveedorServicio {
             throw new MiException("El email no puede ser nulo o estar vacío");
         }
 
-        if (precioHora == 0.0) {
-            throw new MiException("El campo honorarios/hora no puede estar vacío o ser cero");
+           if (domicilio == null || domicilio.isEmpty()) {
+            throw new MiException("El email no puede ser nulo o estar vacío");
         }
-
-        if (domicilio == null || domicilio.isEmpty()) {
-            throw new MiException("El domicilio no puede estar vacío");
+          if (proveedorRepositorio.existsByEmail(email)) {
+            throw new MiException("El email ya está registrado en el sistema");
         }
-        if (descripcion == null || descripcion.isEmpty()) {
-            throw new MiException("La descripcion no puede estar vacío");
-        }
-
+           
+        
     }
 
     @Transactional(readOnly = true)
@@ -265,18 +304,21 @@ public class ProveedorServicio {
     }
 
     @Transactional
-    public void validar3(Double precioHora, String idRubro, String matricula) throws MiException {
+    public void validar3(Double precioHora, String idRubro, String matricula, String descripcion) throws MiException {
 
-        
-        if (precioHora == null || precioHora == 0.0  ) {
+        if (precioHora == null || precioHora == 0.0) {
             throw new MiException("El campo honorarios/hora no puede estar vacío o ser cero");
         }
 
+          if (descripcion == null || descripcion.isEmpty()) {
+            throw new MiException("El campo honorarios/hora no puede estar vacío o ser cero");
+        }
+        
         if (idRubro == null || idRubro.isEmpty()) {
             throw new MiException("debes seleccionar un rubro");
         }
-        
-           if (matricula == null || matricula.isEmpty()) {
+
+        if (matricula == null || matricula.isEmpty()) {
             throw new MiException("debes ingresar una matricula");
         }
     }

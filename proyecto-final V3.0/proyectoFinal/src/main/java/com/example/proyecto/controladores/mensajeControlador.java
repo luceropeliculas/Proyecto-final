@@ -33,11 +33,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/mensaje")
-public class mensajeControlador {
+public class MensajeControlador {
 
-    public static final String ACCOUNT_SID = "ACcc20b39020dc7cd0bdd6879a64d90e78";
+        public static final String ACCOUNT_SID = "ACcc20b39020dc7cd0bdd6879a64d90e78";
     /*twilio cid de max*/
-    public static final String AUTH_TOKEN = "3fced43a36732efdb30779f9c07c3a69";
+    public static final String AUTH_TOKEN = "442ce73ca60164432287e21e55b5ba75";
 
     /*token de max*/
 

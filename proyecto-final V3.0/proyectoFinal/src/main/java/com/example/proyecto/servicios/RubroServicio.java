@@ -30,7 +30,7 @@ public class RubroServicio {
     ImagenServicio imagenServicio;
 
       @Transactional
-public void CrearRubro(String nombreRubro, String descripcion, MultipartFile file) throws MiException {
+public void CrearRubro(String nombreRubro, String descripcion, MultipartFile archivo) throws MiException {
           ValidarDatos(nombreRubro, descripcion);
        /*
     try {
@@ -55,13 +55,21 @@ public void CrearRubro(String nombreRubro, String descripcion, MultipartFile fil
     */
        
         try {
+            
         Rubro rubro = new Rubro();
+        
+        nombreRubro=nombreRubro.toUpperCase();
+        
         rubro.setNombreRubro(nombreRubro);
+        
         rubro.setDescripcion(descripcion);
         
-          Imagen imagen = imagenServicio.guardar(file);
+          Imagen imagen = imagenServicio.guardar(archivo);
+          
         rubro.setImagen(imagen);
+        
         rubroRepositorio.save(rubro);
+        
            } catch (Exception ex) {
         throw new MiException("Error al procesar la imagen");
        
