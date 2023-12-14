@@ -2,12 +2,14 @@ package com.example.proyecto.controladores;
 
 import com.example.proyecto.entidades.Persona;
 import com.example.proyecto.entidades.Proveedor;
+import com.example.proyecto.entidades.Rubro;
 import com.example.proyecto.entidades.Trabajo;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.servicios.ClienteServicio;
 import com.example.proyecto.servicios.ComentarioServicio;
 import com.example.proyecto.servicios.PersonaServicio;
 import com.example.proyecto.servicios.ProveedorServicio;
+import com.example.proyecto.servicios.RubroServicio;
 import com.example.proyecto.servicios.TrabajoServicio;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -35,7 +37,8 @@ public class TrabajoControlador {
     ClienteServicio clienteServicio;
     @Autowired
     PersonaServicio personaServicio;
-
+       @Autowired
+   RubroServicio rubroServicio;
     //id trabajo, comentario, calificacion 
     @GetMapping("/comentar/{idTrabajo}")
     public String mostrarFormularioComentario(@PathVariable Long idTrabajo, ModelMap modelo) {
@@ -52,8 +55,8 @@ public class TrabajoControlador {
 
         modelo.put("cliente", cliente);
         modelo.addAttribute("proveedor", proveedor);
-
-        return "comentarTrabajo.html";
+        modelo.put("numero", 3);
+        return "FormularioTrabajo.html";
     }
 
     //en este grupo no trabajamos con el requestparam (pedir explicacion al max)
@@ -68,16 +71,27 @@ public class TrabajoControlador {
     @PostMapping("/comentar")
     public String comentar(Long idTrabajo, String contenido, Integer calificacion, ModelMap modelo, HttpSession session) {
         try {
-            
+
             comentarioServicio.crearComentario(contenido, calificacion, idTrabajo);
-            
+
             modelo.put("exito", "Comentario Registrado correctamente!");
-            
+
         } catch (MiException ex) {
-            
+
             modelo.put("error", ex.getMessage());
-            
-            return "comentarTrabajo.html";
+            Trabajo trabajo = trabajoServicio.getOne(idTrabajo);
+            modelo.addAttribute("trabajo", trabajo);
+
+            String dniProveedor = trabajo.getProveedor().getDni();
+            Proveedor proveedor = proveedorServicio.getOne(dniProveedor);
+
+            String dniCliente = trabajo.getCliente().getDni();
+            Persona cliente = personaServicio.getOne(dniCliente);
+
+            modelo.put("cliente", cliente);
+            modelo.addAttribute("proveedor", proveedor);
+            modelo.put("numero", 3);
+            return "FormularioTrabajo.html";
         }
         /*
         try {
@@ -107,7 +121,7 @@ public class TrabajoControlador {
 
         modelo.put("numero", 0);
 
-        return "registroTrabajo.html";
+        return "FormularioTrabajo.html";
     }
 
     @PostMapping("/registro")
@@ -115,17 +129,18 @@ public class TrabajoControlador {
 
         try {
             trabajoServicio.solicitudTrabajo(dniProveedor, dniCliente, detalleDeSolicitud);
-            
-              modelo.put("exito", "Trabajo Contratado correctamente!");
-              
-               return "index1.html";
-               
+
+            modelo.put("exito", "Trabajo Contratado correctamente!");
+ List<Rubro> rubros = rubroServicio.ListaRubros();
+            modelo.addAttribute("rubros", rubros);
+            return "index1.html";
+
         } catch (MiException ex) {
-            
+
             return "registroTrabajo.html";
-            
+
         }
-      
+
     }
 
     @GetMapping("/presupuestar/{idTrabajo}")
@@ -149,7 +164,7 @@ public class TrabajoControlador {
 
         modelo.put("numero", 1);
 
-        return "RegistroTrabajoProveedor.html";
+        return "FormularioTrabajo.html";
 
     }
 
@@ -166,16 +181,16 @@ public class TrabajoControlador {
         String dniProveedor = trabajo.getProveedor().getDni();
 //hasta aqui
         try {
-            
+
             trabajoServicio.revisionDeTrabajo(idTrabajo, aceptacion,
                     respuestaProveedor, GastosAdicionales, horasTrabajadasEstimadas, dniProveedor);
-            
+
             modelo.put("exito", "Trabajo Presupuestado correctamente!");
-            
+
         } catch (MiException ex) {
-            
+
             modelo.addAttribute("error", ex.getMessage());
-            
+
         }
 
         Persona proveedor = (Persona) session.getAttribute("usuariosession");
@@ -187,15 +202,15 @@ public class TrabajoControlador {
 
     @GetMapping("/aceptar/{idTrabajo}")
     public String aceptar(@PathVariable Long idTrabajo, ModelMap modelo, HttpSession session) throws MiException {
-    
+
         Boolean aceptacion = true;
 
         trabajoServicio.aceptacionCliente(idTrabajo, aceptacion);
 
         Persona cliente = (Persona) session.getAttribute("usuariosession");
-          List<Trabajo> trabajos = trabajoServicio.listarTrabajoCliente(cliente.getDni());
+        List<Trabajo> trabajos = trabajoServicio.listarTrabajoCliente(cliente.getDni());
         modelo.put("trabajos", trabajos);
-        
+
         return "listar_trabajo_cliente.html";
 
     }
@@ -206,9 +221,9 @@ public class TrabajoControlador {
         trabajoServicio.aceptacionCliente(idTrabajo, aceptacion);
 
         Persona cliente = (Persona) session.getAttribute("usuariosession");
-            List<Trabajo> trabajos = trabajoServicio.listarTrabajoCliente(cliente.getDni());
+        List<Trabajo> trabajos = trabajoServicio.listarTrabajoCliente(cliente.getDni());
         modelo.put("trabajos", trabajos);
-        
+
         return "listar_trabajo_cliente.html";
     }
 
@@ -232,12 +247,12 @@ public class TrabajoControlador {
     @GetMapping("/cancelaProveedor/{idTrabajo}")
     public String cancelaProveedor(@PathVariable Long idTrabajo, ModelMap modelo, HttpSession session) throws MiException {
         Boolean aceptacion = false;
-        
+
         //despues se elimina
         Trabajo trabajo = trabajoServicio.getOne(idTrabajo);
         String idProvedor = trabajo.getProveedor().getDni();
         //hast a aqui
-        
+
         trabajoServicio.CancelarTrabajo(idTrabajo, idProvedor, aceptacion);
 
         Persona proveedor = (Persona) session.getAttribute("usuariosession");

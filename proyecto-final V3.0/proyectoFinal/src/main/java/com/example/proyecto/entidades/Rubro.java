@@ -21,7 +21,7 @@ public class Rubro {
     private String nombreRubro;
     
     //se agrego
-      @OneToOne(cascade = CascadeType.ALL)
+      @OneToOne
         private Imagen imagen;
 
     

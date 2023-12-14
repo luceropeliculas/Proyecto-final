@@ -2,10 +2,13 @@ package com.example.proyecto.controladores;
 
 import com.example.proyecto.entidades.Cliente;
 import com.example.proyecto.entidades.Persona;
+import com.example.proyecto.entidades.Proveedor;
+import com.example.proyecto.entidades.Rubro;
 import com.example.proyecto.entidades.Trabajo;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.servicios.ClienteServicio;
 import com.example.proyecto.servicios.ProveedorServicio;
+import com.example.proyecto.servicios.RubroServicio;
 import com.example.proyecto.servicios.TrabajoServicio;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -32,9 +35,11 @@ public class ClienteControlador {
 
     @Autowired
     TrabajoServicio trabajoServicio;
+    @Autowired
+    RubroServicio rubroServicio;
 
     @GetMapping("/registrar")
-    public String registrar() {
+    public String registrar(ModelMap modelo) {
 
         return "cliente_form.html";
     }
@@ -50,12 +55,14 @@ public class ClienteControlador {
                 proveedorServicio.crearProveedor(archivo, nombre, apellido, dni, telefono, email,
                         password, password2, matricula, descripcion, precioHora, direccion, idRubro);
                 modelo.put("exito", "El Proveedor fue registrado correctamente!");
+
             } else {
-                
+
                 clienteServicio.crearCliente(archivo, nombre, apellido, dni, telefono, email, password, password2, direccion);
-             modelo.put("exito", "El Cliente fue registrado correctamente!");
+                modelo.put("exito", "El Cliente fue registrado correctamente!");
+
             }
-            
+
         } catch (MiException ex) {
 
             modelo.put("error", ex.getMessage());
@@ -69,9 +76,10 @@ public class ClienteControlador {
             modelo.put("matricula", matricula);
             modelo.put("idRubro", idRubro);
             modelo.put("validador", validador);
+            modelo.put("descripcion", descripcion);
             return "registroDoble.html";
         }
-        
+
         return "login1.html";
     }
 
@@ -156,32 +164,45 @@ public class ClienteControlador {
         return "login.html";
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_CLIENTE', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN','ROLE_PROVEEDOR')")
     @GetMapping("/modificar")
     public String modificar(ModelMap modelo, HttpSession session) {
+
         Persona persona = (Persona) session.getAttribute("usuariosession");
 
         if (persona instanceof Cliente) {
-            System.out.println("entro a la istancia");
-            Cliente cliente = (Cliente) persona;
+            
+Cliente cliente=clienteServicio.getOne(persona.getDni());
+        
             modelo.put("cliente", cliente);
-            return "modificarCliente.html";
+
+            modelo.put("verificador", 3);
+            return "modificarDatos.html";
+
         } else {
-            System.out.println("error aquiiiii");
-            // Manejar el caso en que la instancia no sea de tipo Cliente
-            // Puedes redirigir a una página de error o manejar de otra manera
-            return "index1";
+            List<Rubro> rubros = rubroServicio.ListaRubros();
+            modelo.addAttribute("rubros", rubros);
+            modelo.put("verificador", 2);
+
+            Proveedor proveedor = proveedorServicio.getOne(persona.getDni());
+            modelo.put("cliente", proveedor);
+
+            return "modificarDatos.html";
         }
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_CLIENTE', 'ROLE_ADMIN')")
-    @PostMapping("/modificar/{dni}")
-    public String actualizar(@PathVariable String dni, @RequestParam String nombre, MultipartFile archivo, String apellido, String telefono,
-            String email, String domicilio, ModelMap modelo) {
-
+    @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN','ROLE_PROVEEDOR')")
+    @PostMapping("/modificado")
+    public String actualizar(String dni, String nombre, MultipartFile archivo, String apellido, String telefono,
+            String email, String domicilio, ModelMap modelo,HttpSession session) {
+    
         try {
             clienteServicio.actualizar(archivo, nombre, apellido, dni, telefono, email, domicilio);
-
+// Recuperar al cliente actualizad0 de la base de datos
+     
+Cliente clienteActualizado = clienteServicio.getOne(dni);
+// Actualizar la información del usuario en la sesión
+session.setAttribute("usuariosession", clienteActualizado);
             modelo.put("exito", "Cliente actualizado correctamente!");
 
             return "index1.html";
@@ -193,7 +214,5 @@ public class ClienteControlador {
         }
 
     }
-
- 
 
 }

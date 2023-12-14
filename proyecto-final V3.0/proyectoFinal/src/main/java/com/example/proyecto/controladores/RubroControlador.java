@@ -36,10 +36,10 @@ public class RubroControlador {
       @PostMapping("/registro")
     public String registro( String nombreRubro, 
                            String descripcion,
-                            MultipartFile imagen,
+                            MultipartFile archivo,
                            ModelMap modelo){
         try {
-            rubroServicio.CrearRubro(nombreRubro, descripcion, imagen);
+            rubroServicio.CrearRubro(nombreRubro, descripcion, archivo);
             modelo.put("exito", "El Rubro fue registrado correctamente!");
         } catch (MiException ex) {
             modelo.put("error", ex.getMessage());

@@ -43,8 +43,7 @@ public class ProveedorControlador {
     @Autowired
     ComentarioServicio comentarioServicio;
 
-    
-  //  falta el campo descripcion!!!!!!!!!!!!!
+    //  falta el campo descripcion!!!!!!!!!!!!!
     @PostMapping("/registro")
     public String registro(String validador, String nombre, String apellido, String dni, String telefono,
             String direccion, String email, String password, String matricula,
@@ -52,7 +51,7 @@ public class ProveedorControlador {
             ModelMap modelo, MultipartFile archivo, String password2, String idRubro) {
         try {
 
-            proveedorServicio.validar3(precioHora, idRubro, matricula);
+            proveedorServicio.validar3(precioHora, idRubro, matricula,descripcion);
 
             modelo.put("exito", "COMPLETA TUS DATOS PERSONALES PARA CONTINUAR");
             modelo.put("validador", validador);
@@ -124,34 +123,12 @@ public class ProveedorControlador {
         return "perfilProveedor.html";
     }
 
-    
     @PreAuthorize("hasAnyRole('ROLE_PROVEEDOR', 'ROLE_ADMIN')")
     @GetMapping("/perfil")
     public String perfil(ModelMap modelo, HttpSession session) {
         Proveedor proveedor = (Proveedor) session.getAttribute("personasession");
         modelo.put("proveedor", proveedor);
         return "proveedor_modificar.html";
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_PROVEEDOR', 'ROLE_ADMIN')")
-    @PostMapping("/perfil/{id}")
-    public String actualizar(@RequestParam MultipartFile archivo, String nombre, String apellido, String dni, String telefono, String email, String password,
-            String password2, String matricula, String descripcion,
-            Double precioHora, String idRubro, String domicilio, ModelMap modelo) {
-
-        try {
-            proveedorServicio.modificar(archivo, nombre, apellido, dni, telefono, email, matricula, descripcion, precioHora, idRubro, domicilio);
-
-            modelo.put("exito", "Cliente actualizado correctamente!");
-
-            return "inicio.html";
-        } catch (MiException ex) {
-
-            modelo.put("error", ex.getMessage());
-
-            return "proveedor_modificar.html";
-        }
-
     }
 
     @PreAuthorize("hasAnyRole('ROLE_PROVEEDOR', 'ROLE_ADMIN')")
@@ -171,25 +148,67 @@ public class ProveedorControlador {
 
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_PROVEEDOR', 'ROLE_ADMIN')")
-    @PostMapping("/modificarProveedor/{dni}")
-    public String actualizar(@PathVariable String dni, @RequestParam MultipartFile archivo, String nombre, String apellido, String telefono, String email,
-            String matricula, String descripcion,
-            Double precioHora, String domicilio, String idRubro, ModelMap modelo) {
+    @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN','ROLE_PROVEEDOR')")
+    @PostMapping("/modificado")
+    public String modificaPersonales(String dni, String nombre,
+            MultipartFile archivo, String apellido, String telefono,
+            String matricula, Double precioHora, String descripcion, String idRubro,
+            String email, String domicilio, ModelMap modelo, String validador, HttpSession session) {
 
+       
         try {
-            proveedorServicio.modificar(archivo, nombre, apellido, dni, telefono, email, matricula, descripcion, precioHora, domicilio, idRubro);
+             
 
+            proveedorServicio.modificar(archivo, nombre, apellido, dni, telefono, email, domicilio);
+           
+            Proveedor proveedorActualizado = proveedorServicio.getOne(dni);
+            session.setAttribute("usuariosession", proveedorActualizado);
             modelo.put("exito", "Proveedor actualizado correctamente!");
+          
 
-            return "index1.html";
         } catch (MiException ex) {
-
-            modelo.put("error", ex.getMessage());
-
-            return "modificarProvedor.html";
+ List<Rubro> rubros = rubroServicio.ListaRubros();
+            modelo.addAttribute("rubros", rubros);
+            modelo.put("verificador", 2);
+           Proveedor proveedor = proveedorServicio.getOne(dni);
+            modelo.put("cliente", proveedor);
+              modelo.put("error", ex.getMessage());
+            return "modificarDatos.html";
         }
-
+         List<Rubro> rubros = rubroServicio.ListaRubros();
+            modelo.addAttribute("rubros", rubros);
+  return "index1.html";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_CLIENTE','ROLE_ADMIN','ROLE_PROVEEDOR')")
+    @PostMapping("/modificado1")
+    public String modificado1(String dni, String nombre,
+            MultipartFile archivo, String apellido, String telefono,
+            String matricula, Double precioHora, String descripcion, String idRubro,
+            String email, String domicilio, ModelMap modelo, String validador) {
+
+        try {
+            proveedorServicio.modificarOficio(dni, matricula, descripcion, precioHora, idRubro);
+            
+            modelo.put("exito", "Oficio actualizado correctamente!");
+        } catch (MiException ex) {
+            
+            
+ List<Rubro> rubros = rubroServicio.ListaRubros(); 
+            modelo.addAttribute("rubros", rubros);
+            modelo.put("verificador", 2);
+                     
+            
+            modelo.put("precioHora", precioHora);
+            modelo.put("matricula", matricula);
+            modelo.put("idRubro", idRubro);
+            modelo.put("validador", validador);
+            modelo.put("descripcion", descripcion);
+            modelo.put("error", ex.getMessage());
+            return "modificarDatos.html";
+        }
+         List<Rubro> rubros = rubroServicio.ListaRubros();
+            modelo.addAttribute("rubros", rubros);
+        return "index1.html";
+    }
 }

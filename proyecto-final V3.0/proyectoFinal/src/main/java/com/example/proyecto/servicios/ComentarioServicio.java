@@ -4,13 +4,19 @@
  * and open the template in the editor.
  */
 package com.example.proyecto.servicios;
+
 import com.example.proyecto.entidades.Comentario;
+import com.example.proyecto.entidades.Proveedor;
 import com.example.proyecto.entidades.Trabajo;
 import com.example.proyecto.enumeraciones.EstadoTrabajo;
 import com.example.proyecto.excepciones.MiException;
 import com.example.proyecto.repositorios.ComentarioRepositorio;
+import com.example.proyecto.repositorios.ProveedorRepositorio;
 import com.example.proyecto.repositorios.TrabajoRepositorio;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -20,8 +26,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 //para ver entre todos
-
-
 @Service
 public class ComentarioServicio {
 
@@ -31,54 +35,68 @@ public class ComentarioServicio {
     @Autowired
     TrabajoRepositorio trabajoRepositorio;
 
-    
-    /*
-    ANTES QUE NADA MUY BIEN CHICOS!!!!!!!!!!!!!!
-    AQUI VAN UNAS PEQUEÑAS SUGERENCIA
-    
-    LA PRIMER LETRA DE LOS METODOS VA EN MINUSCULA POR BUENAS PRACTICAS
-    
-    el id es autogenerable creo asi que se va del parametro
-     la fecha es autogenerable creo asi que se va del parametro
-      el booleano es autogenerable creo asi que se va del parametro
-    
-        public void CrearComentario(String id, String contenido, Integer calificacion,
-            LocalDateTime fechaHora, boolean altaBaja, Long idTrabajo) throws MiException {
-    */
-    
+    @Autowired
+    ProveedorRepositorio proveedorRepositorio;
+
+    private List<String> forbiddenWords = Arrays.asList("palabra1", "palabra2", "groseria1", "groseria2");
+
+    public boolean containsForbiddenWords(String comment) {
+        return forbiddenWords.stream().anyMatch(comment::contains);
+    }
+
     @Transactional
     public void crearComentario(String contenido, Integer calificacion, Long idTrabajo) throws MiException {
 
         Optional<Trabajo> trabajoRespuesta = trabajoRepositorio.findById(idTrabajo);
-      
+
         validarComentarios(contenido, calificacion);
-       
+
         Date fecha = new Date();
-        
+
         if (trabajoRespuesta.isPresent()) {
-            
+
             Trabajo trabajo = trabajoRespuesta.get();
-            
+
             //esto lo agregue para que ande
             //trabajo.setEstadoTrabajo(EstadoTrabajo.FINALIZADO);
-            
             if (trabajo.getEstadoTrabajo() == EstadoTrabajo.FINALIZADO) {
-               
-                
-                ///se agrego enum calificado y se setea calificado
-                trabajo.setEstadoTrabajo(EstadoTrabajo.CALIFICADO);
-                trabajoRepositorio.save(trabajo);
-                
-                
-                
-                    Comentario comentario = new Comentario(contenido, calificacion, fecha, true);
-                               
-                    comentario.setTrabajo(trabajo);                    
-                    
-                    comentarioRepositorio.save(comentario);
 
-                    //bien ahi chicos !!! no se me ocurrio poner eso 
+                Proveedor proveedor = trabajo.getProveedor();
+
+                Integer contador = proveedor.getContdTrabajoRealizado();
+
+                Integer califProm = proveedor.getPuntuacionPromedio();
+
+                if(contador==null){
+                contador=0;
+                }
                 
+                
+                System.out.println(contador);
+                   System.out.println(califProm);
+                   
+                   System.out.println("|calificacion");
+                  System.out.println(calificacion);
+                
+                Integer general = ((califProm * contador) + calificacion) / (contador + 1);
+
+                proveedor.setContdTrabajoRealizado((contador + 1));
+
+                proveedor.setPuntuacionPromedio(general);
+
+                proveedorRepositorio.save(proveedor);
+
+                trabajo.setEstadoTrabajo(EstadoTrabajo.CALIFICADO);
+                
+                trabajoRepositorio.save(trabajo);
+
+                Comentario comentario = new Comentario(contenido, calificacion, fecha, true);
+
+                comentario.setTrabajo(trabajo);
+
+                comentarioRepositorio.save(comentario);
+
+                //bien ahi chicos !!! no se me ocurrio poner eso 
             } else {
                 throw new MiException("El trabajo debe estar en estado FINALIZADO para agregar un comentario.");
             }
@@ -106,30 +124,29 @@ public class ComentarioServicio {
 //
 //                } }
 //    }
- @Transactional
+    @Transactional
     public void modificarComentarios(Long idTrabajo, String contenido, Integer calificacion, String id) throws MiException {
 
-        
         Optional<Comentario> respuesta = comentarioRepositorio.findById(id);
-        
+
         validarComentarios(contenido, calificacion);
 
         Date fecha = new Date();
-        
+
         if (respuesta.isPresent()) {
-            
+
             Comentario comentario = respuesta.get();
             if (comentario.isAltaBaja()) {
-            comentario.setContenido(contenido);
-            comentario.setCalificacion(calificacion);
-            comentario.setFechaHora(fecha);            
-            comentarioRepositorio.save(comentario);
+                comentario.setContenido(contenido);
+                comentario.setCalificacion(calificacion);
+                comentario.setFechaHora(fecha);
+                comentarioRepositorio.save(comentario);
             } else {
-                throw new MiException ("El comentario está dado de baja, no se puede modificar.");
+                throw new MiException("El comentario está dado de baja, no se puede modificar.");
             }
         }
     }
-    
+
     @Transactional
     public List<Comentario> ListaComentarios() {
 
@@ -139,27 +156,27 @@ public class ComentarioServicio {
 
         return comentarios;
     }
+
     //este lo agregue si no entienden pregunte
-      @Transactional
+    @Transactional
     public List<Comentario> ListaComentariosPorProveedor(String idProveedor) {
         List<Comentario> comentarios = new ArrayList<>();
         comentarios = comentarioRepositorio.findAll();
-          for (Comentario comentario : comentarios) {              
-          } 
-          
+        for (Comentario comentario : comentarios) {
+        }
+
         List<Comentario> comentariosProveedor = new ArrayList<>();
-        
-          for (Comentario comentario : comentarios) {
-              if(comentario.getTrabajo().getProveedor().getDni().equalsIgnoreCase(idProveedor)){
-              comentariosProveedor.add(comentario);
-              }
-          }
-        
+
+        for (Comentario comentario : comentarios) {
+            if (comentario.getTrabajo().getProveedor().getDni().equalsIgnoreCase(idProveedor)) {
+                comentariosProveedor.add(comentario);
+            }
+        }
 
         return comentariosProveedor;
     }
-    
-/*
+
+    /*
     se los comente por que me me da errores, despues revisen en base a crear, tiene que quedar parecido
     @Transactional
     public void ModificarComentarios(String id, String contenido, Integer calificacion, boolean altaBaja, LocalDateTime fechaHora) throws MiException {
@@ -178,13 +195,12 @@ public class ComentarioServicio {
         }
 
     }*/
-
     @Transactional
     @Secured("ROLE_ADMIN")
     public void bajaComentario(String id) throws MiException {
 
         Optional<Comentario> comentarioRespuesta = comentarioRepositorio.findById(id);
-       
+
         if (comentarioRespuesta.isPresent()) {
             Comentario comentario = comentarioRespuesta.get();
 
@@ -216,5 +232,63 @@ public class ComentarioServicio {
         // comentario = ListaComentarios();
 
     }
-}
 
+    //SE AGREGO AL ULTIMO
+    //por fecha
+    @Transactional
+    public List<Comentario> ListaComentariosOrdenadosPorFecha() {
+        List<Comentario> comentarios = ListaComentarios();
+
+        Collections.sort(comentarios, Comparator.comparing(Comentario::getFechaHora));
+
+        return comentarios;
+    }
+
+    // Calificación de menor a mayor
+    @Transactional
+    public List<Comentario> ListaComentariosOrdenadosPorCalificacion() {
+        List<Comentario> comentarios = ListaComentarios();
+
+        Collections.sort(comentarios, Comparator.comparingInt(Comentario::getCalificacion));
+
+        return comentarios;
+    }
+    // Calificación de mayor a menor
+
+    @Transactional
+    public List<Comentario> ListaComentariosOrdenadosPorCalificacionMayor() {
+        List<Comentario> comentarios = ListaComentarios();
+
+        Collections.sort(comentarios, Comparator.comparingInt(Comentario::getCalificacion).reversed());
+
+        return comentarios;
+    }
+
+    public void calificacionPromedio(String dniProveedor) throws MiException {
+        // Obtener el proveedor por su DNI
+        Proveedor proveedor = proveedorRepositorio.findById(dniProveedor)
+                .orElseThrow(() -> new MiException("Proveedor no encontrado con DNI: " + dniProveedor));
+
+        ///////////////////  ver este
+        /*
+        // Obtener todos los comentarios del proveedor
+        List<Comentario> comentarios = comentarioRepositorio.findByTrabajoProveedorDniAndAltaBaja(dniProveedor, true);
+         */
+        List<Comentario> comentarios = new ArrayList();
+
+        // Calcular la suma de las calificaciones
+        int sumaCalificaciones = comentarios.stream()
+                .mapToInt(Comentario::getCalificacion)
+                .sum();
+
+        // Calcular el promedio
+        double promedioCalificaciones = comentarios.isEmpty() ? 0.0 : (double) sumaCalificaciones / comentarios.size();
+
+        // Actualizar la puntuación promedio del proveedor
+        proveedor.setPuntuacionPromedio((int) Math.round(promedioCalificaciones));
+
+        // Guardar el proveedor actualizado
+        proveedorRepositorio.save(proveedor);
+    }
+
+}

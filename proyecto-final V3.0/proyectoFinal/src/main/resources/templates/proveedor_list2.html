@@ -6,7 +6,7 @@
         <title>Service Pro M</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link th:href="@{/css/list.css}" type="text/css" rel="stylesheet"></link>
+        <link th:href="@{/css/listaProveedor.css}" type="text/css" rel="stylesheet"></link>
 
 
     </head>
@@ -98,59 +98,55 @@
                     <div class="perfil-container" th:each="proveedor : ${proveedores}">
                         <div class="perfil-header">
                             <div class="foto-perfil">
+                                <img th:src="@{/imagen/perfil/__${proveedor.dni}__}">
                             </div>
                             <h1 th:text="${proveedor.nombre}"></h1>
                             <h1 th:text="${proveedor.apellido}"></h1>
                         </div>
                         <div class="perfil-info">
                             <center>
-                            <h5><strong>TRABAJOS REALZADOS:</strong>
-                                <span th:if="${proveedor.contdTrabajoRealizado > 0}" th:text="${proveedor.contdTrabajoRealizado}"></span> 
-                                <span th:unless="${proveedor.contdTrabajoRealizado > 0}" th:text="${0}"></span> </h5>
-                            <p ><strong>Telefono:</strong><span th:text="${proveedor.telefono}"></span>  </p>
-                            <p ><strong>Email:</strong><span th:text="${proveedor.email}"></span>  </p>
-                            <p ><strong>Domicilio:</strong><span th:text="${proveedor.domicilio}"></span>  </p>
-                            <p ><strong>Rubro:</strong><span th:text="${proveedor.rubro.nombreRubro}"></span>  </p>
-                            <p ><strong>Matricula:</strong><span th:text="${proveedor.matricula}"></span>  </p>
+                                <h5><strong>TRABAJOS REALIZADOS:</strong>
+                                    <span th:if="${proveedor.contdTrabajoRealizado > 0}" th:text="${proveedor.contdTrabajoRealizado}"></span> 
+                                    <span th:unless="${proveedor.contdTrabajoRealizado > 0}" th:text="${0}"></span> </h5>
+                                <p ><strong>Telefono:</strong><span th:text="${proveedor.telefono}"></span>  </p>
+                                <p ><strong>Email:</strong><span th:text="${proveedor.email}"></span>  </p>
+                                <p ><strong>Domicilio:</strong><span th:text="${proveedor.domicilio}"></span>  </p>
+                                <p ><strong>Rubro:</strong><span th:text="${proveedor.rubro.nombreRubro}"></span>  </p>
+                                <p ><strong>Matricula:</strong><span th:text="${proveedor.matricula}"></span>  </p>
 
-                            <strong>  CALIFICACION </strong> <br>
-                            <div id="rating">
-                                <h6 th:if="${proveedor.puntuacionPromedio==0}"> 
-                                    <p Style="color:black;">este proveedor todavia no realizo ningun trabajo</p>
-                                </h6>
+                                <strong>  CALIFICACION </strong> <br>
+                                <div id="rating">
+                                    <h6 th:if="${proveedor.puntuacionPromedio==0}"> 
+                                        <p Style="color:black;">este proveedor todavia no realizo ningun trabajo</p>
+                                    </h6>
+                                    <strong th:if="${proveedor.puntuacionPromedio==1}"> 
+                                        <span>&#9733;</span>
+                                    </strong>
 
+                                    <strong th:if="${proveedor.puntuacionPromedio==2}">  
+                                        <span>&#9733;</span><span>&#9733;</span>
+                                    </strong>
 
-                                <strong th:if="${proveedor.puntuacionPromedio==1}"> 
-                                    <span>&#9733;</span>
-                                </strong>
+                                    <strong th:if="${proveedor.puntuacionPromedio==3}">  
+                                        <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
+                                    </strong>
+                                    <strong th:if="${proveedor.puntuacionPromedio==4}">  
+                                        <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
+                                    </strong>
+                                    <strong th:if="${proveedor.puntuacionPromedio==5}">  
+                                        <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
+                                    </strong>
+                                </div>
+                                <div class="btn-container">
+                                    <a th:href="@{/proveedor/perfil/__${proveedor.dni}__}">
+                                                                            <button class="ov-btn-grow-spin" id="ov-btn-grow-spin">Ver Perfil</button>
+                                    </a>        
 
-                                <strong th:if="${proveedor.puntuacionPromedio==2}">  
-                                    <span>&#9733;</span><span>&#9733;</span>
-                                </strong>
-
-                                <strong th:if="${proveedor.puntuacionPromedio==3}">  
-                                    <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
-                                </strong>
-                                <strong th:if="${proveedor.puntuacionPromedio==4}">  
-                                    <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
-                                </strong>
-                                <strong th:if="${proveedor.puntuacionPromedio==5}">  
-                                    <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
-                                </strong>
-                            </div>
-                            <div class="btn-container">
-                                <a th:href="@{/proveedor/perfil/__${proveedor.dni}__}">
-                                    <br>
-
-                                    <button class="ov-btn-grow-spin" id="ov-btn-grow-spin">Ver Perfil</button>
-
-                                </a>        
-
-                                <a th:href="@{/trabajo/contratar/__${proveedor.dni}__}">
-                                    <button class="ov-btn-grow-spin" id="ov-btn-grow-spin">Contratar</button>
-                                </a>
-                            </div>
-</center>
+                                    <a th:href="@{/trabajo/contratar/__${proveedor.dni}__}">
+                                        <button class="ov-btn-grow-spin" id="ov-btn-grow-spin">Contratar</button>
+                                    </a>
+                                </div>
+                            </center>
                         </div>
                     </div> 
 
